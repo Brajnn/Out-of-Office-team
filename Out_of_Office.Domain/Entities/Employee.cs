@@ -17,6 +17,9 @@ namespace Out_of_Office.Domain.Entities
 
         public string Position { get; set; }
 
+        [DataType(DataType.Date)]
+        public DateTime? HireDate { get; set; }
+
         [EnumDataType(typeof(EmployeeStatus))]
         public EmployeeStatus Status { get; set; }
         public int PeoplePartnerID { get; set; }

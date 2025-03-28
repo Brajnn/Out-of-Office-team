@@ -78,11 +78,11 @@ namespace Out_of_Office.Controllers
         {
             var employees = await _mediator.Send(new GetAllEmployeesQuery());
             var hrManagers = employees.Where(e => e.Position == "HR Manager").ToList();
-
+            var hireDate = DateTime.Now;
             ViewBag.HrManagers = hrManagers;
             ViewBag.Positions = new[] { "HR Manager", "Project Manager", "Employee" };
 
-            return View("CreateEmployee", new CreateEmployeeCommand());
+            return View("CreateEmployee", new CreateEmployeeCommand() { HireDate=hireDate} );
         }
 
         

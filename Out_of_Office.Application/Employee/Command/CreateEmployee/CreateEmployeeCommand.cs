@@ -13,6 +13,8 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
         public string Subdivision { get; set; }
         public string Position { get; set; }
         public string Status { get; set; }
+
+        public DateTime HireDate { get; set; }
         public int PeoplePartnerID { get; set; }
         public int OutOfOfficeBalance { get; set; }
         public byte[] Photo { get; set; }

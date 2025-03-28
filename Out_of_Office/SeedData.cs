@@ -13,7 +13,7 @@ public static class SeedData
         var employeeRepo = serviceProvider.GetRequiredService<IEmployeeRepository>();
         var userService = serviceProvider.GetRequiredService<IUserService>();
 
-        string adminUsername = "admin123";
+        string adminUsername = "admin1";
 
         // Sprawdź, czy użytkownik już istnieje
         if (context.Users.Any(u => u.Username == adminUsername))

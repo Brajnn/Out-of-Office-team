@@ -34,6 +34,7 @@ namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
             employee.FullName = request.FullName;
             employee.Subdivision = request.Subdivision;
             employee.Position = request.Position;
+            employee.HireDate = request.HireDate;
             employee.Status = employeeStatus;
             employee.PeoplePartnerID = request.PeoplePartnerID;
             employee.OutOfOfficeBalance = request.OutOfOfficeBalance;

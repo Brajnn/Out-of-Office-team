@@ -30,10 +30,12 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
                 FullName = request.FullName,
                 Subdivision = request.Subdivision,
                 Position = request.Position,
+                HireDate = request.HireDate,
                 Status = employeeStatus,
                 PeoplePartnerID = request.PeoplePartnerID,
                 OutOfOfficeBalance = request.OutOfOfficeBalance,
                 Photo = request.Photo
+                
             };
 
             await _employeeRepository.AddEmployeeAsync(employee);
