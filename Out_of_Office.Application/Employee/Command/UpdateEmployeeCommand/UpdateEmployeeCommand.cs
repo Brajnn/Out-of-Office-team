@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Out_of_Office.Application.Leave_Balance;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,6 @@ namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
         public int PeoplePartnerID { get; set; }
         public int OutOfOfficeBalance { get; set; }
         public byte[] Photo { get; set; }
+        public List<LeaveBalanceDto> LeaveBalances { get; set; }
     }
 }

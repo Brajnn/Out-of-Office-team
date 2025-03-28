@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Out_of_Office.Application.Leave_Balance;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,8 @@ namespace Out_of_Office.Application.Employee
         public string Status { get; set; }
         public int PeoplePartnerID { get; set; }
         public int OutOfOfficeBalance { get; set; }
+        public List<LeaveBalanceDto> LeaveBalances { get; set; } = new();
+        public int DaysAvailable { get; set; }
         public byte[] Photo { get; set; }
     }
 }

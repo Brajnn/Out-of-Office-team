@@ -10,6 +10,7 @@ using Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand;
 using Out_of_Office.Application.Employee.Command.UpdateEmployeeStatus;
 using Out_of_Office.Application.Employee.Queries.GetAllEmployees;
 using Out_of_Office.Application.Employee.Queries.GetEmployeeById;
+using Out_of_Office.Application.Leave_Balance;
 using Out_of_Office.Application.Models.AssignProjectViewModel;
 using Out_of_Office.Application.Project.Query.GetAllProjectsQuery;
 using Out_of_Office.Domain.Interfaces;
@@ -140,8 +141,16 @@ namespace Out_of_Office.Controllers
                     Status = employeeDto.Status,
                     PeoplePartnerID = employeeDto.PeoplePartnerID,
                     OutOfOfficeBalance = employeeDto.OutOfOfficeBalance,
-                    Photo = employeeDto.Photo
-                };
+                    HireDate = employeeDto.HireDate,
+                    Photo = employeeDto.Photo,
+                    LeaveBalances = employeeDto.LeaveBalances?
+                    .Select(lb => new LeaveBalanceDto
+                    {
+                        Type = lb.Type,
+                        DaysAvailable = lb.DaysAvailable
+                    })
+                    .ToList() ?? new List<LeaveBalanceDto>()
+                    };
 
                 await _mediator.Send(command);
                 return RedirectToAction(nameof(Index));

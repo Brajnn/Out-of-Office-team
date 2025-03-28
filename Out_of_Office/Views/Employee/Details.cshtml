@@ -35,6 +35,26 @@
             </dd>
         }
     </dl>
+    <dt class="col-sm-2">Leave Balances</dt>
+    <dd class="col-sm-10">
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Days Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var lb in Model.LeaveBalances)
+                {
+                    <tr>
+                        <td>@lb.Type</td>
+                        <td>@lb.DaysAvailable</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </dd>
 </div>
 
 <div>

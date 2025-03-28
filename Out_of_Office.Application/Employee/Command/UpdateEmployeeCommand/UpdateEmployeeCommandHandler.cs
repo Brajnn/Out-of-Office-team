@@ -39,6 +39,14 @@ namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
             employee.PeoplePartnerID = request.PeoplePartnerID;
             employee.OutOfOfficeBalance = request.OutOfOfficeBalance;
             employee.Photo = request.Photo;
+            if (request.LeaveBalances != null && request.LeaveBalances.Any())
+            {
+                var leaveBalances = request.LeaveBalances
+                 .Select(lb => (Enum.Parse<LeaveType>(lb.Type), lb.DaysAvailable))
+                 .ToList();
+
+                await _employeeRepository.UpdateLeaveBalancesAsync(employee.Id, leaveBalances);
+            }
 
             await _employeeRepository.UpdateEmployeeAsync(employee);
 

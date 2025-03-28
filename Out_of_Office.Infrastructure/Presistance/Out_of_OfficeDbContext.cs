@@ -21,6 +21,7 @@ namespace Out_of_Office.Infrastructure.Presistance
         public DbSet<LeaveRequest> LeaveRequest { get; set; }
         public DbSet<ApprovalRequest> ApprovalRequest { get; set; }
         public DbSet<EmployeeProject> EmployeeProjects { get; set; }
+        public DbSet<LeaveBalance> LeaveBalances { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
@@ -56,6 +57,22 @@ namespace Out_of_Office.Infrastructure.Presistance
                 entity.Property(e => e.Photo)
                       .IsRequired(false)
                       .HasColumnType("varbinary(max)");
+            });
+            modelBuilder.Entity<LeaveBalance>(entity =>
+            {
+                entity.HasKey(lb => new { lb.EmployeeId, lb.Type });
+
+                entity.HasOne(lb => lb.Employee)
+                      .WithMany(e => e.LeaveBalances)
+                      .HasForeignKey(lb => lb.EmployeeId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.Property(lb => lb.Type)
+                      .IsRequired()
+                      .HasConversion<string>();
+
+                entity.Property(lb => lb.DaysAvailable)
+                      .IsRequired();
             });
 
             modelBuilder.Entity<LeaveRequest>(entity =>

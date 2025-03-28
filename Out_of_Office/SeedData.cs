@@ -13,7 +13,7 @@ public static class SeedData
         var employeeRepo = serviceProvider.GetRequiredService<IEmployeeRepository>();
         var userService = serviceProvider.GetRequiredService<IUserService>();
 
-        string adminUsername = "admin1";
+        string adminUsername = "TEST132";
 
         // Sprawdź, czy użytkownik już istnieje
         if (context.Users.Any(u => u.Username == adminUsername))
@@ -46,7 +46,7 @@ public static class SeedData
         // Tworzymy użytkownika powiązanego z pracownikiem
         await userService.RegisterAsync(
             username: adminUsername,
-            password: "Test123!",
+            password: "TEST132",
             employeeId: availableEmployee.Id,
             position: "Administrator"
         );

@@ -57,8 +57,25 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+            <h4>Leave Balances</h4>
+            @for (int i = 0; i < Model.LeaveBalances.Count; i++)
+            {
+                <div class="form-group">
+                    <label class="control-label">@Model.LeaveBalances[i].Type Days</label>
+
+                    <input asp-for="LeaveBalances[@i].DaysAvailable" class="form-control" />
+
+                    <input type="hidden" asp-for="LeaveBalances[@i].Type" />
+
+                    <span class="text-muted">
+                        Type: @Model.LeaveBalances[i].Type |
+                        Days: @Model.LeaveBalances[i].DaysAvailable
+                    </span>
+                </div>
+            }
         </form>
     </div>
+    
 </div>
 
 <div>

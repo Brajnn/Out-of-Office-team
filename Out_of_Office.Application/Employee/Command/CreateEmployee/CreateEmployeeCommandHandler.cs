@@ -34,8 +34,14 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
                 Status = employeeStatus,
                 PeoplePartnerID = request.PeoplePartnerID,
                 OutOfOfficeBalance = request.OutOfOfficeBalance,
-                Photo = request.Photo
-                
+                Photo = request.Photo,
+                LeaveBalances = new List<LeaveBalance>
+            {
+                new LeaveBalance { Type = LeaveType.Vacation, DaysAvailable = request.VacationDays },
+                new LeaveBalance { Type = LeaveType.SickLeave, DaysAvailable = request.SickLeaveDays },
+                new LeaveBalance { Type = LeaveType.Unpaid, DaysAvailable = request.UnpaidLeaveDays }
+            }
+
             };
 
             await _employeeRepository.AddEmployeeAsync(employee);
