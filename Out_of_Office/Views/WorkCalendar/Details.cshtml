@@ -30,10 +30,24 @@
                         @foreach (var day in orderedDays)
                         {
                             var color = day.IsHoliday ? "bg-danger text-white" : "bg-light";
-                            <div class="border rounded text-center p-2 @color" style="min-height: 60px;">
-                                <div>@day.Date.Day</div>
-                                <small style="font-size: 0.7rem;">@day.Date.ToString("ddd")</small>
-                            </div>
+                            if (day.IsHoliday && !string.IsNullOrEmpty(day.Description))
+                            {
+                                <div class="calendar-day border rounded text-center p-2 @color"
+                                     style="min-height: 60px;"
+                                     title="@day.Description"
+                                     data-bs-toggle="tooltip" >
+                                    <div>@day.Date.Day</div>
+                                    <small style="font-size: 0.7rem;">@day.Date.ToString("ddd")</small>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="calendar-day border rounded text-center p-2 @color"
+                                     style="min-height: 60px;">
+                                    <div>@day.Date.Day</div>
+                                    <small style="font-size: 0.7rem;">@day.Date.ToString("ddd")</small>
+                                </div>
+                            }
                         }
                     </div>
                 </div>
