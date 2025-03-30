@@ -34,9 +34,18 @@ namespace Out_of_Office.Controllers
 
         // GET: /WorkCalendar/Create
         [HttpGet]
-        public IActionResult Create(int? year)
+        public async Task<IActionResult> Create(int? year)
         {
-            int selectedYear = year ?? DateTime.Now.Year;
+            var usedYears = await _mediator.Send(new GetAvailableCalendarYearsQuery());
+            var allYears = Enumerable.Range(DateTime.Now.Year, 6); 
+            var availableYears = allYears.Except(usedYears).ToList();
+
+            int selectedYear = year ?? availableYears.FirstOrDefault();
+
+            if (!availableYears.Contains(selectedYear))
+            {
+                return RedirectToAction("Index");
+            }
 
             var command = new CreateWorkCalendarCommand
             {
@@ -53,7 +62,8 @@ namespace Out_of_Office.Controllers
                         };
                     }).ToList()
             };
-            Console.WriteLine($"GET Create loaded. Year: {command.Year}, Days: {command.Days?.Count}");
+
+            ViewBag.AvailableYears = availableYears;
             return View(command);
         }
 

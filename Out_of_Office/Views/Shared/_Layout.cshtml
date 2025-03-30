@@ -45,6 +45,12 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="ApprovalRequest" asp-action="Index">Approval Requests</a>
                                 </li>
                             }
+                            @if (User.IsInRole("HRManager") ||  User.IsInRole("Administrator"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="WorkCalendar" asp-action="Index">Calendar</a>
+                                </li>
+                            }
                             
                         }
               
