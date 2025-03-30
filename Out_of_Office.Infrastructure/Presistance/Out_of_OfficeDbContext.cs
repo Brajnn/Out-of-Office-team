@@ -22,6 +22,7 @@ namespace Out_of_Office.Infrastructure.Presistance
         public DbSet<ApprovalRequest> ApprovalRequest { get; set; }
         public DbSet<EmployeeProject> EmployeeProjects { get; set; }
         public DbSet<LeaveBalance> LeaveBalances { get; set; }
+        public DbSet<WorkCalendarDay> WorkCalendarDays { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
@@ -163,6 +164,11 @@ namespace Out_of_Office.Infrastructure.Presistance
 
                 entity.Property(ep => ep.IsProjectManager)
                       .IsRequired();
+            });
+            modelBuilder.Entity<WorkCalendarDay>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Description).HasMaxLength(200);
             });
             base.OnModelCreating(modelBuilder);
         }

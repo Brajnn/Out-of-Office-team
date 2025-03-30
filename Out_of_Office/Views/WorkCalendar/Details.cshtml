@@ -1,0 +1,45 @@
+﻿@model List<Out_of_Office.Application.WorkDayCalendar.WorkCalendarDayDto>
+@{
+    var grouped = Model.GroupBy(d => d.Date.Month).OrderBy(g => g.Key);
+    var year = ViewBag.Year;
+    var monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+}
+
+<h2 class="text-center my-4">Calendar - @ViewData["Year"]</h2>
+
+<div class="row">
+    @foreach (var month in grouped)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <div class="card-header text-center font-weight-bold bg-primary text-white">
+                    @monthNames[month.Key - 1]
+                </div>
+                @{
+                    var orderedDays = month.OrderBy(d => d.Date.Day).ToList();
+                    var firstDayOfMonth = orderedDays.First().Date;
+                    int offset = ((int)firstDayOfMonth.DayOfWeek + 6) % 7; 
+                }
+                <div class="card-body p-2">
+                    <div class="d-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">
+                        @for (int i = 0; i < offset; i++)
+                        {
+                            <div></div> 
+                        }
+
+                        @foreach (var day in orderedDays)
+                        {
+                            var color = day.IsHoliday ? "bg-danger text-white" : "bg-light";
+                            <div class="border rounded text-center p-2 @color" style="min-height: 60px;">
+                                <div>@day.Date.Day</div>
+                                <small style="font-size: 0.7rem;">@day.Date.ToString("ddd")</small>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">← Back</a>

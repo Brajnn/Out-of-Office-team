@@ -1,0 +1,35 @@
+﻿@model List<int>
+@{
+    ViewData["Title"] = "Work Calendar";
+}
+
+<h2>Work Calendars</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Create New Calendar</a>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var year in Model)
+            {
+                <tr>
+                    <td>@year</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="@Url.Action("Details", "WorkCalendar", new { year = year })">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No calendars found.</p>
+}

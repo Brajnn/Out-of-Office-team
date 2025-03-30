@@ -1,0 +1,59 @@
+﻿@model Out_of_Office.Application.WorkDayCalendar.Command.CreateWorkCalendar.CreateWorkCalendarCommand
+
+@{
+    ViewData["Title"] = "Create Work Calendar";
+}
+
+<h2>Create Work Calendar for @Model.Year</h2>
+
+<!-- Select Year -->
+<form asp-action="Create" method="get" class="mb-4">
+    <label for="year">Select Year:</label>
+    <select name="year" id="year" class="form-control" onchange="this.form.submit()">
+        @for (int y = DateTime.Now.Year; y <= DateTime.Now.Year + 5; y++)
+        {
+            <option value="@y" selected="@(Model.Year == y ? "selected" : null)">@y</option>
+        }
+    </select>
+</form>
+
+<!-- FORMULARZ ZAPISU -->
+<form asp-action="Create" method="post">
+    <input type="hidden" asp-for="Year" />
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Holiday</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Days.Count; i++)
+            {
+                <tr>
+                    <td>@Model.Days[i].Date.ToShortDateString()</td>
+                    <td>@Model.Days[i].Date.ToString("dddd")</td>
+
+                    <td>
+                        <input type="hidden" name="Days[@i].Date" value="@Model.Days[i].Date.ToString("yyyy-MM-dd")" />
+                        <input type="checkbox" name="Days[@i].IsHoliday" value="true" @(Model.Days[i].IsHoliday ? "checked" : "") />
+                    </td>
+
+                    <td>
+                        <input type="text" name="Days[@i].Description" class="form-control" value="@Model.Days[i].Description" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-success">Save Calendar</button>
+</form>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["Success"]</div>
+}

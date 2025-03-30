@@ -70,7 +70,7 @@ app.MapControllerRoute(
 );
 app.MapControllerRoute(
     name: "auth",
-    pattern: "api/{controller=Auth}/{action=Login}/{id?}"
+    pattern: "{controller=Auth}/{action=Login}/{id?}"
 );
 app.MapControllerRoute(
     name: "default",
