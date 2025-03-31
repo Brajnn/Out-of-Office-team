@@ -97,12 +97,7 @@ namespace Out_of_Office.Controllers
             {
                 var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                int userId;
-                try
-                {
-                    userId = int.Parse(userIdString);
-                }
-                catch
+                if (!int.TryParse(userIdString, out var userId))
                 {
                     return Unauthorized();
                 }
@@ -115,9 +110,19 @@ namespace Out_of_Office.Controllers
 
                 command.EmployeeId = user.EmployeeId;
 
-                await _mediator.Send(command);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await _mediator.Send(command);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    // Dodajemy błąd do ModelState, aby pokazać go użytkownikowi
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
             }
+
+            // Jeśli błąd — zwracamy widok z powrotem i pokazujemy błędy
             return View(command);
         }
         [HttpPost]
