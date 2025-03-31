@@ -4,6 +4,7 @@
     ViewData["Title"] = "Leave Request Details";
     string formattedReason = string.Concat(Model.AbsenceReason.Select((c, i) => i > 0 && char.IsUpper(c) ? " " + c : c.ToString()));
     int totalDays = (Model.EndDate - Model.StartDate).Days + 1;
+    
 }
 
 <h2 class="mb-4">Leave Request Details</h2>
@@ -27,6 +28,9 @@
 
         <dt class="col-sm-3">Total Days (including holidays)</dt>
         <dd class="col-sm-9">@totalDays</dd>
+
+        <dt class="col-sm-3">Working Days (excluding holidays)</dt>
+        <dd class="col-sm-9">@Model.WorkingDays</dd>
 
         <dt class="col-sm-3">Comment</dt>
         <dd class="col-sm-9">@Model.Comment</dd>

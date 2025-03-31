@@ -14,6 +14,7 @@ namespace Out_of_Office.Application.Leave_Request
         public string AbsenceReason { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public int WorkingDays { get; set; }
         public string Comment { get; set; }
         public string Status { get; set; }
         

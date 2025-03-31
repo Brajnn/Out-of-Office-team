@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestCommand;
 using Out_of_Office.Application.Leave_Request.Command.UpdateLeaveRequestStatus;
 using X.PagedList;
+using Out_of_Office.Application.WorkDayCalendar.Query.GetWorkCalendarByYear;
+using Out_of_Office.Application.WorkDayCalendar;
 
 namespace Out_of_Office.Controllers
 {
@@ -82,6 +84,7 @@ namespace Out_of_Office.Controllers
             {
                 return NotFound();
             }
+          
             return View(leaveRequest);
         }
         [HttpGet]
