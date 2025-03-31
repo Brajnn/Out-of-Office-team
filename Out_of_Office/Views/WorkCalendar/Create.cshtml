@@ -3,8 +3,7 @@
 @{
     ViewData["Title"] = "Create Work Calendar";
 }
-
-<h2>Create Work Calendar for @Model.Year</h2>
+<h2 class="text-center my-4">Create Work Calendar for @Model.Year</h2>
 
 @{
     var availableYears = ViewBag.AvailableYears as List<int> ?? new List<int>();
@@ -53,9 +52,13 @@
         </tbody>
     </table>
 
-    <button type="submit" class="btn btn-success">Save Calendar</button>
+   
 </form>
+<div class="mt-4">
+    <button type="submit" class="btn btn-success">Save Calendar</button>
 
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</div>
 @if (TempData["Success"] != null)
 {
     <div class="alert alert-success mt-3">@TempData["Success"]</div>

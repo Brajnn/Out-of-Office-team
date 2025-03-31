@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Out_of_Office.Application.WorkDayCalendar;
 using Out_of_Office.Application.WorkDayCalendar.Command.CreateWorkCalendar;
+using Out_of_Office.Application.WorkDayCalendar.Command.DeleteWorkCalendarCommand;
 using Out_of_Office.Application.WorkDayCalendar.Query.GetAvailableCalendarYears;
 using Out_of_Office.Application.WorkDayCalendar.Query.GetWorkCalendarByYear;
 
@@ -31,6 +33,13 @@ namespace Out_of_Office.Controllers
             return View("Details", days);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(int year)
+        {
+            await _mediator.Send(new DeleteWorkCalendarCommand { Year = year });
+            TempData["Success"] = $"Calendar for {year} was deleted.";
+            return RedirectToAction("Index");
+        }
 
         // GET: /WorkCalendar/Create
         [HttpGet]

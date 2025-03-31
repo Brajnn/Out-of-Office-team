@@ -6,6 +6,9 @@
 }
 
 <h2 class="text-center my-4">Calendar - @ViewData["Year"]</h2>
+<div>
+    <a asp-action="Index" class="btn btn-secondary mb-4">← Back</a>
+</div>
 
 <div class="row">
     @foreach (var month in grouped)
@@ -35,7 +38,7 @@
                                 <div class="calendar-day border rounded text-center p-2 @color"
                                      style="min-height: 60px;"
                                      title="@day.Description"
-                                     data-bs-toggle="tooltip" >
+                                     data-bs-toggle="tooltip" >    <!-- Tooltip is using in wwwroot/js/site.js--> 
                                     <div>@day.Date.Day</div>
                                     <small style="font-size: 0.7rem;">@day.Date.ToString("ddd")</small>
                                 </div>
@@ -56,4 +59,3 @@
     }
 </div>
 
-<a asp-action="Index" class="btn btn-secondary">← Back</a>

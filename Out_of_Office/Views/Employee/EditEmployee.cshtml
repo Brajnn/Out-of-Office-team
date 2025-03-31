@@ -67,10 +67,6 @@
 
                     <input type="hidden" asp-for="LeaveBalances[@i].Type" />
 
-                    <span class="text-muted">
-                        Type: @Model.LeaveBalances[i].Type |
-                        Days: @Model.LeaveBalances[i].DaysAvailable
-                    </span>
                 </div>
             }
         </form>
@@ -79,7 +75,7 @@
 </div>
 
 <div>
-    @Html.ActionLink("Back to List", "Index", "Employee")
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
 
 @section Scripts {

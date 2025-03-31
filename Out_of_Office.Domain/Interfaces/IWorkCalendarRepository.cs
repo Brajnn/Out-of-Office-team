@@ -13,5 +13,6 @@ namespace Out_of_Office.Domain.Interfaces
         Task AddCalendarAsync(int year, List<WorkCalendarDay> days);
         Task<List<int>> GetAvailableYearsAsync();
         Task<List<WorkCalendarDay>> GetByYearAsync(int year);
+        Task DeleteCalendarAsync(int year);
     }
 }

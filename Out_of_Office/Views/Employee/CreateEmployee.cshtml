@@ -100,10 +100,10 @@
         </form>
     </div>
 </div>
-
 <div>
-    @Html.ActionLink("Back to List", "Index", "Employee")
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

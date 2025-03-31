@@ -51,7 +51,15 @@ namespace Out_of_Office.Infrastructure.Repositories
                 .OrderBy(d => d.Date)
                 .ToListAsync();
         }
+        public async Task DeleteCalendarAsync(int year)
+        {
+            var days = await _dbContext.WorkCalendarDays
+                .Where(d => d.Year == year)
+                .ToListAsync();
 
+            _dbContext.WorkCalendarDays.RemoveRange(days);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 
 }

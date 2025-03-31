@@ -23,8 +23,15 @@
                     <td>@year</td>
                     <td>
                         <a class="btn btn-info btn-sm" href="@Url.Action("Details", "WorkCalendar", new { year = year })">Details</a>
+                        <form asp-action="Delete" method="post" class="d-inline">
+                            <input type="hidden" name="year" value="@year" />
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete the calendar for @year?');">
+                                Delete
+                            </button>
+                        </form>
                     </td>
                 </tr>
+
             }
         </tbody>
     </table>
