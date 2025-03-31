@@ -117,12 +117,11 @@ namespace Out_of_Office.Controllers
                 }
                 catch (Exception ex)
                 {
-                    // Dodajemy błąd do ModelState, aby pokazać go użytkownikowi
+                    // Model state for user
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
 
-            // Jeśli błąd — zwracamy widok z powrotem i pokazujemy błędy
             return View(command);
         }
         [HttpPost]
