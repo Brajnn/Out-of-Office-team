@@ -15,12 +15,14 @@ namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalReque
         private readonly IApprovalRequestRepository _approvalRequestRepository;
         private readonly ILeaveRequestRepository _leaveRequestRepository;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IWorkCalendarRepository _calendarRepository;
 
-        public UpdateApprovalRequestStatusCommandHandler(IApprovalRequestRepository approvalRequestRepository, ILeaveRequestRepository leaveRequestRepository, IEmployeeRepository employeeRepository)
+        public UpdateApprovalRequestStatusCommandHandler(IApprovalRequestRepository approvalRequestRepository, ILeaveRequestRepository leaveRequestRepository, IEmployeeRepository employeeRepository,IWorkCalendarRepository calendarRepository)
         {
             _approvalRequestRepository = approvalRequestRepository;
             _leaveRequestRepository = leaveRequestRepository;
             _employeeRepository = employeeRepository;
+            _calendarRepository = calendarRepository;
         }
 
         public async Task<Unit> Handle(UpdateApprovalRequestStatusCommand request, CancellationToken cancellationToken)
@@ -33,16 +35,45 @@ namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalReque
 
             var leaveRequest = await _leaveRequestRepository.GetLeaveRequestByIdAsync(approvalRequest.LeaveRequestID);
             if (leaveRequest == null)
-            {
                 throw new NotFoundException(nameof(LeaveRequest), approvalRequest.LeaveRequestID);
-            }
+
+            var employee = await _employeeRepository.GetEmployeeByIdAsync(leaveRequest.EmployeeID);
+            if (employee == null)
+                throw new NotFoundException(nameof(Employee), leaveRequest.EmployeeID);
 
             approvalRequest.StatusChangedAt = DateTime.Now;
+
             if (request.Status == ApprovalStatus.Approved)
             {
+                var allRequests = await _leaveRequestRepository.GetAllLeaveRequestsAsync();
+                var overlaps = allRequests.Any(lr =>
+                    lr.EmployeeID == leaveRequest.EmployeeID &&
+                    lr.Status == LeaveRequest.AbsenceStatus.Approved &&
+                    lr.ID != leaveRequest.ID &&
+                    lr.StartDate <= leaveRequest.EndDate &&
+                    lr.EndDate >= leaveRequest.StartDate);
+                if (overlaps)
+                    throw new InvalidOperationException("This leave overlaps with an already approved leave request.");
+                var calendar = await _calendarRepository.GetByYearAsync(leaveRequest.StartDate.Year);
+                int workingDays = calendar
+                    .Count(d => d.Date >= leaveRequest.StartDate && d.Date <= leaveRequest.EndDate && !d.IsHoliday);
+
+                if (!Enum.TryParse<LeaveType>(leaveRequest.AbsenceReason, out var leaveType))
+                    throw new InvalidOperationException($"Invalid leave type: {leaveRequest.AbsenceReason}");
+
+                var balance = employee.LeaveBalances?.FirstOrDefault(b => b.Type == leaveType);
+                if (balance == null)
+                    throw new InvalidOperationException($"No leave balance found for type '{leaveRequest.AbsenceReason}'");
+
+                if (balance.DaysAvailable < workingDays)
+                    throw new InvalidOperationException($"Not enough available days for {leaveRequest.AbsenceReason}. Required: {workingDays}, Available: {balance.DaysAvailable}");
+
+                balance.DaysAvailable -= workingDays;
+
                 leaveRequest.Status = LeaveRequest.AbsenceStatus.Approved;
                 approvalRequest.Status = ApprovalStatus.Approved;
 
+                await _employeeRepository.UpdateEmployeeAsync(employee); 
             }
             else
             {
@@ -53,18 +84,6 @@ namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalReque
 
             await _approvalRequestRepository.UpdateAsync(approvalRequest);
             await _leaveRequestRepository.UpdateAsync(leaveRequest);
-
-            var employee = await _employeeRepository.GetEmployeeByIdAsync(leaveRequest.EmployeeID);
-            if (employee != null)
-            {
-                var approvedLeaveRequests = await _leaveRequestRepository.GetAllLeaveRequestsAsync();
-                var totalApprovedDays = approvedLeaveRequests
-                    .Where(lr => lr.EmployeeID == leaveRequest.EmployeeID && lr.Status == LeaveRequest.AbsenceStatus.Approved)
-                    .Sum(lr => (lr.EndDate - lr.StartDate).Days + 1);
-
-                employee.OutOfOfficeBalance = totalApprovedDays;
-                await _employeeRepository.UpdateEmployeeAsync(employee);
-            }
 
             return Unit.Value;
         }
