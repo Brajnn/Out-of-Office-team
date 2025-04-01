@@ -22,23 +22,29 @@ namespace Out_of_Office.Application.Leave_Request.Command.UpdateLeaveRequestStat
 
         public async Task<Unit> Handle(UpdateLeaveRequestStatusCommand request, CancellationToken cancellationToken)
         {
+            // Validate leave request
             var leaveRequest = await _leaveRequestRepository.GetLeaveRequestByIdAsync(request.LeaveRequestID);
             if (leaveRequest == null)
             {
                 throw new KeyNotFoundException("LeaveRequest not found.");
             }
-
+            // Parse and set status
             if (!Enum.TryParse(request.Status, out LeaveRequest.AbsenceStatus newStatus))
             {
                 throw new ArgumentException("Invalid status.");
             }
 
             leaveRequest.Status = newStatus;
-            await _leaveRequestRepository.UpdateLeaveRequestAsync(leaveRequest);
 
+            // Handle Submitted status
             if (newStatus == LeaveRequest.AbsenceStatus.Submitted)
             {
+                // Set submission timestamp if not already set
+                if (leaveRequest.SubmittedAt == null)
+                    leaveRequest.SubmittedAt = DateTime.Now;
+                // Only create approval request if it doesn't exist
                 var existingApprovalRequest = await _approvalRequestRepository.GetApprovalRequestByLeaveRequestIdAsync(request.LeaveRequestID);
+
                 if (existingApprovalRequest == null)
                 {
                     var approvalRequest = new ApprovalRequest
@@ -46,12 +52,13 @@ namespace Out_of_Office.Application.Leave_Request.Command.UpdateLeaveRequestStat
                         LeaveRequestID = request.LeaveRequestID,
                         ApproverID = leaveRequest.Employee.PeoplePartnerID,
                         Status = ApprovalStatus.New,
-                        Comment = leaveRequest.Comment
+                        Comment = leaveRequest.Comment,
+                         
                     };
                     await _approvalRequestRepository.AddApprovalRequestAsync(approvalRequest);
                 }
             }
-
+            await _leaveRequestRepository.UpdateLeaveRequestAsync(leaveRequest);
             return Unit.Value;
         }
     }

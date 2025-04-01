@@ -23,6 +23,7 @@ namespace Out_of_Office.Application.Approval_Request.Query.GetAllApprovalRequest
         public async Task<IEnumerable<ApprovalRequestDto>> Handle(GetAllApprovalRequestQuery request, CancellationToken cancellationToken)
         {
             var approvalRequests = await _approvalRequestRepository.GetAllApprovalRequestsAsync();
+
             return _mapper.Map<IEnumerable<ApprovalRequestDto>>(approvalRequests);
         }
     }

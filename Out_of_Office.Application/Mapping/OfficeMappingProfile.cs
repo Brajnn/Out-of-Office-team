@@ -20,14 +20,18 @@ namespace Out_of_Office.Application.Mapping
             CreateMap<Domain.Entities.Employee, EmployeeDto>()
                 .ForMember(dest => dest.LeaveBalances, opt => opt.MapFrom(src => src.LeaveBalances));
             CreateMap<ApprovalRequest, ApprovalRequestDto>()
-           .ForMember(dest => dest.ApproverFullName, opt => opt.MapFrom(src => src.Approver != null ? src.Approver.FullName : string.Empty));
+           .ForMember(dest => dest.ApproverFullName, opt => opt.MapFrom(src => src.Approver != null ? src.Approver.FullName : string.Empty))
+           .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
             CreateMap<LeaveRequest, LeaveRequestDto>()
            .ForMember(dest => dest.EmployeeFullName, opt => opt.MapFrom(src => src.Employee.FullName))
+            .ForMember(dest => dest.SubmittedAt, opt => opt.MapFrom(src => src.SubmittedAt))
            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
             CreateMap<LeaveBalance, LeaveBalanceDto>()
-
-    .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()));
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()));
             CreateMap<Domain.Entities.Project, ProjectDto>();
+
+ 
+
         }
     }
 }

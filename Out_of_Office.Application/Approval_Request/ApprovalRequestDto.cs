@@ -13,7 +13,8 @@ namespace Out_of_Office.Application.Approval_Request
         public int ApproverID { get; set; }
         public string ApproverFullName { get; set; }
         public int LeaveRequestID { get; set; }
-        public ApprovalStatus Status { get; set; }
+        public string Status { get; set; }
+        public DateTime? StatusChangedAt { get; set; }
         public string Comment { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace Out_of_Office.Domain.Entities
         public int LeaveRequestID { get; set; }  
         public LeaveRequest LeaveRequest { get; set; }
         public ApprovalStatus Status { get; set; } = ApprovalStatus.New;
-
+        public DateTime? StatusChangedAt { get; set; }
         public string? Comment { get; set; } 
     }
 

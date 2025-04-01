@@ -53,10 +53,23 @@
                 <td>@approvalRequest.ID</td>
                 <td>@approvalRequest.ApproverFullName</td>
                 <td>@approvalRequest.LeaveRequestID</td>
-                <td>@approvalRequest.Status</td>
+                <td>
+                    @{
+                        var badgeClass = approvalRequest.Status switch
+                        {
+                            "Approved" => "badge bg-success",
+                            "Rejected" => "badge bg-danger",
+                            "ApprovalStatus.New" => "badge bg-primary",
+                            _ => "badge bg-light"
+                        };
+                    }
+                    <span class="@badgeClass">@approvalRequest.Status</span>
+                </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@approvalRequest.ID" class="btn btn-info">Details</a>
-                   
+
+                    @if (approvalRequest.Status == "New")
+                    {
                         <form asp-controller="ApprovalRequest" asp-action="Approve" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@approvalRequest.ID" />
                             <input type="hidden" name="status" value="Approved" />
@@ -67,7 +80,7 @@
                             <input type="hidden" name="status" value="Rejected" />
                             <button type="submit" class="btn btn-danger">Reject</button>
                         </form>
-                    
+                    }
                 </td>
             </tr>
         }

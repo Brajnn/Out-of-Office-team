@@ -17,6 +17,12 @@
         <dd class="col-sm-10">@Model.LeaveRequestID</dd>
         <dt class="col-sm-2">Status</dt>
         <dd class="col-sm-10">@Model.Status</dd>
+        <dt class="col-sm-2">Status Changed At</dt>
+        <dd class="col-sm-10">
+            @(Model.StatusChangedAt.HasValue
+                ? Model.StatusChangedAt.Value.ToString("yyyy-MM-dd HH:mm")
+                : "Not yet changed")
+        </dd>
         <dt class="col-sm-2">Comment</dt>
         <dd class="col-sm-10">@Model.Comment</dd>
     </dl>

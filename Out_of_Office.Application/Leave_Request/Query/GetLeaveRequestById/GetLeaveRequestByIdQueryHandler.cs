@@ -13,13 +13,15 @@ namespace Out_of_Office.Application.Leave_Request.Query.GetLeaveRequestById
     {
         private readonly ILeaveRequestRepository _leaveRequestRepository;
         private readonly IWorkCalendarRepository _calendarRepository;
+        private readonly IApprovalRequestRepository _approvalRequestRepository;
         private readonly IMapper _mapper;
 
-        public GetLeaveRequestByIdQueryHandler(ILeaveRequestRepository leaveRequestRepository, IWorkCalendarRepository calendarRepository, IMapper mapper)
+        public GetLeaveRequestByIdQueryHandler(ILeaveRequestRepository leaveRequestRepository, IWorkCalendarRepository calendarRepository,  IMapper mapper, IApprovalRequestRepository approvalRequestRepository)
         {
             _leaveRequestRepository = leaveRequestRepository;
             _mapper = mapper;
             _calendarRepository = calendarRepository;
+            _approvalRequestRepository = approvalRequestRepository;
         }
 
         public async Task<LeaveRequestDto> Handle(GetLeaveRequestByIdQuery request, CancellationToken cancellationToken)
@@ -38,6 +40,9 @@ namespace Out_of_Office.Application.Leave_Request.Query.GetLeaveRequestById
 
             var leaveRequestDto = _mapper.Map<LeaveRequestDto>(leaveRequest);
             leaveRequestDto.WorkingDays = workingDays;
+            var approvalRequest = await _approvalRequestRepository.GetApprovalRequestByLeaveRequestIdAsync(leaveRequest.ID);
+            leaveRequestDto.StatusChangedAt = approvalRequest?.StatusChangedAt;
+
             return leaveRequestDto;
         }
     }

@@ -37,15 +37,18 @@ namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalReque
                 throw new NotFoundException(nameof(LeaveRequest), approvalRequest.LeaveRequestID);
             }
 
+            approvalRequest.StatusChangedAt = DateTime.Now;
             if (request.Status == ApprovalStatus.Approved)
             {
                 leaveRequest.Status = LeaveRequest.AbsenceStatus.Approved;
                 approvalRequest.Status = ApprovalStatus.Approved;
+
             }
             else
             {
                 leaveRequest.Status = LeaveRequest.AbsenceStatus.Rejected;
                 approvalRequest.Status = ApprovalStatus.Rejected;
+
             }
 
             await _approvalRequestRepository.UpdateAsync(approvalRequest);

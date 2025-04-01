@@ -16,6 +16,8 @@ namespace Out_of_Office.Application.Leave_Request
         public DateTime EndDate { get; set; }
         public int WorkingDays { get; set; }
         public string Comment { get; set; }
+        public DateTime? SubmittedAt { get; set; }
+        public DateTime? StatusChangedAt { get; set; }
         public string Status { get; set; }
         
     }

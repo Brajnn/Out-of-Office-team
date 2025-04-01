@@ -36,10 +36,9 @@ namespace Out_of_Office.Controllers
             }
             if (!string.IsNullOrEmpty(statusFilter))
             {
-                if (Enum.TryParse(statusFilter, out ApprovalStatus status))
-                {
-                    approvalRequests = approvalRequests.Where(ar => ar.Status == status).ToList();
-                }
+                approvalRequests = approvalRequests
+                    .Where(ar => ar.Status.Equals(statusFilter, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
             }
             approvalRequests = sortOrder switch
             {
