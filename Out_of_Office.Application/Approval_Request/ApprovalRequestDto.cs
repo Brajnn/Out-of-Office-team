@@ -15,6 +15,7 @@ namespace Out_of_Office.Application.Approval_Request
         public int LeaveRequestID { get; set; }
         public string Status { get; set; }
         public DateTime? StatusChangedAt { get; set; }
+        public DateTime? LeaveRequestSubmittedAt { get; set; }
         public string Comment { get; set; }
     }
 }

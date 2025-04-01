@@ -23,7 +23,9 @@ namespace Out_of_Office.Application.Approval_Request.Query.GetApprovalRequestByI
         public async Task<ApprovalRequestDto> Handle(GetApprovalRequestByIdQuery request, CancellationToken cancellationToken)
         {
             var approvalRequest = await _approvalRequestRepository.GetApprovalRequestByIdAsync(request.Id);
-            return _mapper.Map<ApprovalRequestDto>(approvalRequest);
+            var dto = _mapper.Map<ApprovalRequestDto>(approvalRequest);
+            dto.LeaveRequestSubmittedAt= approvalRequest.LeaveRequest.SubmittedAt;
+            return dto;
         }
     }
 }

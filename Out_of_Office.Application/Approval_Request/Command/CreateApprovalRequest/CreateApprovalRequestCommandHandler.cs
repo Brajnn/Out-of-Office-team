@@ -30,7 +30,9 @@ namespace Out_of_Office.Application.Approval_Request.Command.CreateApprovalReque
                 ApproverID = request.ApproverID,
                 LeaveRequestID = request.LeaveRequestID,
                 Status = request.Status,
-                Comment = request.Comment
+                Comment = request.Comment,
+
+               
             };
 
             await _approvalRequestRepository.AddApprovalRequestAsync(approvalRequest);

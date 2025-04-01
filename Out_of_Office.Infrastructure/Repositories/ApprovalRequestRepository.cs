@@ -31,6 +31,7 @@ namespace Out_of_Office.Infrastructure.Repositories
         {
             return await _dbContext.ApprovalRequest
                         .Include(ar => ar.Approver)
+                        .Include(ar => ar.LeaveRequest)
                         .FirstOrDefaultAsync(ar => ar.ID == id);
         }
         public async Task<ApprovalRequest> GetApprovalRequestByLeaveRequestIdAsync(int leaveRequestId)
