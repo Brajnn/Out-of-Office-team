@@ -17,14 +17,12 @@
         <dd class="col-sm-10">@Model.LeaveRequestID</dd>
         <dt class="col-sm-2">Status</dt>
         <dd class="col-sm-10">@Model.Status</dd>
+        @if (Model.LeaveRequestSubmittedAt != null)
+        {
         <dt class="col-sm-2">Received At</dt>
-        <dd class="col-sm-10">
-            @if (Model.LeaveRequestSubmittedAt != null)
-            {
-            <dt class="col-sm-2">Received At</dt>
-            <dd class="col-sm-10">@Model.LeaveRequestSubmittedAt.Value.ToString("dd MMM yyyy HH:mm")</dd>
-            }
-        </dd>
+        <dd class="col-sm-10">@Model.LeaveRequestSubmittedAt.Value.ToString("dd MMM yyyy HH:mm")</dd>
+        }
+
         <dt class="col-sm-2">Status Changed At</dt>
         <dd class="col-sm-10">
             @(Model.StatusChangedAt.HasValue
