@@ -13,13 +13,14 @@ using Out_of_Office.Application.Employee.Queries.GetEmployeeById;
 using Out_of_Office.Application.Leave_Balance;
 using Out_of_Office.Application.Models.AssignProjectViewModel;
 using Out_of_Office.Application.Project.Query.GetAllProjectsQuery;
+using Out_of_Office.Application.User.Query.GetUserById;
 using Out_of_Office.Domain.Interfaces;
 using Out_of_Office.Infrastructure.Presistance;
 using System.Security.Claims;
 using X.PagedList;
 namespace Out_of_Office.Controllers
 {
-    [Authorize(Roles = "HRManager,ProjectManager,Administrator")]
+    [Authorize(Roles = "Employee,HRManager,ProjectManager,Administrator")]
     public class EmployeeController :Controller
     {
         private readonly IMediator _mediator;
@@ -158,6 +159,23 @@ namespace Out_of_Office.Controllers
             return View("EditEmployee", employeeDto);
         }
 
-       
+        [HttpGet]
+        public async Task<IActionResult> EmployeeProfile()
+        {
+            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdStr, out int userId))
+                return Unauthorized();
+
+            var user = await _mediator.Send(new GetUserByIdQuery { Id = userId });
+            if (user == null)
+                return NotFound("User not found.");
+
+            var employee = await _mediator.Send(new GetEmployeeByIdQuery { Id = user.EmployeeId });
+            if (employee == null)
+                return NotFound("Employee not found.");
+
+            return View("EmployeeProfile", employee);
+        }
+
     }
 }

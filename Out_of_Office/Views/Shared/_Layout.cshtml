@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Out_of_Office.styles.css" asp-append-version="true" />
+
 </head>
 <body>
     <header>
@@ -80,6 +81,16 @@
                             }
                         </li>
                     </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Employee" asp-action="EmployeeProfile">
+                                    <i class="bi bi-person-circle"></i> My Profile
+                                </a>
+                            </li>
+                        </ul>
+                    }
                     <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {

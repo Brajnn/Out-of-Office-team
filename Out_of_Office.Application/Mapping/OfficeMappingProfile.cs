@@ -4,6 +4,7 @@ using Out_of_Office.Application.Employee;
 using Out_of_Office.Application.Leave_Balance;
 using Out_of_Office.Application.Leave_Request;
 using Out_of_Office.Application.Project;
+using Out_of_Office.Application.User;
 using Out_of_Office.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -30,8 +31,8 @@ namespace Out_of_Office.Application.Mapping
             CreateMap<LeaveBalance, LeaveBalanceDto>()
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()));
             CreateMap<Domain.Entities.Project, ProjectDto>();
+            CreateMap<Domain.Entities.User, UserDto>();
 
- 
 
         }
     }
