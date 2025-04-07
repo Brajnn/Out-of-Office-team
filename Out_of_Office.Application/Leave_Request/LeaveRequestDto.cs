@@ -21,6 +21,7 @@ namespace Out_of_Office.Application.Leave_Request
         public DateTime? StatusChangedAt { get; set; }
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string? DecisionComment { get; set; }
 
     }
 }

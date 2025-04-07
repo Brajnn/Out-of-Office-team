@@ -13,5 +13,6 @@ namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalReque
         public int ApprovalRequestId { get; set; }
         public DateTime? StatusChangedAt { get; set; }
         public ApprovalStatus Status { get; set; }
+        public string DecisionComment { get; set; }
     }
 }

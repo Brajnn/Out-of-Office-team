@@ -41,6 +41,10 @@ namespace Out_of_Office.Application.Leave_Request.Query.GetLeaveRequestById
             var leaveRequestDto = _mapper.Map<LeaveRequestDto>(leaveRequest);
             leaveRequestDto.WorkingDays = workingDays;
             var approvalRequest = await _approvalRequestRepository.GetApprovalRequestByLeaveRequestIdAsync(leaveRequest.ID);
+            if (approvalRequest != null)
+            {
+                leaveRequestDto.DecisionComment = approvalRequest.DecisionComment;
+            }
             leaveRequestDto.StatusChangedAt = approvalRequest?.StatusChangedAt;
 
             return leaveRequestDto;

@@ -12,5 +12,6 @@ namespace Out_of_Office.Application.Leave_Request.Command.UpdateLeaveRequestStat
         public int LeaveRequestID { get; set; }
         public string Status { get; set; }
         public string Comment { get; set; }
+
     }
 }

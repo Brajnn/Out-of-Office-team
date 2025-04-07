@@ -61,7 +61,9 @@ namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalReque
             else
             {
                 leaveRequest.Status = LeaveRequest.AbsenceStatus.Rejected;
-                approvalRequest.Status = ApprovalStatus.Rejected;
+                approvalRequest.Status = ApprovalStatus.Rejected; 
+                approvalRequest.DecisionComment = request.DecisionComment;
+
 
             }
 

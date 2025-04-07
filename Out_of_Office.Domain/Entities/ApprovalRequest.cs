@@ -17,6 +17,7 @@ namespace Out_of_Office.Domain.Entities
         public ApprovalStatus Status { get; set; } = ApprovalStatus.New;
         public DateTime? StatusChangedAt { get; set; }
         public string? Comment { get; set; } 
+        public string? DecisionComment { get; set; }
     }
 
     public enum ApprovalStatus

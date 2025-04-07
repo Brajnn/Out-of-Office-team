@@ -51,6 +51,11 @@
             <dt class="col-sm-3">Decision Date</dt>
             <dd class="col-sm-9">@Model.StatusChangedAt?.ToString("dd MMM yyyy HH:mm")</dd>
         }
+        @if (Model.DecisionComment != null)
+        {
+            <dt class="col-sm-3">Decision Comment</dt>
+            <dd class="col-sm-9">@Model.DecisionComment</dd>
+        }
 
     </dl>
 </div>

@@ -99,17 +99,19 @@ namespace Out_of_Office.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Reject(int id)
+        public async Task<IActionResult> Reject(int id, string comment)
         {
             var updateApprovalStatusCommand = new UpdateApprovalRequestStatusCommand
             {
                 ApprovalRequestId = id,
                 Status = ApprovalStatus.Rejected,
+                DecisionComment = comment
             };
 
             await _mediator.Send(updateApprovalStatusCommand);
 
             return RedirectToAction(nameof(Index));
         }
+
     }
 }
