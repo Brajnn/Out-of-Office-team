@@ -52,23 +52,6 @@ namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalReque
                     lr.ID != leaveRequest.ID &&
                     lr.StartDate <= leaveRequest.EndDate &&
                     lr.EndDate >= leaveRequest.StartDate);
-                if (overlaps)
-                    throw new InvalidOperationException("This leave overlaps with an already approved leave request.");
-                var calendar = await _calendarRepository.GetByYearAsync(leaveRequest.StartDate.Year);
-                int workingDays = calendar
-                    .Count(d => d.Date >= leaveRequest.StartDate && d.Date <= leaveRequest.EndDate && !d.IsHoliday);
-
-                if (!Enum.TryParse<LeaveType>(leaveRequest.AbsenceReason, out var leaveType))
-                    throw new InvalidOperationException($"Invalid leave type: {leaveRequest.AbsenceReason}");
-
-                var balance = employee.LeaveBalances?.FirstOrDefault(b => b.Type == leaveType);
-                if (balance == null)
-                    throw new InvalidOperationException($"No leave balance found for type '{leaveRequest.AbsenceReason}'");
-
-                if (balance.DaysAvailable < workingDays)
-                    throw new InvalidOperationException($"Not enough available days for {leaveRequest.AbsenceReason}. Required: {workingDays}, Available: {balance.DaysAvailable}");
-
-                balance.DaysAvailable -= workingDays;
 
                 leaveRequest.Status = LeaveRequest.AbsenceStatus.Approved;
                 approvalRequest.Status = ApprovalStatus.Approved;

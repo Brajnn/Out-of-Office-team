@@ -92,7 +92,19 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
 
                 throw new Exception($"Not enough available days for {displayName}. Please check your available days on your profile.");
             }
+            // Check for overlapping leave requests
+            var allRequests = await _leaveRequestRepository.GetAllLeaveRequestsAsync();
+            var overlappingRequestExists = allRequests.Any(lr =>
+                lr.EmployeeID == request.EmployeeId &&
+                lr.Status == LeaveRequest.AbsenceStatus.Approved &&
+                lr.StartDate <= request.EndDate &&
+                lr.EndDate >= request.StartDate
+            );
 
+            if (overlappingRequestExists)
+            {
+                throw new InvalidOperationException("You already have an approved leave request overlapping with these dates.");
+            }
             var leaveRequest = new LeaveRequest
             {
                 EmployeeID = request.EmployeeId,
