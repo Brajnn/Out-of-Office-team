@@ -7,6 +7,9 @@
     var idSortParam = currentSort == "id_asc" ? "id_desc" : "id_asc";
     var employeeSortParam = currentSort == "employee_asc" ? "employee_desc" : "employee_asc";
     var startDateSortParam = currentSort == "startdate_asc" ? "startdate_desc" : "startdate_asc";
+    var endDateSortParam = currentSort == "enddate_asc" ? "enddate_desc" : "enddate_asc";
+    var createdAtSortParam = currentSort == "createdat_asc" ? "createdat_desc" : "createdat_asc";
+
 
 }
 
@@ -35,7 +38,9 @@
                 {
             <th>@Html.ActionLink("Employee", "Index", new { sortOrder = employeeSortParam })</th>
                 }
+            <th>@Html.ActionLink("Created At", "Index", new { sortOrder = createdAtSortParam })</th>
             <th>@Html.ActionLink("Start Date", "Index", new { sortOrder = startDateSortParam })</th>
+            <th>@Html.ActionLink("End Date", "Index", new { sortOrder = endDateSortParam })</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -48,8 +53,14 @@
                 {
                     <td>@leaveRequest.EmployeeFullName</td>
                 }
-                  
+                <td>
+                    @(leaveRequest.CreatedAt.ToString("yyyy-MM-dd HH:mm") ?? "—")
+                </td>
                 <td>@leaveRequest.StartDate.ToString("yyyy-MM-dd")</td>
+                <td>@leaveRequest.EndDate.ToString("yyyy-MM-dd")</td>
+
+               
+                
                 <td>
                     <a asp-action="Details" asp-route-id="@leaveRequest.ID" class="btn btn-info btn-sm">Details</a>
                 </td>

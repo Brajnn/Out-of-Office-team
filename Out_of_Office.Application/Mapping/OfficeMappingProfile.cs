@@ -26,12 +26,14 @@ namespace Out_of_Office.Application.Mapping
            .ForMember(dest => dest.LeaveRequestSubmittedAt, opt => opt.MapFrom(src => src.LeaveRequest.SubmittedAt)); ;
             CreateMap<LeaveRequest, LeaveRequestDto>()
            .ForMember(dest => dest.EmployeeFullName, opt => opt.MapFrom(src => src.Employee.FullName))
-            .ForMember(dest => dest.SubmittedAt, opt => opt.MapFrom(src => src.SubmittedAt))
+           .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+           .ForMember(dest => dest.SubmittedAt, opt => opt.MapFrom(src => src.SubmittedAt))
            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
             CreateMap<LeaveBalance, LeaveBalanceDto>()
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()));
             CreateMap<Domain.Entities.Project, ProjectDto>();
             CreateMap<Domain.Entities.User, UserDto>();
+
 
 
         }

@@ -112,7 +112,8 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
                 Comment = request.Comment,
-                Status = LeaveRequest.AbsenceStatus.New
+                Status = LeaveRequest.AbsenceStatus.New,
+                CreatedAt = DateTime.Now
             };
 
             await _leaveRequestRepository.AddAsync(leaveRequest);

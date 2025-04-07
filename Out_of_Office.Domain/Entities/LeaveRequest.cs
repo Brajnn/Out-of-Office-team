@@ -17,6 +17,7 @@ namespace Out_of_Office.Domain.Entities
         public DateTime EndDate { get; set; }
         
         public string? Comment { get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime? SubmittedAt { get; set; }
         public AbsenceStatus Status { get; set; } = AbsenceStatus.New;
         public enum AbsenceStatus
