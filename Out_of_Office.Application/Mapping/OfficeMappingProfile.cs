@@ -23,7 +23,8 @@ namespace Out_of_Office.Application.Mapping
             CreateMap<ApprovalRequest, ApprovalRequestDto>()
            .ForMember(dest => dest.ApproverFullName, opt => opt.MapFrom(src => src.Approver != null ? src.Approver.FullName : string.Empty))
            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
-           .ForMember(dest => dest.LeaveRequestSubmittedAt, opt => opt.MapFrom(src => src.LeaveRequest.SubmittedAt)); ;
+           .ForMember(dest => dest.LeaveRequestSubmittedAt, opt => opt.MapFrom(src => src.LeaveRequest.SubmittedAt))
+           .ForMember(dest => dest.EmployeeFullName, opt => opt.MapFrom(src => src.LeaveRequest.Employee.FullName));
             CreateMap<LeaveRequest, LeaveRequestDto>()
            .ForMember(dest => dest.EmployeeFullName, opt => opt.MapFrom(src => src.Employee.FullName))
            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))

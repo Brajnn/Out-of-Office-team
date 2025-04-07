@@ -25,6 +25,7 @@ namespace Out_of_Office.Application.Approval_Request.Query.GetApprovalRequestByI
             var approvalRequest = await _approvalRequestRepository.GetApprovalRequestByIdAsync(request.Id);
             var dto = _mapper.Map<ApprovalRequestDto>(approvalRequest);
             dto.LeaveRequestSubmittedAt= approvalRequest.LeaveRequest.SubmittedAt;
+            dto.EmployeeFullName = approvalRequest.LeaveRequest.Employee.FullName;
             return dto;
         }
     }

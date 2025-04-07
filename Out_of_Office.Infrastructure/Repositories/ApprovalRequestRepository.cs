@@ -25,13 +25,15 @@ namespace Out_of_Office.Infrastructure.Repositories
             return await _dbContext.ApprovalRequest
                 .Include(ar => ar.Approver)
                 .Include(ar => ar.LeaveRequest)
+                .ThenInclude(lr => lr.Employee)
                 .ToListAsync();
         }
         public async Task<ApprovalRequest> GetApprovalRequestByIdAsync(int id)
         {
             return await _dbContext.ApprovalRequest
-                        .Include(ar => ar.Approver)
+                        .Include(ar => ar.Approver)                       
                         .Include(ar => ar.LeaveRequest)
+                        .ThenInclude(lr => lr.Employee)
                         .FirstOrDefaultAsync(ar => ar.ID == id);
         }
         public async Task<ApprovalRequest> GetApprovalRequestByLeaveRequestIdAsync(int leaveRequestId)
