@@ -37,7 +37,7 @@ namespace Out_of_Office.Controllers
             ViewBag.IdSortParm = string.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
             ViewBag.EmployeeSortParm = sortOrder == "employee_asc" ? "employee_desc" : "employee_asc";
             ViewBag.StartDateSortParm = sortOrder == "startdate_asc" ? "startdate_desc" : "startdate_asc";
-
+            ViewBag.CreatedAtSortParm = sortOrder == "createdat_asc" ? "createdatdate_desc" : "createdatdate_asc";
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userRole = User.FindFirstValue(ClaimTypes.Role);
             if (!int.TryParse(userIdString, out var userId))
@@ -65,6 +65,8 @@ namespace Out_of_Office.Controllers
                 "employee_desc" => leaveRequests.OrderByDescending(lr => lr.EmployeeFullName).ToList(),
                 "startdate_asc" => leaveRequests.OrderBy(lr => lr.StartDate).ToList(),
                 "startdate_desc" => leaveRequests.OrderByDescending(lr => lr.StartDate).ToList(),
+                "createdat_desc" => leaveRequests.OrderByDescending(lr => lr.CreatedAt).ToList(),
+                "createdat_asc" => leaveRequests.OrderBy(lr => lr.CreatedAt).ToList(),
                 _ => leaveRequests.OrderBy(lr => lr.ID).ToList(), 
             };
 
