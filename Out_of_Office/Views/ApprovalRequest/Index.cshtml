@@ -42,6 +42,7 @@
             <th>
                 Leave Request Number
             </th>
+            <th>Received date</th>
             <th>
                 <a href="?sortOrder=@statusSortParam">Status</a>
             </th>
@@ -56,6 +57,11 @@
                 <td>@approvalRequest.EmployeeFullName</td>
                 <td>@approvalRequest.ApproverFullName</td> 
                 <td>@approvalRequest.LeaveRequestID</td>
+                <td>
+                    @(approvalRequest.LeaveRequestSubmittedAt.HasValue
+                        ? approvalRequest.LeaveRequestSubmittedAt.Value.ToString("dd MMM yyyy HH:mm")
+                        : "—")
+                </td>
                 <td>
                     @{
                         var badgeClass = approvalRequest.Status switch
