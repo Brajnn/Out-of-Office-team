@@ -13,19 +13,49 @@
 
 
 
-    @using (Html.BeginForm("Index", "ApprovalRequest", FormMethod.Get))
+@using (Html.BeginForm("Index", "ApprovalRequest", FormMethod.Get))
 {
-    <p>
-        <label for="searchRequestId">Search by Request Number:</label>
-        <input type="number" id="searchRequestId" name="searchRequestId" value="@ViewData["SearchRequestId"]" />
-    </p>
-    <p>
-        <label for="statusFilter">Filter by Status:</label>
-        @Html.DropDownList("statusFilter", (SelectList)ViewBag.Statuses, "All Statuses", new { @id = "statusFilter" })
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label>Search by Request Number:</label>
+            <input type="number" class="form-control" id="searchRequestId" name="searchRequestId" value="@ViewData["SearchRequestId"]" />
+        </div>
 
-        <input type="submit" value="Filter" class="btn btn-primary ml-2" />
-    </p>
-    }
+        <div class="col-md-3">
+            <label>Search by Employee Name:</label>
+            <input type="text" class="form-control" id="employeeName" name="employeeName" value="@ViewData["EmployeeName"]" />
+        </div>
+
+        <div class="col-md-6">
+            <label>Status:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selectedStatuses" value="New" @(ViewBag.SelectedStatuses.Contains("New") ? "checked" : "") />
+                <label class="form-check-label">New</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Approved" @(ViewBag.SelectedStatuses.Contains("Approved") ? "checked" : "") />
+                <label class="form-check-label">Approved</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Rejected" @(ViewBag.SelectedStatuses.Contains("Rejected") ? "checked" : "") />
+                <label class="form-check-label">Rejected</label>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label>From:</label>
+            <input type="date" class="form-control" name="startDate" value="@ViewBag.StartDate" />
+        </div>
+        <div class="col-md-3">
+            <label>To:</label>
+            <input type="date" class="form-control" name="endDate" value="@ViewBag.EndDate" />
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </div>
+}
 
 
 <table class="table">

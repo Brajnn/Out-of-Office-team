@@ -20,7 +20,7 @@ namespace Out_of_Office.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? searchRequestId, string sortOrder, string statusFilter, int? pageNumber)
+        public async Task<IActionResult> Index(int? searchRequestId, string sortOrder, string statusFilter, int? pageNumber, List<string> selectedStatuses, string employeeName, DateTime? startDate, DateTime? endDate)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.IdSortParm = string.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
@@ -28,18 +28,37 @@ namespace Out_of_Office.Controllers
             ViewBag.StatusSortParm = sortOrder == "status_asc" ? "status_desc" : "status_asc";
 
             var approvalRequests = await _mediator.Send(new GetAllApprovalRequestQuery());
+            // Default date
+            if (!startDate.HasValue)
+                startDate = DateTime.Today;
+            if (!endDate.HasValue)
+                endDate = new DateTime(DateTime.Today.Year, 12, 31);
 
+            // Request number search
             if (searchRequestId.HasValue)
             {
                 approvalRequests = approvalRequests.Where(ar => ar.LeaveRequestID == searchRequestId.Value).ToList();
                 ViewData["SearchRequestId"] = searchRequestId.Value;
             }
-            if (!string.IsNullOrEmpty(statusFilter))
+            // Employee name search
+            if (!string.IsNullOrEmpty(employeeName))
             {
-                approvalRequests = approvalRequests
-                    .Where(ar => ar.Status.Equals(statusFilter, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
+                approvalRequests = approvalRequests.Where(ar => ar.EmployeeFullName.Contains(employeeName, StringComparison.OrdinalIgnoreCase)).ToList();
+                ViewData["EmployeeName"] = employeeName;
             }
+            // Filter by Selected Statuses
+            if (selectedStatuses != null && selectedStatuses.Any())
+            {
+                approvalRequests = approvalRequests.Where(ar => selectedStatuses.Contains(ar.Status)).ToList();
+            }
+            // 📅 Filter by Received Date
+            approvalRequests = approvalRequests.Where(ar =>
+                ar.LeaveRequestSubmittedAt.HasValue &&
+                ar.LeaveRequestSubmittedAt.Value.Date >= startDate.Value.Date &&
+                ar.LeaveRequestSubmittedAt.Value.Date <= endDate.Value.Date
+            ).ToList();
+           
+           
             approvalRequests = sortOrder switch
             {
                 "id_desc" => approvalRequests.OrderByDescending(ar => ar.ID).ToList(),
@@ -50,6 +69,10 @@ namespace Out_of_Office.Controllers
                 _ => approvalRequests.OrderBy(ar => ar.ID).ToList(),
             };
             ViewBag.Statuses = new SelectList(Enum.GetNames(typeof(ApprovalStatus)));
+            ViewBag.SelectedStatuses = selectedStatuses ?? new List<string>();
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+
             int pageSize = 10;
             int pageIndex = pageNumber ?? 1;
 
