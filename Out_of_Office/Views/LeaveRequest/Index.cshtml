@@ -15,20 +15,53 @@
 
 <h2>Leave Requests</h2>
 
-
-<p>
-    @using (Html.BeginForm("Index", "LeaveRequest", FormMethod.Get))
-    {
-        <label for="SearchRequestId">Search by Request Number:</label>
-        <input type="text" id="SearchRequestId" name="SearchRequestId" value="@ViewData["SearchRequestId"]" />
-        <input type="submit" value="Search" />
-    }
-</p>
-
 <p>
     @Html.ActionLink("Add New Leave Request", "Create", "LeaveRequest", null, new { @class = "btn btn-primary" })
 </p>
+@using (Html.BeginForm("Index", "LeaveRequest", FormMethod.Get))
+{
+    <div class="row">
+        <div class="col-md-3">
+            <label>Search by Request Number:</label>
+            <input type="text" id="SearchRequestId" name="searchRequestId" value="@ViewData["SearchRequestId"]" class="form-control" />
+        </div>
 
+        <div class="col-md-6">
+            <label>Status:</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selectedStatuses" value="New" @(ViewBag.SelectedStatuses.Contains("New") ? "checked" : "") />
+                <label class="form-check-label">New</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Submitted" @(ViewBag.SelectedStatuses.Contains("Submitted") ? "checked" : "") />
+                <label class="form-check-label">Submitted</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Approved" @(ViewBag.SelectedStatuses.Contains("Approved") ? "checked" : "") />
+                <label class="form-check-label">Approved</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Rejected" @(ViewBag.SelectedStatuses.Contains("Rejected") ? "checked" : "") />
+                <label class="form-check-label">Rejected</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Cancelled" @(ViewBag.SelectedStatuses.Contains("Cancelled") ? "checked" : "") />
+                <label class="form-check-label">Cancelled</label>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label>Start Date:</label>
+            <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control" />
+            <label>End Date:</label>
+            <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control" />
+        </div>
+
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Filter</button>
+}
 
 <table class="table">
     <thead>
@@ -81,7 +114,7 @@
                     {
                         <form asp-action="Cancel" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@leaveRequest.ID" />
-                            <button type="submit" class="btn btn-warning btn-sm">Cancel</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
                         </form>
                     }
                     else

@@ -31,7 +31,7 @@ namespace Out_of_Office.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(int? searchRequestId, string sortOrder, int? pageNumber)
+        public async Task<IActionResult> Index(int? searchRequestId, string sortOrder, int? pageNumber, List<string> selectedStatuses, DateTime? startDate, DateTime? endDate)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.IdSortParm = string.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
@@ -40,6 +40,7 @@ namespace Out_of_Office.Controllers
             ViewBag.CreatedAtSortParm = sortOrder == "createdat_asc" ? "createdatdate_desc" : "createdatdate_asc";
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userRole = User.FindFirstValue(ClaimTypes.Role);
+
             if (!int.TryParse(userIdString, out var userId))
             {
                 _logger.LogError("Unable to parse UserId from NameIdentifier claim. Value: {UserIdString}", userIdString);
@@ -52,11 +53,35 @@ namespace Out_of_Office.Controllers
          
             var leaveRequests = await _mediator.Send(new GetAllLeaveRequestsQuery { UserId = employeeId, UserRole = userRole });
 
+            // --- FILTS----
+            // 🛠️ Default date
+            if (!startDate.HasValue)
+            {
+                startDate = DateTime.Today;
+            }
+            if (!endDate.HasValue)
+            {
+                endDate = new DateTime(DateTime.Today.Year, 12, 31);
+            }
 
             if (searchRequestId.HasValue)
             {
                 leaveRequests = leaveRequests.Where(lr => lr.ID == searchRequestId.Value).ToList();
                 ViewData["SearchRequestId"] = searchRequestId.Value;
+            }
+            if (selectedStatuses != null && selectedStatuses.Any())
+            {
+                leaveRequests = leaveRequests.Where(lr => selectedStatuses.Contains(lr.Status)).ToList();
+            }
+
+            if (startDate.HasValue)
+            {
+                leaveRequests = leaveRequests.Where(lr => lr.StartDate >= startDate.Value).ToList();
+            }
+
+            if (endDate.HasValue)
+            {
+                leaveRequests = leaveRequests.Where(lr => lr.EndDate <= endDate.Value).ToList();
             }
             leaveRequests = sortOrder switch
             {
@@ -69,7 +94,9 @@ namespace Out_of_Office.Controllers
                 "createdat_asc" => leaveRequests.OrderBy(lr => lr.CreatedAt).ToList(),
                 _ => leaveRequests.OrderBy(lr => lr.ID).ToList(), 
             };
-
+            ViewBag.SelectedStatuses = selectedStatuses ?? new List<string>();
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
             int pageSize = 10;
             int pageIndex = pageNumber ?? 1;
 
