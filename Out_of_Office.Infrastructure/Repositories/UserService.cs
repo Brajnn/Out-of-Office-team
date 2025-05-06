@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Out_of_Office.Domain.Entities;
 using Out_of_Office.Domain.Interfaces;
 using Out_of_Office.Infrastructure.Identity;
@@ -46,6 +47,15 @@ namespace Out_of_Office.Infrastructure.Repositories
                 return (false, roleResult.Errors.Select(e => e.Description));
             }
             return (true, Enumerable.Empty<string>());
+
+        }
+        public async Task<string> GetUsernameByEmployeeIdAsync(int employeeId)
+        {
+            var user = await _userManager.Users
+                .Include(u => u.Employee)
+                .FirstOrDefaultAsync(u => u.Employee != null && u.Employee.Id == employeeId);
+
+            return user?.UserName;
         }
     }
 }

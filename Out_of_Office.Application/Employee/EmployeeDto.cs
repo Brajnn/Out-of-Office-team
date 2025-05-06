@@ -20,5 +20,6 @@ namespace Out_of_Office.Application.Employee
         public List<LeaveBalanceDto> LeaveBalances { get; set; } = new();
         public int DaysAvailable { get; set; }
         public byte[] Photo { get; set; }
+        public string Username { get; set; }
     }
 }

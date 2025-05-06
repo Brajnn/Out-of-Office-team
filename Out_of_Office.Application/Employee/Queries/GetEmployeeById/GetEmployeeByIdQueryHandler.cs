@@ -13,11 +13,13 @@ namespace Out_of_Office.Application.Employee.Queries.GetEmployeeById
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public GetEmployeeByIdQueryHandler(IEmployeeRepository employeeRepository, IMapper mapper)
+        public GetEmployeeByIdQueryHandler(IEmployeeRepository employeeRepository, IMapper mapper, IUserService userService)
         {
             _employeeRepository = employeeRepository;
             _mapper = mapper;
+            _userService = userService;
         }
 
         public async Task<EmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
@@ -27,7 +29,9 @@ namespace Out_of_Office.Application.Employee.Queries.GetEmployeeById
             {
                 return null; 
             }
-            return _mapper.Map<EmployeeDto>(employee);
+            var dto= _mapper.Map<EmployeeDto>(employee);
+            dto.Username = await _userService.GetUsernameByEmployeeIdAsync(employee.Id);
+            return dto;
         }
     }
 }
