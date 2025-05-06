@@ -54,10 +54,6 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
                     new LeaveBalance { Type = LeaveType.Unpaid, DaysAvailable = request.UnpaidLeaveDays }
                 }
             };
-
-            await _employeeRepository.AddEmployeeAsync(employee);
-
-
             var (success, errors) = await _userService.CreateUserForEmployeeAsync(
                 request.Username,
                 request.Password,
@@ -69,6 +65,7 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
                 request.ValidationErrors = errors.ToList();
                 return Unit.Value;
             }
+            await _employeeRepository.AddEmployeeAsync(employee);
 
             return Unit.Value;
         }
