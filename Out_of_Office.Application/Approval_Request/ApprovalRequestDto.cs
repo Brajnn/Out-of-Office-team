@@ -16,8 +16,10 @@ namespace Out_of_Office.Application.Approval_Request
         public string Status { get; set; }
         public DateTime? StatusChangedAt { get; set; }
         public DateTime? LeaveRequestSubmittedAt { get; set; }
-        public string Comment { get; set; }
         public string DecisionComment { get; set; }
         public string EmployeeFullName { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string LeaveRequestComment { get; set; }
     }
 }
