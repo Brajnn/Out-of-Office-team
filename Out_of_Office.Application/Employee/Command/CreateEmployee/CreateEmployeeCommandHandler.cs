@@ -13,6 +13,7 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUserService _userService;
+
         public CreateEmployeeCommandHandler(IEmployeeRepository employeeRepository, IUserService userService)
         {
             _employeeRepository = employeeRepository;
@@ -20,11 +21,22 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
         }
 
         public async Task<Unit> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
-        {
+        { 
             if (!Enum.TryParse(request.Status, out EmployeeStatus employeeStatus))
             {
-                throw new ArgumentException("Invalid employee status", nameof(request.Status));
+                request.ValidationErrors = new List<string> { "Incorrect employee status." };
+                return Unit.Value;
             }
+
+            if (string.IsNullOrWhiteSpace(request.FullName) ||
+                string.IsNullOrWhiteSpace(request.Subdivision) ||
+                string.IsNullOrWhiteSpace(request.Position))
+            {
+                request.ValidationErrors = new List<string> { "Fill all fields." };
+                return Unit.Value;
+            }
+
+
             var employee = new Domain.Entities.Employee
             {
                 FullName = request.FullName,
@@ -36,16 +48,27 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
                 OutOfOfficeBalance = request.OutOfOfficeBalance,
                 Photo = request.Photo,
                 LeaveBalances = new List<LeaveBalance>
-            {
-                new LeaveBalance { Type = LeaveType.Vacation, DaysAvailable = request.VacationDays },
-                new LeaveBalance { Type = LeaveType.SickLeave, DaysAvailable = request.SickLeaveDays },
-                new LeaveBalance { Type = LeaveType.Unpaid, DaysAvailable = request.UnpaidLeaveDays }
-            }
-
+                {
+                    new LeaveBalance { Type = LeaveType.Vacation, DaysAvailable = request.VacationDays },
+                    new LeaveBalance { Type = LeaveType.SickLeave, DaysAvailable = request.SickLeaveDays },
+                    new LeaveBalance { Type = LeaveType.Unpaid, DaysAvailable = request.UnpaidLeaveDays }
+                }
             };
 
             await _employeeRepository.AddEmployeeAsync(employee);
-            await _userService.RegisterAsync(request.Username, request.Password, employee.Id, employee.Position);
+
+
+            var (success, errors) = await _userService.CreateUserForEmployeeAsync(
+                request.Username,
+                request.Password,
+                employee,
+                request.Position);
+
+            if (!success)
+            {
+                request.ValidationErrors = errors.ToList();
+                return Unit.Value;
+            }
 
             return Unit.Value;
         }

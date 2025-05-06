@@ -25,5 +25,6 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
 
         public string Username { get; set; }
         public string Password { get; set; }
+        public List<string> ValidationErrors { get; set; } = new();
     }
 }

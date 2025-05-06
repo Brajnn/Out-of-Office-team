@@ -2,38 +2,37 @@
 
 @{
     ViewData["Title"] = "Create Employee";
-    var hrManagers = ViewBag.HrManagers as List<Out_of_Office.Application.Employee.EmployeeDto>;
-    var positions = ViewBag.Positions as string[];
+    var hrManagers = ViewBag.HrManagers as List<SelectListItem>;
+    var positions = ViewBag.Positions as List<SelectListItem>;
 }
 
 <h1>Create Employee</h1>
-
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
                 <input asp-for="FullName" class="form-control" />
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Subdivision" class="control-label"></label>
                 <input asp-for="Subdivision" class="form-control" />
                 <span asp-validation-for="Subdivision" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Position" class="control-label"></label>
-                <select asp-for="Position" class="form-control">
+                <select asp-for="Position" class="form-control" asp-items="positions">
                     <option value="">Select Position</option>
-                    @foreach (var position in positions)
-                    {
-                        <option value="@position">@position</option>
-                    }
                 </select>
                 <span asp-validation-for="Position" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
                 <select asp-for="Status" class="form-control">
@@ -42,63 +41,67 @@
                 </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="PeoplePartnerID" class="control-label"></label>
-                <select asp-for="PeoplePartnerID" class="form-control">
+                <select asp-for="PeoplePartnerID" class="form-control" asp-items="hrManagers">
                     <option value="">Select HR Manager</option>
-                    @foreach (var hrManager in hrManagers)
-                    {
-                        <option value="@hrManager.Id">@hrManager.FullName</option>
-                    }
                 </select>
                 <span asp-validation-for="PeoplePartnerID" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="HireDate" class="control-label"></label>
                 <input asp-for="HireDate" class="form-control" type="date" />
                 <span asp-validation-for="HireDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="VacationDays" class="control-label"></label>
                 <input asp-for="VacationDays" class="form-control" />
                 <span asp-validation-for="VacationDays" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="SickLeaveDays" class="control-label"></label>
                 <input asp-for="SickLeaveDays" class="form-control" />
                 <span asp-validation-for="SickLeaveDays" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="UnpaidLeaveDays" class="control-label"></label>
                 <input asp-for="UnpaidLeaveDays" class="form-control" />
                 <span asp-validation-for="UnpaidLeaveDays" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Photo" class="control-label"></label>
                 <input asp-for="Photo" type="file" class="form-control" />
                 <span asp-validation-for="Photo" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" type="password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary ms-2">Back to List</a>
             </div>
         </form>
     </div>
 </div>
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</div>
-
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
