@@ -1,0 +1,44 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Out_of_Office.Domain.Entities;
+using Out_of_Office.Domain.Interfaces;
+using Out_of_Office.Infrastructure.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Out_of_Office.Infrastructure.Repositories
+{
+    public class UserService : IUserService
+    {
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public UserService(UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
+
+        public async Task<(bool Success, IEnumerable<string> Errors)> CreateUserForEmployeeAsync(string username, string password, Employee employee, string role)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = username,
+                Email = $"{username}@office.local",
+                EmailConfirmed = true,
+                Employee = employee
+            };
+
+            if (string.IsNullOrWhiteSpace(employee.Subdivision) ||
+                string.IsNullOrWhiteSpace(employee.Position))
+            {
+                return (false, new[] { "Not enough data." });
+            }
+
+            var result = await _userManager.CreateAsync(user, password);
+
+            await _userManager.AddToRoleAsync(user, role);
+            return (true, Enumerable.Empty<string>());
+        }
+    }
+}
