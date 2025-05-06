@@ -24,6 +24,12 @@ namespace Out_of_Office.Application.Approval_Request.Query.GetAllApprovalRequest
         {
             var approvalRequests = await _approvalRequestRepository.GetAllApprovalRequestsAsync();
 
+            if (request.UserRole == "HRManager")
+            {
+                approvalRequests = approvalRequests
+                    .Where(r => r.ApproverID == request.UserId)
+                    .ToList();
+            }
             return _mapper.Map<IEnumerable<ApprovalRequestDto>>(approvalRequests);
         }
     }

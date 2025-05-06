@@ -22,7 +22,7 @@ namespace Out_of_Office.Infrastructure.Repositories
 
         public async Task<IEnumerable<ApprovalRequest>> GetAllApprovalRequestsAsync()
         {
-            return await _dbContext.ApprovalRequest
+            return await _dbContext.ApprovalRequests
                 .Include(ar => ar.Approver)
                 .Include(ar => ar.LeaveRequest)
                 .ThenInclude(lr => lr.Employee)
@@ -30,7 +30,7 @@ namespace Out_of_Office.Infrastructure.Repositories
         }
         public async Task<ApprovalRequest> GetApprovalRequestByIdAsync(int id)
         {
-            return await _dbContext.ApprovalRequest
+            return await _dbContext.ApprovalRequests
                         .Include(ar => ar.Approver)                       
                         .Include(ar => ar.LeaveRequest)
                         .ThenInclude(lr => lr.Employee)
@@ -38,18 +38,18 @@ namespace Out_of_Office.Infrastructure.Repositories
         }
         public async Task<ApprovalRequest> GetApprovalRequestByLeaveRequestIdAsync(int leaveRequestId)
         {
-            return await _dbContext.ApprovalRequest
+            return await _dbContext.ApprovalRequests
                                  .FirstOrDefaultAsync(ar => ar.LeaveRequestID == leaveRequestId);
         }
 
         public async Task AddApprovalRequestAsync(ApprovalRequest approvalRequest)
         {
-            _dbContext.ApprovalRequest.Add(approvalRequest);
+            _dbContext.ApprovalRequests.Add(approvalRequest);
             await _dbContext.SaveChangesAsync();
         }
         public async Task UpdateAsync(ApprovalRequest approvalRequest)
         {
-            _dbContext.ApprovalRequest.Update(approvalRequest);
+            _dbContext.ApprovalRequests.Update(approvalRequest);
             await _dbContext.SaveChangesAsync();
         }
     }

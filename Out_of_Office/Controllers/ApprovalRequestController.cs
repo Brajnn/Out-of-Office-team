@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Out_of_Office.Application.Approval_Request.Command.CreateApprovalRequest;
@@ -6,6 +7,8 @@ using Out_of_Office.Application.Approval_Request.Command.UpdateApprovalRequestSt
 using Out_of_Office.Application.Approval_Request.Query.GetAllApprovalRequestQuery;
 using Out_of_Office.Application.Approval_Request.Query.GetApprovalRequestByIdQuery;
 using Out_of_Office.Domain.Entities;
+using Out_of_Office.Infrastructure.Identity;
+using System.Security.Claims;
 using X.PagedList;
 
 namespace Out_of_Office.Controllers
@@ -13,10 +16,11 @@ namespace Out_of_Office.Controllers
     public class ApprovalRequestController:Controller
     {
         private readonly IMediator _mediator;
-
-        public ApprovalRequestController(IMediator mediator)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ApprovalRequestController(IMediator mediator, UserManager<ApplicationUser> userManager)
         {
             _mediator = mediator;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -27,8 +31,18 @@ namespace Out_of_Office.Controllers
             ViewBag.ApproverSortParm = sortOrder == "approver_asc" ? "approver_desc" : "approver_asc";
             ViewBag.StatusSortParm = sortOrder == "status_asc" ? "status_desc" : "status_asc";
 
-            var approvalRequests = await _mediator.Send(new GetAllApprovalRequestQuery());
-            // Default date
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user?.EmployeeId == null || user.EmployeeId == 0)
+                return Unauthorized();
+
+            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            var userId = user.EmployeeId;
+            var approvalRequests = await _mediator.Send(new GetAllApprovalRequestQuery
+            {
+                UserId = user.EmployeeId.Value,
+                UserRole = role
+            });
             if (!startDate.HasValue)
                 startDate = DateTime.Today;
             if (!endDate.HasValue)

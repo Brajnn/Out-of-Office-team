@@ -9,5 +9,7 @@ namespace Out_of_Office.Application.Approval_Request.Query.GetAllApprovalRequest
 {
     public class GetAllApprovalRequestQuery : IRequest<IEnumerable<ApprovalRequestDto>>
     {
+        public int UserId { get; set; }
+        public string UserRole { get; set; }
     }
 }
