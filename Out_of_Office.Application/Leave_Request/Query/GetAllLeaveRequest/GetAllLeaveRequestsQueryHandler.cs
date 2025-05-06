@@ -35,10 +35,26 @@ namespace Out_of_Office.Application.Leave_Request.Query.GetAllLeaveRequest
                     await _leaveRequestRepository.UpdateLeaveRequestAsync(leaveRequest);
                 }
             }
-            if (request.UserRole == "Employee")
+            switch (request.UserRole?.ToLowerInvariant())
             {
-                leaveRequests = leaveRequests.Where(lr => lr.Employee.Id == request.UserId).ToList();
+                case "employee":
+                    leaveRequests = leaveRequests
+                        .Where(lr => lr.Employee.Id == request.UserId)
+                        .ToList();
+                    break;
+
+                case "hrmanager":
+                case "projectmanager":
+                case "administrator":
+                    
+                    break;
+
+                default:
+                    
+                    leaveRequests = new List<Domain.Entities.LeaveRequest>();
+                    break;
             }
+
             var leaveRequestDtos = _mapper.Map<IEnumerable<LeaveRequestDto>>(leaveRequests);
             return leaveRequestDtos;
         }

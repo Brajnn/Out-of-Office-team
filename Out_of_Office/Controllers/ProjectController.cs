@@ -20,13 +20,13 @@ namespace Out_of_Office.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly ILogger<ProjectController> _logger;
 
-        public ProjectController(IMediator mediator, IEmployeeRepository employeeRepository, IUserRepository userRepository)
+        public ProjectController(IMediator mediator, IEmployeeRepository employeeRepository, ILogger<ProjectController> logger)
         {
             _mediator = mediator;
             _employeeRepository = employeeRepository;
-            _userRepository = userRepository;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -38,15 +38,16 @@ namespace Out_of_Office.Controllers
             ViewBag.StartDateSortParm = sortOrder == "startdate_asc" ? "startdate_desc" : "startdate_asc";
             ViewBag.ManagerSortParm = sortOrder == "manager_asc" ? "manager_desc" : "manager_asc";
 
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userRole = User.FindFirstValue(ClaimTypes.Role);
-            if (!int.TryParse(userIdString, out var userId))
+
+            var employee = await _employeeRepository.GetEmployeeByApplicationUserIdAsync(appUserId);
+            if (employee == null)
             {
+                _logger.LogWarning("No employee found for ApplicationUser ID: {AppUserId}", appUserId);
                 return Unauthorized();
             }
-
-            var user = await _userRepository.GetByIdAsync(userId);
-            var employeeId = user.EmployeeId;
+            var employeeId = employee.Id;
 
             var projects = await _mediator.Send(new GetAllProjectsQuery { UserId = employeeId, UserRole = userRole });
             if (searchProjectId.HasValue)

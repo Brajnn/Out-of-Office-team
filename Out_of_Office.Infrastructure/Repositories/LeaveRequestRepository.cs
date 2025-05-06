@@ -21,29 +21,29 @@ namespace Out_of_Office.Infrastructure.Repositories
 
         public async Task<IEnumerable<LeaveRequest>> GetAllLeaveRequestsAsync()
         {
-            return await _context.LeaveRequest
+            return await _context.LeaveRequests
                 .Include(lr => lr.Employee) 
                 .ToListAsync();
         }
         public async Task<LeaveRequest> GetLeaveRequestByIdAsync(int id)
         {
-            return await _context.LeaveRequest
+            return await _context.LeaveRequests
                 .Include(lr => lr.Employee)
                 .FirstOrDefaultAsync(lr => lr.ID == id);
         }
         public async Task UpdateAsync(LeaveRequest leaveRequest)
         {
-            _context.LeaveRequest.Update(leaveRequest);
+            _context.LeaveRequests.Update(leaveRequest);
             await _context.SaveChangesAsync();
         }
         public async Task AddAsync(LeaveRequest leaveRequest)
         {
-            _context.LeaveRequest.Add(leaveRequest);
+            _context.LeaveRequests.Add(leaveRequest);
             await _context.SaveChangesAsync();
         }
         public async Task UpdateLeaveRequestAsync(LeaveRequest leaveRequest)
         {
-            _context.LeaveRequest.Update(leaveRequest);
+            _context.LeaveRequests.Update(leaveRequest);
             await _context.SaveChangesAsync();
         }
     }

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Out_of_Office.Infrastructure.Repositories;
 using Out_of_Office.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Out_of_Office.Infrastructure.Identity;
 
 namespace Out_of_Office.Infrastructure.Extensions
 {
@@ -22,9 +23,10 @@ namespace Out_of_Office.Infrastructure.Extensions
         {
             services.AddDbContext<Out_of_OfficeDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("OutOfOfficeConnectionString")));
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<Out_of_OfficeDbContext>()
+                .AddDefaultTokenProviders();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IEmployeeRepository,EmployeeRepository>();
             services.AddScoped<IApprovalRequestRepository, ApprovalRequestRepository>();
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();

@@ -15,6 +15,8 @@ namespace Out_of_Office.Domain.Interfaces
         Task UpdateEmployeeAsync(Employee employee);
         Task<IList<Employee>> GetProjectManagersAsync();
         Task UpdateLeaveBalancesAsync(int employeeId, List<(LeaveType Type, int DaysAvailable)> balances);
+        Task<List<Employee>> GetEmployeesWithoutAccountAsync();
+        Task<Employee> GetEmployeeByApplicationUserIdAsync(string appUserId);
     }
 
 }

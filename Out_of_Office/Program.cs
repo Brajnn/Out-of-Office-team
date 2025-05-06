@@ -4,6 +4,8 @@ using Out_of_Office.Infrastructure.Extensions;
 using Out_of_Office.Application.Extensions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Out_of_Office.Infrastructure.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -13,23 +15,7 @@ options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAplication();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/auth/login";
-        options.LogoutPath = "/auth/logout";
-        options.AccessDeniedPath = "/auth/accessdenied";
-    });
-builder.Services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-    options.AddPolicy("EmployeeOnly", policy => policy.RequireRole("Employee"));
-    options.AddPolicy("HRManagerOnly", policy => policy.RequireRole("HRManager"));
-    options.AddPolicy("ProjectManagerOnly", policy => policy.RequireRole("Project Manager"));
-    options.AddPolicy("AdministratorOnly", policy => policy.RequireRole("Administrator"));
-});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -69,11 +55,23 @@ app.MapControllerRoute(
     defaults: new { controller = "ApprovalRequest", action = "Index" }
 );
 app.MapControllerRoute(
-    name: "auth",
-    pattern: "{controller=Auth}/{action=Login}/{id?}"
-);
-app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await IdentityInitializer.SeedRolesAsync(roleManager);
+}
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
 
+    var dbContext = services.GetRequiredService<Out_of_OfficeDbContext>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+    await IdentityInitializer.SeedRolesAsync(roleManager);
+    await IdentityInitializer.SeedAdminAsync(userManager, roleManager, dbContext);
+    await IdentityInitializer.SeedDemoUsersAsync(userManager, roleManager, dbContext);
+}
 app.Run();

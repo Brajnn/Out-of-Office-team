@@ -1,18 +1,19 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Out_of_Office.Application.Leave_Request.Query;
+
 using Out_of_Office.Application.Leave_Request.Query.GetAllLeaveRequest;
 using Out_of_Office.Application.Leave_Request.Query.GetLeaveRequestById;
 using Out_of_Office.Domain.Interfaces;
 using System.Security.Claims;
-using Microsoft.Extensions.Logging;
+
 using Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestCommand;
 using Out_of_Office.Application.Leave_Request.Command.UpdateLeaveRequestStatus;
 using X.PagedList;
-using Out_of_Office.Application.WorkDayCalendar.Query.GetWorkCalendarByYear;
-using Out_of_Office.Application.WorkDayCalendar;
+using Out_of_Office.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Out_of_Office.Controllers
 {
@@ -20,14 +21,15 @@ namespace Out_of_Office.Controllers
     public class LeaveRequestController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IUserRepository _userRepository;
         private readonly ILogger<LeaveRequestController> _logger;
-
-        public LeaveRequestController(IMediator mediator, ILogger<LeaveRequestController> logger, IUserRepository userRepository)
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public LeaveRequestController(IMediator mediator, ILogger<LeaveRequestController> logger, IEmployeeRepository employeeRepository, UserManager<ApplicationUser> userManager)
         {
             _mediator = mediator;
             _logger = logger;
-            _userRepository = userRepository;
+            _employeeRepository = employeeRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -38,20 +40,32 @@ namespace Out_of_Office.Controllers
             ViewBag.EmployeeSortParm = sortOrder == "employee_asc" ? "employee_desc" : "employee_asc";
             ViewBag.StartDateSortParm = sortOrder == "startdate_asc" ? "startdate_desc" : "startdate_asc";
             ViewBag.CreatedAtSortParm = sortOrder == "createdat_asc" ? "createdatdate_desc" : "createdatdate_asc";
-            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userRole = User.FindFirstValue(ClaimTypes.Role);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (!int.TryParse(userIdString, out var userId))
+            var applicationUser = await _userManager.Users
+            .Include(u => u.Employee)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (applicationUser == null)
             {
-                _logger.LogError("Unable to parse UserId from NameIdentifier claim. Value: {UserIdString}", userIdString);
-                return Unauthorized(); 
+                _logger.LogWarning("User not found for ID: {UserId}", userId);
+                return Unauthorized();
             }
 
-            var user = await _userRepository.GetByIdAsync(userId);
+            var employee = applicationUser.Employee;
 
-            var employeeId = user.EmployeeId;
-         
-            var leaveRequests = await _mediator.Send(new GetAllLeaveRequestsQuery { UserId = employeeId, UserRole = userRole });
+            if (employee == null && userRole == "Employee")
+            {
+                _logger.LogWarning("No employee assigned to user ID: {UserId}", userId);
+                return Unauthorized();
+            }
+
+            var leaveRequests = await _mediator.Send(new GetAllLeaveRequestsQuery
+            {
+                UserId = employee?.Id ?? 0,
+                UserRole = userRole
+            });
 
             // --- FILTS----
             // 🛠️ Default date
@@ -125,33 +139,29 @@ namespace Out_of_Office.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateLeaveRequestCommand command)
         {
-            if (ModelState.IsValid)
+            if (!User.Identity.IsAuthenticated)
+                return Forbid();
+
+            var appUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.Users.Include(u => u.Employee)
+                .FirstOrDefaultAsync(u => u.Id == appUserId);
+
+            if (user?.Employee == null)
             {
-                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                _logger.LogWarning("Nie przypisano Employee do użytkownika {User}", appUserId);
+                return Forbid();
+            }
 
-                if (!int.TryParse(userIdString, out var userId))
-                {
-                    return Unauthorized();
-                }
+            command.EmployeeId = user.Employee.Id;
 
-                var user = await _userRepository.GetByIdAsync(userId);
-                if (user == null)
-                {
-                    return Unauthorized();
-                }
-
-                command.EmployeeId = user.EmployeeId;
-
-                try
-                {
-                    await _mediator.Send(command);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    // Model state for user
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                }
+            try
+            {
+                await _mediator.Send(command);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
 
             return View(command);

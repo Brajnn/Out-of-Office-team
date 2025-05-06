@@ -1,34 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Out_of_Office.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Out_of_Office.Infrastructure.Identity;
+
 
 namespace Out_of_Office.Infrastructure.Presistance
 {
-    public class Out_of_OfficeDbContext : DbContext
+    public class Out_of_OfficeDbContext : IdentityDbContext<ApplicationUser>
     {
         public Out_of_OfficeDbContext(DbContextOptions<Out_of_OfficeDbContext> options)
         : base(options)
         {
 
         }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Employee> Employee { get; set; }
-        public DbSet<Project> Project { get; set; }
-        public DbSet<LeaveRequest> LeaveRequest { get; set; }
-        public DbSet<ApprovalRequest> ApprovalRequest { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
+        public DbSet<ApprovalRequest> ApprovalRequests { get; set; }
         public DbSet<EmployeeProject> EmployeeProjects { get; set; }
         public DbSet<LeaveBalance> LeaveBalances { get; set; }
         public DbSet<WorkCalendarDay> WorkCalendarDays { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            modelBuilder.Entity<ApplicationUser>()
             .HasOne(u => u.Employee)
-            .WithOne(e => e.User)
-            .HasForeignKey<User>(u => u.EmployeeId);
+            .WithOne() 
+            .HasForeignKey<ApplicationUser>(u => u.EmployeeId)
+            .OnDelete(DeleteBehavior.SetNull);
             modelBuilder.Entity<Employee>(entity =>
             {
 
@@ -66,7 +65,7 @@ namespace Out_of_Office.Infrastructure.Presistance
                 entity.HasOne(lb => lb.Employee)
                       .WithMany(e => e.LeaveBalances)
                       .HasForeignKey(lb => lb.EmployeeId)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.Restrict);
 
                 entity.Property(lb => lb.Type)
                       .IsRequired()
@@ -83,6 +82,7 @@ namespace Out_of_Office.Infrastructure.Presistance
                 entity.HasOne(e => e.Employee)
                       .WithMany()
                       .HasForeignKey(e => e.EmployeeID)
+                      .OnDelete(DeleteBehavior.Restrict)
                       .IsRequired();
 
                 entity.Property(e => e.AbsenceReason)
@@ -118,6 +118,7 @@ namespace Out_of_Office.Infrastructure.Presistance
                 entity.HasOne(e => e.ProjectManager)
                       .WithMany()
                       .HasForeignKey(e => e.ProjectManagerID)
+                      .OnDelete(DeleteBehavior.Restrict)
                       .IsRequired();
 
                 entity.Property(e => e.Comment)
@@ -134,7 +135,8 @@ namespace Out_of_Office.Infrastructure.Presistance
 
                 entity.HasOne(e => e.Approver)
                       .WithMany() 
-                      .HasForeignKey(e => e.ApproverID)  
+                      .HasForeignKey(e => e.ApproverID)
+                      .OnDelete(DeleteBehavior.Restrict)
                       .IsRequired();
 
                 entity.HasOne(e => e.LeaveRequest)

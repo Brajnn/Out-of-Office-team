@@ -19,9 +19,12 @@
 
     }
 </p>
+@if (User.IsInRole("Administrator"))
+{
 <p>
     @Html.ActionLink("Add New Employee", "Create", "Employee", null, new { @class = "btn btn-primary" })
 </p>
+}
 
 <table class="table">
     <thead>

@@ -21,28 +21,28 @@ namespace Out_of_Office.Infrastructure.Repositories
         }
         public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()
         {
-            return await _dbContext.Employee.ToListAsync();
+            return await _dbContext.Employees.ToListAsync();
         }
         public async Task AddEmployeeAsync(Employee employee)
         {
-            _dbContext.Employee.Add(employee);
+            _dbContext.Employees.Add(employee);
             await _dbContext.SaveChangesAsync();
         }
         public async Task<Employee> GetEmployeeByIdAsync(int Id)
         {
-            return await _dbContext.Employee
+            return await _dbContext.Employees
                 .Include(e => e.LeaveBalances)
                 .FirstOrDefaultAsync(e => e.Id == Id);
         }
 
         public async Task UpdateEmployeeAsync(Employee employee)
         {
-            _dbContext.Employee.Update(employee);
+            _dbContext.Employees.Update(employee);
             await _dbContext.SaveChangesAsync();
         }
         public async Task<IList<Employee>> GetProjectManagersAsync()
         {
-            return await _dbContext.Employee
+            return await _dbContext.Employees
                                  .Where(e => e.Position == "Project Manager")
                                  .ToListAsync();
         }
@@ -72,6 +72,23 @@ namespace Out_of_Office.Infrastructure.Repositories
             }
 
             await _dbContext.SaveChangesAsync();
+        }
+        public async Task<List<Employee>> GetEmployeesWithoutAccountAsync()
+        {
+            return await _dbContext.Employees
+                .Where(e => !_dbContext.Users.Any(u => u.EmployeeId == e.Id))
+                .ToListAsync();
+        }
+        public async Task<Employee?> GetEmployeeByApplicationUserIdAsync(string applicationUserId)
+        {
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync(u => u.Id == applicationUserId);
+
+            if (user == null || user.EmployeeId == null)
+                return null;
+
+            return await _dbContext.Employees
+                .FirstOrDefaultAsync(e => e.Id == user.EmployeeId);
         }
     }
 }

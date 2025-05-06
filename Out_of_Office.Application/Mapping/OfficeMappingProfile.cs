@@ -4,13 +4,7 @@ using Out_of_Office.Application.Employee;
 using Out_of_Office.Application.Leave_Balance;
 using Out_of_Office.Application.Leave_Request;
 using Out_of_Office.Application.Project;
-using Out_of_Office.Application.User;
 using Out_of_Office.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Out_of_Office.Application.Mapping
 {
@@ -24,6 +18,7 @@ namespace Out_of_Office.Application.Mapping
            .ForMember(dest => dest.ApproverFullName, opt => opt.MapFrom(src => src.Approver != null ? src.Approver.FullName : string.Empty))
            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
            .ForMember(dest => dest.LeaveRequestSubmittedAt, opt => opt.MapFrom(src => src.LeaveRequest.SubmittedAt))
+           .ForMember(dest => dest.ApproverID, opt => opt.MapFrom(src => src.Approver.Id))
            .ForMember(dest => dest.EmployeeFullName, opt => opt.MapFrom(src => src.LeaveRequest.Employee.FullName));
             CreateMap<LeaveRequest, LeaveRequestDto>()
            .ForMember(dest => dest.EmployeeFullName, opt => opt.MapFrom(src => src.Employee.FullName))
@@ -33,7 +28,6 @@ namespace Out_of_Office.Application.Mapping
             CreateMap<LeaveBalance, LeaveBalanceDto>()
             .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.ToString()));
             CreateMap<Domain.Entities.Project, ProjectDto>();
-            CreateMap<Domain.Entities.User, UserDto>();
 
 
 
