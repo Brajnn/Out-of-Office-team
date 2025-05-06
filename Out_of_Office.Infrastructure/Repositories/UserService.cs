@@ -36,8 +36,15 @@ namespace Out_of_Office.Infrastructure.Repositories
             }
 
             var result = await _userManager.CreateAsync(user, password);
-
-            await _userManager.AddToRoleAsync(user, role);
+            if (!result.Succeeded)
+            {
+                return (false, result.Errors.Select(e => e.Description));
+            }
+            var roleResult = await _userManager.AddToRoleAsync(user, role);
+            if (!roleResult.Succeeded)
+            {
+                return (false, roleResult.Errors.Select(e => e.Description));
+            }
             return (true, Enumerable.Empty<string>());
         }
     }

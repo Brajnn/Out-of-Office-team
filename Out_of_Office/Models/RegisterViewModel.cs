@@ -11,9 +11,9 @@ namespace Out_of_Office.Models
         public string Email { get; set; }
 
         [Required]
-        public string Role { get; set; } // np. "Employee"
+        public string Role { get; set; } 
 
-        public int? EmployeeId { get; set; } // opcjonalne, jeśli chcesz połączyć
+        public int? EmployeeId { get; set; } 
 
         [Required, DataType(DataType.Password)]
         public string Password { get; set; }

@@ -24,8 +24,6 @@ namespace Out_of_Office.Controllers
         {
             _mediator = mediator;
         }
-
-        // ======================= LISTA PRACOWNIKÓW ==========================
         public async Task<IActionResult> Index(string sortOrder, string searchString, string positionFilter, int? pageNumber)
         {
             var employees = await _mediator.Send(new GetAllEmployeesQuery());
@@ -53,7 +51,6 @@ namespace Out_of_Office.Controllers
             return View(employees.ToPagedList(pageNumber ?? 1, 10));
         }
 
-        // ======================= SZCZEGÓŁY ==========================
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -106,17 +103,16 @@ namespace Out_of_Office.Controllers
                 }).ToList();
 
             var positions = new List<SelectListItem>
-    {
-        new SelectListItem { Text = "HR Manager", Value = "HRManager" },
-        new SelectListItem { Text = "Project Manager", Value = "ProjectManager" },
-        new SelectListItem { Text = "Employee", Value = "Employee" }
-    };
+            {
+                new SelectListItem { Text = "HR Manager", Value = "HRManager" },
+                new SelectListItem { Text = "Project Manager", Value = "ProjectManager" },
+                new SelectListItem { Text = "Employee", Value = "Employee" }
+            };
 
             ViewBag.HrManagers = hrManagers;
             ViewBag.Positions = positions;
         }
 
-        // ======================= UPDATE STATUS ==========================
         [HttpPost]
         public async Task<IActionResult> UpdateStatus(int id, bool isActive)
         {
@@ -129,7 +125,6 @@ namespace Out_of_Office.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ======================= EDIT ==========================
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -163,8 +158,6 @@ namespace Out_of_Office.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        // ======================= PROFIL ==========================
         [HttpGet]
         public async Task<IActionResult> EmployeeProfile()
         {

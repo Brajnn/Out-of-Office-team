@@ -28,19 +28,15 @@ namespace Out_of_Office.Infrastructure.Identity
             var adminUsername = "admin125";
             var adminEmail = "admin@office.local";
 
-            // 1. Sprawdź, czy użytkownik już istnieje
             var adminUser = await userManager.FindByNameAsync(adminUsername);
             if (adminUser != null)
             {
-                // upewnij się, że ma przypisaną rolę
                 if (!await userManager.IsInRoleAsync(adminUser, "Administrator"))
                 {
                     await userManager.AddToRoleAsync(adminUser, "Administrator");
                 }
                 return;
             }
-
-            // 2. Jeśli nie ma użytkownika, to dodaj również pracownika
             var adminEmployee = new Employee
             {
                 FullName = "Admin Systemowy",
@@ -73,7 +69,7 @@ namespace Out_of_Office.Infrastructure.Identity
             var result = await userManager.CreateAsync(adminUser, "Admin123!");
             if (!result.Succeeded)
             {
-                throw new Exception("❌ Nie udało się utworzyć konta admina: " +
+                throw new Exception("Can't create an admin account: " +
                     string.Join(", ", result.Errors.Select(e => e.Description)));
             }
 

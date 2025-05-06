@@ -67,8 +67,6 @@ namespace Out_of_Office.Controllers
                 UserRole = userRole
             });
 
-            // --- FILTS----
-            // 🛠️ Default date
             if (!startDate.HasValue)
             {
                 startDate = DateTime.Today;
