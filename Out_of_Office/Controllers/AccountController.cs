@@ -41,5 +41,29 @@ namespace Out_of_Office.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword, string confirmPassword)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return Unauthorized();
+
+            if (newPassword != confirmPassword)
+            {
+                TempData["ErrorMessage"] = "Passwords do not match.";
+                return RedirectToAction("EmployeeProfile", "Employee");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+            if (!result.Succeeded)
+            {
+                TempData["ErrorMessage"] = string.Join(" ", result.Errors.Select(e => e.Description));
+                return RedirectToAction("EmployeeProfile", "Employee");
+            }
+
+            TempData["SuccessMessage"] = "Password changed successfully.";
+            return RedirectToAction("EmployeeProfile", "Employee");
+        }
+
     }
 }

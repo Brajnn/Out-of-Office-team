@@ -15,7 +15,6 @@ options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAplication();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

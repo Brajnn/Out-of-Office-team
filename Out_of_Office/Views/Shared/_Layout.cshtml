@@ -53,21 +53,18 @@
                     <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <span class="navbar-text me-2">
-                                    Hello, @User.Identity.Name
-                                </span>
-                            </li>
-                            @if (User.IsInRole("Administrator"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="UserManagement" asp-action="Create">Create User</a>
-                                </li>
-                            }
-                            <li class="nav-item">
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                                </form>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    My Profile
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Employee" asp-action="EmployeeProfile">View Profile</a></li>
+                                    <li>
+                                        <form asp-controller="Account" asp-action="Logout" method="post" class="dropdown-item p-0">
+                                            <button type="submit" class="btn btn-link dropdown-item">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </li>
                         }
                         else

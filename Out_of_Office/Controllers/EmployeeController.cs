@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.AspNetCore.Identity;
 using Out_of_Office.Application.Employee;
 using Out_of_Office.Application.Employee.Command.CreateEmployee;
 using Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand;
@@ -19,10 +19,11 @@ namespace Out_of_Office.Controllers
     public class EmployeeController : Controller
     {
         private readonly IMediator _mediator;
-
-        public EmployeeController(IMediator mediator)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public EmployeeController(IMediator mediator, UserManager<ApplicationUser> userManager)
         {
             _mediator = mediator;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index(string sortOrder, string searchString, string positionFilter, int? pageNumber)
         {
@@ -161,12 +162,16 @@ namespace Out_of_Office.Controllers
         [HttpGet]
         public async Task<IActionResult> EmployeeProfile()
         {
-            var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!int.TryParse(userIdStr, out int employeeId))
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null || user.EmployeeId == 0)
                 return Unauthorized();
 
-            var employee = await _mediator.Send(new GetEmployeeByIdQuery { Id = employeeId });
-            return employee is null ? NotFound("Employee not found.") : View("EmployeeProfile", employee);
+            var employee = await _mediator.Send(new GetEmployeeByIdQuery { Id = user.EmployeeId.Value });
+            if (employee == null)
+                return NotFound("Employee not found.");
+
+            ViewBag.Username = user.UserName;
+            return View("EmployeeProfile", employee);
         }
     }
 }
