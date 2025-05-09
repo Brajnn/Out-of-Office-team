@@ -20,21 +20,14 @@ namespace Out_of_Office.Infrastructure.Repositories
             _userManager = userManager;
         }
 
-        public async Task<(bool Success, IEnumerable<string> Errors)> CreateUserForEmployeeAsync(string username, string password, Employee employee, string role)
+        public async Task<(bool Success, IEnumerable<string> Errors)> CreateUserForEmployeeAsync(string username, string password, string role)
         {
             var user = new ApplicationUser
             {
                 UserName = username,
                 Email = $"{username}@office.local",
-                EmailConfirmed = true,
-                Employee = employee
+                EmailConfirmed = true
             };
-
-            if (string.IsNullOrWhiteSpace(employee.Subdivision) ||
-                string.IsNullOrWhiteSpace(employee.Position))
-            {
-                return (false, new[] { "Not enough data." });
-            }
 
             var result = await _userManager.CreateAsync(user, password);
             if (!result.Succeeded)
@@ -56,6 +49,15 @@ namespace Out_of_Office.Infrastructure.Repositories
                 .FirstOrDefaultAsync(u => u.Employee != null && u.Employee.Id == employeeId);
 
             return user?.UserName;
+        }
+        public async Task LinkUserToEmployeeAsync(string username, int employeeId)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user != null)
+            {
+                user.EmployeeId = employeeId;
+                await _userManager.UpdateAsync(user);
+            }
         }
     }
 }

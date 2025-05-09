@@ -35,8 +35,15 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
                 request.ValidationErrors = new List<string> { "Fill all fields." };
                 return Unit.Value;
             }
-
-
+            var (success, errors) = await _userService.CreateUserForEmployeeAsync(
+                request.Username,
+                request.Password,
+                request.Position);
+            if (!success)
+            {
+                request.ValidationErrors = errors.ToList();
+                return Unit.Value;
+            }
             var employee = new Domain.Entities.Employee
             {
                 FullName = request.FullName,
@@ -54,19 +61,9 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
                     new LeaveBalance { Type = LeaveType.Unpaid, DaysAvailable = request.UnpaidLeaveDays }
                 }
             };
-            var (success, errors) = await _userService.CreateUserForEmployeeAsync(
-                request.Username,
-                request.Password,
-                employee,
-                request.Position);
-
-            if (!success)
-            {
-                request.ValidationErrors = errors.ToList();
-                return Unit.Value;
-            }
+            
             await _employeeRepository.AddEmployeeAsync(employee);
-
+            await _userService.LinkUserToEmployeeAsync(request.Username, employee.Id);
             return Unit.Value;
         }
     }
