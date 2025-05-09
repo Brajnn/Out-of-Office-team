@@ -25,15 +25,19 @@ namespace Out_of_Office.Controllers
             _mediator = mediator;
             _userManager = userManager;
         }
-        public async Task<IActionResult> Index(string sortOrder, string searchString, string positionFilter, int? pageNumber)
+        public async Task<IActionResult> Index(string sortOrder, string searchString, List<string> selectedPositions, bool showInactive = false, int? pageNumber = 1)
         {
             var employees = await _mediator.Send(new GetAllEmployeesQuery());
-
+            // Filter by name
             if (!string.IsNullOrEmpty(searchString))
                 employees = employees.Where(e => e.FullName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            // Filter by positions
+            if (selectedPositions != null && selectedPositions.Any())
+                employees = employees.Where(e => selectedPositions.Contains(e.Position)).ToList();
 
-            if (!string.IsNullOrEmpty(positionFilter))
-                employees = employees.Where(e => e.Position == positionFilter).ToList();
+            // Filter by status
+            if (!showInactive)
+                employees = employees.Where(e => e.Status == "Active").ToList();
 
             employees = sortOrder switch
             {
@@ -46,7 +50,8 @@ namespace Out_of_Office.Controllers
 
             ViewBag.CurrentSort = sortOrder;
             ViewBag.CurrentFilter = searchString;
-            ViewBag.CurrentPositionFilter = positionFilter;
+            ViewBag.ShowInactive = showInactive;
+            ViewBag.SelectedPositions = selectedPositions ?? new List<string>();
             ViewBag.Positions = new SelectList(new[] { "HR Manager", "Project Manager", "Employee" });
 
             return View(employees.ToPagedList(pageNumber ?? 1, 10));

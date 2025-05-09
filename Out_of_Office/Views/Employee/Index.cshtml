@@ -6,17 +6,36 @@
 <p>
     @using (Html.BeginForm("Index", "Employee", FormMethod.Get))
     {
-    <p>
-        <label for="searchString">Search by Name:</label>
-        <input type="text" name="searchString" id="searchString" value="@ViewBag.CurrentFilter" />
-    </p>
-    <p>
-        <label for="positionFilter">Filter by Position:</label>
-            @Html.DropDownList("positionFilter", (SelectList)ViewBag.Positions, "All Positions", new { @id = "positionFilter" })
-    
-        <input type="submit" value="Search" class="btn btn-primary ml-2" />
-    </p>
+        <div class="row mb-2">
+            <div class="col-md-3">
+                <label for="searchString">Search by Name:</label>
+                <input type="text" name="searchString" id="searchString" value="@ViewBag.CurrentFilter" class="form-control" />
+            </div>
 
+            <div class="col-md-6">
+                <label>Filter by Position:</label>
+                @foreach (var position in (SelectList)ViewBag.Positions)
+                {
+                    <div class="form-check">
+                        <input type="checkbox" name="selectedPositions" value="@position.Value"
+                        @(ViewBag.SelectedPositions != null && ((List<string>)ViewBag.SelectedPositions).Contains(position.Value) ? "checked" : "")
+                               class="form-check-input" id="position_@position.Value" />
+                        <label class="form-check-label" for="position_@position.Value">@position.Text</label>
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-check mt-4">
+                    <input type="checkbox" class="form-check-input" id="showInactive" name="showInactive" value="true" @(ViewBag.ShowInactive ? "checked" : "") />
+                    <label class="form-check-label" for="showInactive">Show Inactive Employees</label>
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-3">
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+            </div>
+        </div>
     }
 </p>
 @if (User.IsInRole("Administrator"))
@@ -70,7 +89,13 @@
 </table>
 
 <div class="text-center">
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { pageNumber = page, sortOrder = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, positionFilter = ViewBag.CurrentPositionFilter }), new PagedListRenderOptions
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { 
+        pageNumber = page,
+        sortOrder = ViewBag.CurrentSort, 
+        searchString = ViewBag.CurrentFilter,
+        selectedPositions = ViewBag.SelectedPositions,
+        showInactive = ViewBag.ShowInactive,
+         }), new PagedListRenderOptions
 {
     Display = PagedListDisplayMode.IfNeeded,
     MaximumPageNumbersToDisplay = 5,
