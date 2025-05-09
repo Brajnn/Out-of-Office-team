@@ -137,7 +137,15 @@
 </table>
 
 <div class="text-center">
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { pageNumber = page, sortOrder = ViewBag.CurrentSort, searchRequestId = ViewData["SearchRequestId"] }), new PagedListRenderOptions
+    @Html.PagedListPager(Model, page => Url.Action("Index", new
+        {
+            pageNumber = page,
+            sortOrder = ViewBag.CurrentSort,
+            searchRequestId = ViewData["SearchRequestId"],
+            selectedStatuses = ViewBag.SelectedStatuses,
+            startDate = ViewBag.StartDate,
+            endDate = ViewBag.EndDate
+        }), new PagedListRenderOptions
 {
     Display = PagedListDisplayMode.IfNeeded,
     MaximumPageNumbersToDisplay = 5,
