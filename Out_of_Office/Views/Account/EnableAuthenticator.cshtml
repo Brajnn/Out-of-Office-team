@@ -1,0 +1,41 @@
+﻿@model Out_of_Office.Models.EnableAuthenticatorViewModel
+@using QRCoder
+
+@{
+    ViewData["Title"] = "Enable Google Authenticator";
+
+    // Generate the authenticator URI that the Google Authenticator app will use
+    var authenticatorUri = $"otpauth://totp/OutOfOffice:{User.Identity.Name}?secret={Model.Key}&issuer=OutOfOffice";
+
+    // Initialize QR code generator
+    var qrGenerator = new QRCodeGenerator();
+
+    // Create QR code data from the authenticator URI
+    var qrCodeData = qrGenerator.CreateQrCode(authenticatorUri, QRCodeGenerator.ECCLevel.Q);
+
+    // Generate a Base64 representation of the QR code image
+    var qrCode = new Base64QRCode(qrCodeData);
+    var qrCodeImageAsBase64 = qrCode.GetGraphic(20);
+}
+
+<h2>Configure Google Authenticator</h2>
+
+<div class="mb-4">
+    <p>Scan the QR code below using the <strong>Google Authenticator</strong> app:</p>
+    <img src="data:image/png;base64,@qrCodeImageAsBase64" alt="QR code" />
+    <p>Or manually enter the key:</p>
+    <div class="alert alert-secondary">@Model.Key</div>
+</div>
+
+<form asp-action="EnableAuthenticator" method="post">
+    <div class="mb-3">
+        <label class="form-label">Google Authenticator code</label>
+        <input asp-for="Code" class="form-control" autocomplete="off" required />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Enable 2FA</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

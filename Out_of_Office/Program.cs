@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews(options =>
 options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
-
+builder.Services.AddSession();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAplication();
 var app = builder.Build();
@@ -31,7 +31,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseSession();
 
 app.MapControllerRoute(
     name: "lists-employees",

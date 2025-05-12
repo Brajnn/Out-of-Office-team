@@ -23,7 +23,11 @@ namespace Out_of_Office.Infrastructure.Extensions
         {
             services.AddDbContext<Out_of_OfficeDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("OutOfOfficeConnectionString")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                //options.SignIn.RequireConfirmedEmail = true; // future
+                options.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+            })
                 .AddEntityFrameworkStores<Out_of_OfficeDbContext>()
                 .AddDefaultTokenProviders();
             services.AddScoped<IUserService, UserService>();

@@ -26,7 +26,11 @@ namespace Out_of_Office.Controllers
             if (!ModelState.IsValid) return View(model);
 
             var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, false, false);
-
+            if (result.RequiresTwoFactor)
+            {
+                HttpContext.Session.SetString("2FAUser", model.Username);
+                return RedirectToAction("LoginWith2fa");
+            }
             if (result.Succeeded)
                 return RedirectToAction("Index", "Home");
 
@@ -64,6 +68,67 @@ namespace Out_of_Office.Controllers
             TempData["SuccessMessage"] = "Password changed successfully.";
             return RedirectToAction("EmployeeProfile", "Employee");
         }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> EnableAuthenticator()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            await _userManager.ResetAuthenticatorKeyAsync(user);
+            var key = await _userManager.GetAuthenticatorKeyAsync(user);
 
+            var model = new EnableAuthenticatorViewModel { Key = key };
+            return View(model);
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EnableAuthenticator(EnableAuthenticatorViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var verificationCode = model.Code.Replace(" ", "").Replace("-", "");
+
+            var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
+                user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+
+            if (!is2faTokenValid)
+            {
+                ModelState.AddModelError("", "Incorrect verification code.");
+                return View(model);
+            }
+
+            await _userManager.SetTwoFactorEnabledAsync(user, true);
+
+            TempData["SuccessMessage"] = "Two-factor authentication has been successfully enabled.";
+
+            var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+            TempData["RecoveryCodes"] = recoveryCodes;
+
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public IActionResult LoginWith2fa() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> LoginWith2fa(LoginWith2faViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var username = HttpContext.Session.GetString("2FAUser");
+            if (username == null)
+            {
+                ModelState.AddModelError("", "Session expired. Try logging in again.");
+                return RedirectToAction("Login");
+            }
+
+            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, false, false);
+
+            if (result.Succeeded)
+            {
+                HttpContext.Session.Remove("2FAUser");
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", "Invalid authenticator code.");
+            return View(model);
+        }
     }
 }

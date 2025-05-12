@@ -1,0 +1,16 @@
+﻿@model Out_of_Office.Models.LoginWith2faViewModel
+
+<h2>Two-Factor Authentication</h2>
+
+<form asp-action="LoginWith2fa" method="post">
+    <div class="mb-3">
+        <label class="form-label">Authenticator Code</label>
+        <input asp-for="Code" class="form-control" autocomplete="off" required />
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Log in</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
