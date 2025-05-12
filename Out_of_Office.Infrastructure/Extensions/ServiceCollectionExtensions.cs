@@ -33,6 +33,10 @@ namespace Out_of_Office.Infrastructure.Extensions
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IEmployeeProjectRepository, EmployeeProjectRepository>();
             services.AddScoped<IWorkCalendarRepository, WorkCalendarRepository>();
+            services.AddScoped<IUserContext, UserContext>();
+            services.AddScoped<IAuditLogService, AuditLogService>();
+            services.AddHttpContextAccessor();
+
         }
     }
 }

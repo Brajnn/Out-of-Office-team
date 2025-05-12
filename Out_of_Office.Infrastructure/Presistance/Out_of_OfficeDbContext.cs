@@ -21,6 +21,7 @@ namespace Out_of_Office.Infrastructure.Presistance
         public DbSet<LeaveBalance> LeaveBalances { get; set; }
         public DbSet<WorkCalendarDay> WorkCalendarDays { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ApplicationUser>()

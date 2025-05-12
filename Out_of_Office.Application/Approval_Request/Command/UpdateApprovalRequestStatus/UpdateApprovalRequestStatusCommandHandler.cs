@@ -2,12 +2,7 @@
 using Out_of_Office.Application.Common.Exceptions;
 using Out_of_Office.Domain.Entities;
 using Out_of_Office.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.Text.Json;
 namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalRequestStatus
 {
     public class UpdateApprovalRequestStatusCommandHandler:IRequestHandler<UpdateApprovalRequestStatusCommand>
@@ -16,13 +11,15 @@ namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalReque
         private readonly ILeaveRequestRepository _leaveRequestRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IWorkCalendarRepository _calendarRepository;
+        private readonly IAuditLogService _auditLogService;
 
-        public UpdateApprovalRequestStatusCommandHandler(IApprovalRequestRepository approvalRequestRepository, ILeaveRequestRepository leaveRequestRepository, IEmployeeRepository employeeRepository,IWorkCalendarRepository calendarRepository)
+        public UpdateApprovalRequestStatusCommandHandler(IApprovalRequestRepository approvalRequestRepository, ILeaveRequestRepository leaveRequestRepository, IEmployeeRepository employeeRepository,IWorkCalendarRepository calendarRepository, IAuditLogService auditLogService)
         {
             _approvalRequestRepository = approvalRequestRepository;
             _leaveRequestRepository = leaveRequestRepository;
             _employeeRepository = employeeRepository;
             _calendarRepository = calendarRepository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<Unit> Handle(UpdateApprovalRequestStatusCommand request, CancellationToken cancellationToken)
@@ -70,7 +67,16 @@ namespace Out_of_Office.Application.Approval_Request.Command.UpdateApprovalReque
 
             await _approvalRequestRepository.UpdateAsync(approvalRequest);
             await _leaveRequestRepository.UpdateAsync(leaveRequest);
-
+            var details = JsonSerializer.Serialize(new
+            {
+                approvalRequest.ID,
+                approvalRequest.Status,
+                approvalRequest.ApproverID,
+                approvalRequest.LeaveRequestID,
+                approvalRequest.StatusChangedAt,
+                approvalRequest.DecisionComment
+            });
+            await _auditLogService.LogAsync("CreateApprovalRequest", details, cancellationToken);
             return Unit.Value;
         }
     }

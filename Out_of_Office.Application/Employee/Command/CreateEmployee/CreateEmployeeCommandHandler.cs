@@ -1,23 +1,19 @@
 ﻿using MediatR;
 using Out_of_Office.Domain.Entities;
 using Out_of_Office.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.Text.Json;
 namespace Out_of_Office.Application.Employee.Command.CreateEmployee
 {
     public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand>
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUserService _userService;
-
-        public CreateEmployeeCommandHandler(IEmployeeRepository employeeRepository, IUserService userService)
+        private readonly IAuditLogService _auditLogService;
+        public CreateEmployeeCommandHandler(IEmployeeRepository employeeRepository, IUserService userService, IAuditLogService auditLogService)
         {
             _employeeRepository = employeeRepository;
             _userService = userService;
+            _auditLogService = auditLogService;
         }
 
         public async Task<Unit> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
@@ -64,6 +60,16 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
             
             await _employeeRepository.AddEmployeeAsync(employee);
             await _userService.LinkUserToEmployeeAsync(request.Username, employee.Id);
+            var details = JsonSerializer.Serialize(new
+            {
+                employee.Id,
+                employee.FullName,
+                employee.Position,
+                employee.Status,
+                employee.HireDate,
+                request.Username
+            });
+            await _auditLogService.LogAsync("CreateEmployee", details, cancellationToken);
             return Unit.Value;
         }
     }
