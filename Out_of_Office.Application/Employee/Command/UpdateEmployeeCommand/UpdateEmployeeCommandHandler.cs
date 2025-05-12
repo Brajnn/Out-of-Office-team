@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
@@ -12,10 +13,11 @@ namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
     public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand>
     {
         private readonly IEmployeeRepository _employeeRepository;
-
-        public UpdateEmployeeCommandHandler(IEmployeeRepository employeeRepository)
+        private readonly IAuditLogService _auditLogService;
+        public UpdateEmployeeCommandHandler(IEmployeeRepository employeeRepository, IAuditLogService auditLogService)
         {
             _employeeRepository = employeeRepository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<Unit> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
@@ -49,6 +51,15 @@ namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
             }
 
             await _employeeRepository.UpdateEmployeeAsync(employee);
+            var details = JsonSerializer.Serialize(new
+            {
+                employee.Id,
+                employee.FullName,
+                employee.Position,
+                employee.Status,
+                employee.HireDate
+            });
+            await _auditLogService.LogAsync("UpdateEmployee", details, cancellationToken);
 
             return Unit.Value;
         }
