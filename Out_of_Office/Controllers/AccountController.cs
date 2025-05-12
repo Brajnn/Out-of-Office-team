@@ -84,15 +84,28 @@ namespace Out_of_Office.Controllers
         public async Task<IActionResult> EnableAuthenticator(EnableAuthenticatorViewModel model)
         {
             var user = await _userManager.GetUserAsync(User);
-            var verificationCode = model.Code.Replace(" ", "").Replace("-", "");
+
+            var key = await _userManager.GetAuthenticatorKeyAsync(user);
+            if (string.IsNullOrEmpty(key))
+            {
+                await _userManager.ResetAuthenticatorKeyAsync(user);
+                key = await _userManager.GetAuthenticatorKeyAsync(user);
+            }
+
+            var verificationCode = model.Code?.Replace(" ", "").Replace("-", "");
+            if (string.IsNullOrEmpty(verificationCode))
+            {
+                ModelState.AddModelError(nameof(model.Code), "The verification code is required. Please enter the code from your authenticator app.");
+                return View(new EnableAuthenticatorViewModel { Key = key }); // Ensure key is passed again
+            }
 
             var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
                 user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
 
             if (!is2faTokenValid)
             {
-                ModelState.AddModelError("", "Incorrect verification code.");
-                return View(model);
+                ModelState.AddModelError(nameof(model.Code), "The verification code is incorrect. Please try again with the correct code from your authenticator app.");
+                return View(new EnableAuthenticatorViewModel { Key = key }); // Ensure key is passed again
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, true);
@@ -102,7 +115,7 @@ namespace Out_of_Office.Controllers
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
             TempData["RecoveryCodes"] = recoveryCodes;
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("EmployeeProfile", "Employee");
         }
         [HttpGet]
         public IActionResult LoginWith2fa() => View();
@@ -130,5 +143,18 @@ namespace Out_of_Office.Controllers
             ModelState.AddModelError("", "Invalid authenticator code.");
             return View(model);
         }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ResetAuthenticator()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            await _userManager.SetTwoFactorEnabledAsync(user, false);
+            await _userManager.ResetAuthenticatorKeyAsync(user);
+
+            TempData["SuccessMessage"] = "Authenticator reset. Please configure a new authenticator app.";
+            return RedirectToAction("EnableAuthenticator");
+        }
+
     }
+
 }

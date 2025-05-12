@@ -176,6 +176,7 @@ namespace Out_of_Office.Controllers
                 return NotFound("Employee not found.");
 
             ViewBag.Username = user.UserName;
+            ViewBag.HasAuthenticator = user.TwoFactorEnabled;
             return View("EmployeeProfile", employee);
         }
     }

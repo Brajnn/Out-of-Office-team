@@ -5,10 +5,7 @@
 
 <h2 class="mb-4">My Profile</h2>
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-}
+
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
@@ -77,5 +74,25 @@
             </div>
             <button type="submit" class="btn btn-primary">Change Password</button>
         </form>
+    </div>
+    <div class="col-md-6 mt-4">
+        <h4 class="mb-3">Two-Factor Authentication (2FA)</h4>
+
+        @if (ViewBag.HasAuthenticator)
+        {
+            <div class="alert alert-success">
+                Two-Factor Authentication is <strong>enabled</strong> for your account.
+            </div>
+            <form asp-controller="Account" asp-action="ResetAuthenticator" method="post">
+                <button type="submit" class="btn btn-warning">Reset Authenticator</button>
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-secondary">
+                Two-Factor Authentication is <strong>not enabled</strong> on your account.
+            </div>
+            <a class="btn btn-primary" asp-controller="Account" asp-action="EnableAuthenticator">Enable Authenticator</a>
+        }
     </div>
 </div>
