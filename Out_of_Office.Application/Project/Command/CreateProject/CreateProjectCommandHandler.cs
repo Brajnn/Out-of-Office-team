@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Out_of_Office.Application.Project.Command.CreateProject
@@ -11,10 +12,11 @@ namespace Out_of_Office.Application.Project.Command.CreateProject
     public class CreateProjectCommandHandler:IRequestHandler<CreateProjectCommand>
     {
         private readonly IProjectRepository _projectRepository;
-
-        public CreateProjectCommandHandler(IProjectRepository projectRepository)
+        private readonly IAuditLogService _auditLogService;
+        public CreateProjectCommandHandler(IProjectRepository projectRepository, IAuditLogService auditLogService)
         {
             _projectRepository = projectRepository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<Unit> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
@@ -30,9 +32,19 @@ namespace Out_of_Office.Application.Project.Command.CreateProject
             };
 
             await _projectRepository.AddProjectAsync(project);
-            return Unit.Value;
+            
+            var details = JsonSerializer.Serialize(new
+            {
+                project.ProjectType,
+                project.StartDate,
+                project.EndDate,
+                project.ProjectManagerID,
+                project.Status
+            });
 
+            await _auditLogService.LogAsync("CreateProject", details, cancellationToken);
+            return Unit.Value;
         }
-        
+
     }
 }

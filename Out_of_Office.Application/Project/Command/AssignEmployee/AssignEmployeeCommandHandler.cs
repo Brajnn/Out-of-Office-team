@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Out_of_Office.Application.Project.Command.AssignEmployee
@@ -13,11 +14,12 @@ namespace Out_of_Office.Application.Project.Command.AssignEmployee
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IEmployeeProjectRepository _employeeProjectRepository;
-
-        public AssignEmployeeCommandHandler(IProjectRepository projectRepository, IEmployeeProjectRepository employeeProjectRepository)
+        private readonly IAuditLogService _auditLogService;
+        public AssignEmployeeCommandHandler(IProjectRepository projectRepository, IEmployeeProjectRepository employeeProjectRepository, IAuditLogService auditLogService)
         {
             _projectRepository = projectRepository;
             _employeeProjectRepository = employeeProjectRepository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<Unit> Handle(AssignEmployeeCommand request, CancellationToken cancellationToken)
@@ -42,6 +44,13 @@ namespace Out_of_Office.Application.Project.Command.AssignEmployee
             };
 
             await _employeeProjectRepository.AddEmployeeProjectAsync(newEmployeeProject);
+            var details = JsonSerializer.Serialize(new
+            {
+                EmployeeId = request.EmployeeId,
+                ProjectId = request.ProjectId
+            });
+
+            await _auditLogService.LogAsync("AssignEmployeeToProject", details, cancellationToken);
 
             return Unit.Value;
         }
