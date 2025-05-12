@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Out_of_Office.Application.Leave_Request.Command.UpdateLeaveRequestStatus
@@ -13,11 +14,12 @@ namespace Out_of_Office.Application.Leave_Request.Command.UpdateLeaveRequestStat
     {
         private readonly ILeaveRequestRepository _leaveRequestRepository;
         private readonly IApprovalRequestRepository _approvalRequestRepository;
-
-        public UpdateLeaveRequestStatusCommandHandler(ILeaveRequestRepository leaveRequestRepository, IApprovalRequestRepository approvalRequestRepository)
+        private readonly IAuditLogService _auditLogService;
+        public UpdateLeaveRequestStatusCommandHandler(ILeaveRequestRepository leaveRequestRepository, IApprovalRequestRepository approvalRequestRepository, IAuditLogService auditLogService )
         {
             _leaveRequestRepository = leaveRequestRepository;
             _approvalRequestRepository = approvalRequestRepository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<Unit> Handle(UpdateLeaveRequestStatusCommand request, CancellationToken cancellationToken)
@@ -55,10 +57,19 @@ namespace Out_of_Office.Application.Leave_Request.Command.UpdateLeaveRequestStat
                         Comment = leaveRequest.Comment,
                          
                     };
+                    
                     await _approvalRequestRepository.AddApprovalRequestAsync(approvalRequest);
+                    var approvalDetails = JsonSerializer.Serialize(new
+                    {
+                        approvalRequest.LeaveRequestID,
+                        approvalRequest.ApproverID,
+                        approvalRequest.Status
+                    });
+                    await _auditLogService.LogAsync("CreateApprovalRequestForSubmittedLeave", approvalDetails, cancellationToken);
                 }
             }
             await _leaveRequestRepository.UpdateLeaveRequestAsync(leaveRequest);
+
             return Unit.Value;
         }
     }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestCommand
@@ -15,15 +16,17 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
         private readonly ILeaveRequestRepository _leaveRequestRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IWorkCalendarRepository _calendarRepository;
-
+        private readonly IAuditLogService _auditLogService;
         public CreateLeaveRequestCommandHandler(
             ILeaveRequestRepository leaveRequestRepository,
             IEmployeeRepository employeeRepository,
-            IWorkCalendarRepository calendarRepository)
+            IWorkCalendarRepository calendarRepository,
+            IAuditLogService auditLogService)
         {
             _leaveRequestRepository = leaveRequestRepository;
             _employeeRepository = employeeRepository;
             _calendarRepository = calendarRepository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<Unit> Handle(CreateLeaveRequestCommand request, CancellationToken cancellationToken)
@@ -117,6 +120,17 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
             };
 
             await _leaveRequestRepository.AddAsync(leaveRequest);
+            var details = JsonSerializer.Serialize(new
+            {
+                leaveRequest.EmployeeID,
+                leaveRequest.AbsenceReason,
+                leaveRequest.StartDate,
+                leaveRequest.EndDate,
+                leaveRequest.Status,
+                leaveRequest.CreatedAt
+            });
+            await _auditLogService.LogAsync("CreateLeaveRequest", details, cancellationToken);
+
             return Unit.Value;
         }
     }
