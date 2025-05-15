@@ -14,7 +14,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
+                <label asp-for="FullName" class="control-label">Full Name</label>
                 <input asp-for="FullName" class="form-control" />
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
@@ -43,7 +43,7 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="PeoplePartnerID" class="control-label"></label>
+                <label asp-for="PeoplePartnerID" class="control-label">Supervisor</label>
                 <select asp-for="PeoplePartnerID" class="form-control" asp-items="hrManagers">
                     <option value="">Select HR Manager</option>
                 </select>
@@ -51,25 +51,25 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="HireDate" class="control-label"></label>
+                <label asp-for="HireDate" class="control-label">Hire Date</label>
                 <input asp-for="HireDate" class="form-control" type="date" />
                 <span asp-validation-for="HireDate" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="VacationDays" class="control-label"></label>
+                <label asp-for="VacationDays" class="control-label">Vacation days</label>
                 <input asp-for="VacationDays" class="form-control" />
                 <span asp-validation-for="VacationDays" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="SickLeaveDays" class="control-label"></label>
+                <label asp-for="SickLeaveDays" class="control-label">Sick leave days</label>
                 <input asp-for="SickLeaveDays" class="form-control" />
                 <span asp-validation-for="SickLeaveDays" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="UnpaidLeaveDays" class="control-label"></label>
+                <label asp-for="UnpaidLeaveDays" class="control-label">Unpaid leave days</label>
                 <input asp-for="UnpaidLeaveDays" class="form-control" />
                 <span asp-validation-for="UnpaidLeaveDays" class="text-danger"></span>
             </div>
