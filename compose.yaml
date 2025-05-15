@@ -1,0 +1,45 @@
+services:
+  outofoffice:
+    build:
+      context: .
+      dockerfile: Out_of_Office/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      sqldata:
+        condition: service_healthy
+    networks:
+      - backend-network
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__OutOfOfficeConnectionString=Server=${DATABASE_HOST};Database=${DATABASE_NAME};User=${DATABASE_USER};Password=${SA_PASSWORD};TrustServerCertificate=True;
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqldata
+    restart: always
+    ports:
+      - "1433:1433"
+    environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=${SA_PASSWORD}
+    env_file:
+      - .env
+    volumes:
+      - sqldata-data:/var/opt/mssql
+      - ./init.sql:/init.sql
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "bash", "-c", "</dev/tcp/localhost/1433"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    entrypoint: [ "sh", "-c", "/opt/mssql/bin/sqlservr & sleep 20 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -i /init.sql && tail -f /dev/null" ]
+volumes:
+  sqldata-data:
+
+networks:
+  backend-network:

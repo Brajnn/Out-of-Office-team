@@ -17,6 +17,11 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAplication();
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<Out_of_OfficeDbContext>();
+    dbContext.Database.Migrate();
+}
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
