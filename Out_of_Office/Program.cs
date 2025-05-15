@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Out_of_Office.Infrastructure.Identity;
+using MediatR;
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -73,9 +74,11 @@ using (var scope = app.Services.CreateScope())
     var dbContext = services.GetRequiredService<Out_of_OfficeDbContext>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var mediator = services.GetRequiredService<IMediator>();
 
     await IdentityInitializer.SeedRolesAsync(roleManager);
-    await IdentityInitializer.SeedAdminAsync(userManager, roleManager, dbContext);
     await IdentityInitializer.SeedDemoUsersAsync(userManager, roleManager, dbContext);
+    await IdentityInitializer.SeedAdminAsync(userManager, roleManager, dbContext);
+    await IdentityInitializer.SeedExampleProjectAndCalendarAsync(userManager, mediator, dbContext);
 }
 app.Run();

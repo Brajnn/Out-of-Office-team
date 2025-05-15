@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Out_of_Office.Domain.Entities;
 using Out_of_Office.Infrastructure.Presistance;
 using System;
@@ -37,6 +39,8 @@ namespace Out_of_Office.Infrastructure.Identity
                 }
                 return;
             }
+            var projectManagerEmployee = dbContext.Employees
+                    .FirstOrDefault(e => e.Position == "ProjectManager");
             var adminEmployee = new Employee
             {
                 FullName = "Admin Systemowy",
@@ -44,7 +48,7 @@ namespace Out_of_Office.Infrastructure.Identity
                 Position = "Administrator",
                 HireDate = new DateTime(2023, 1, 1),
                 Status = EmployeeStatus.Active,
-                PeoplePartnerID = 0,
+                PeoplePartnerID = projectManagerEmployee.Id,
                 OutOfOfficeBalance = 30,
                 Photo = null,
                 LeaveBalances = new List<LeaveBalance>
@@ -115,9 +119,71 @@ namespace Out_of_Office.Infrastructure.Identity
                     await userManager.AddToRoleAsync(user, role);
                 }
             }
-
+            await CreateUser("pm", "pm@office.local", "ProjectManager", "Piotr Manager");
             await CreateUser("hr", "hr@office.local", "HRManager", "Helena HR");
             await CreateUser("user", "user@office.local", "Employee", "Jan Kowalski");
         }
+        public static async Task SeedExampleProjectAndCalendarAsync(UserManager<ApplicationUser> userManager, IMediator mediator, Out_of_OfficeDbContext dbContext)
+        {
+
+            // Project seeding
+            if (!dbContext.Projects.Any())
+            {
+                var pmUser = await userManager.FindByNameAsync("pm");
+                if (pmUser?.EmployeeId == null)
+                {
+                    Console.WriteLine("Skipping project seeding: Project Manager user does not have an associated Employee ID.");
+                    return;
+                }
+                var project = new Project
+                {
+                    ProjectType = "Internal",
+                    StartDate = DateTime.UtcNow.AddDays(-30),
+                    EndDate = DateTime.UtcNow.AddDays(60),
+                    ProjectManagerID = pmUser.EmployeeId.Value,
+                    Comment = "Demo project for showcasing the system",
+                    Status = ProjectStatus.Active,
+                };
+
+                dbContext.Projects.Add(project);
+                await dbContext.SaveChangesAsync();
+
+
+                var employeeIds = dbContext.Employees.Select(e => e.Id).ToList();
+                foreach (var employeeId in employeeIds)
+                {
+                    await mediator.Send(new Out_of_Office.Application.Project.Command.AssignEmployee.AssignEmployeeCommand
+                    {
+                        EmployeeId = employeeId,
+                        ProjectId = project.ID
+                    });
+                }
+            }
+
+            // Calendar seeding
+            if (!dbContext.WorkCalendarDays.Any())
+            {
+                int year = DateTime.UtcNow.Year;
+                var daysInYear = Enumerable.Range(1, 12)
+                    .SelectMany(month => Enumerable.Range(1, DateTime.DaysInMonth(year, month))
+                    .Select(day => new DateTime(year, month, day)));
+
+                foreach (var day in daysInYear)
+                {
+                    dbContext.WorkCalendarDays.Add(new WorkCalendarDay
+                    {
+                        Year = year,
+                        Date = day,
+                        IsHoliday = day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Sunday,
+                        Description = day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Sunday
+                            ? "Weekend"
+                            : "Working day"
+                    });
+                }
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
     }
 }

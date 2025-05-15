@@ -17,10 +17,16 @@ namespace Out_of_Office.Infrastructure.Extensions
 
         public async Task LogAsync(string action, string details, CancellationToken cancellationToken = default)
         {
+            var userId = _userContext.GetCurrentApplicationUserId();
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                userId = "system"; 
+            }
             var log = new AuditLog
             {
                 Id = Guid.NewGuid(),
-                UserId = _userContext.GetCurrentApplicationUserId(),
+                UserId = userId,
                 Action = action,
                 Details = details,
                 Timestamp = DateTime.UtcNow

@@ -116,10 +116,18 @@ namespace Out_of_Office.Controllers
         {
             if (ModelState.IsValid)
             {
+                return View("CreateApprovalRequest", command);
+            }
+            try
+            {
                 await _mediator.Send(command);
                 return RedirectToAction(nameof(Index));
             }
-            return View("CreateApprovalRequest", command);
+            catch (Exception ex)
+            {
+                
+                return View("ErrorMessage", $"Failed to send application: {ex.Message}");
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Approve(int id)
