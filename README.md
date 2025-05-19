@@ -6,10 +6,11 @@ Out of Office is a modern web application built with ASP.NET Core MVC, designed 
 1. [Architecture & Technologies](#architecture--technologies)
 2. [General Information](#general-information)
 3. [Technologies Used](#technologies-used)
-4. [Core Features](#core-features)
-5. [Screens](#screens)
-6. [Getting started (Local Deployment with Docker)](#getting-started-local-deployment-with-docker)
-7. [Contact](#contact)
+4. [Key Libraries & Design Patterns](#technologies-used)
+5. [Core Features](#core-features)
+6. [Screens](#screens)
+7. [Getting started (Local Deployment with Docker)](#getting-started-local-deployment-with-docker)
+8. [Contact](#contact)
    
 ## General Information
 Out of Office is an employee leave and project management system designed for companies that need to handle employee absences, project assignments, and approval workflows in an organized and auditable way. It supports HR, managers, and employees by providing:
@@ -26,7 +27,11 @@ The application is structured according to Clean Architecture, which separates c
 * **_Application Layer:_** Implements application-specific logic using CQRS (Commands and Queries).
 * **_Infrastructure Layer:_** Provides database access (Entity Framework Core with SQL Server), external integrations, and configuration services.
 * **_Presentation Layer:_** ASP.NET Core MVC application using Razor Pages for user interface and interaction.
-
+  
+## Key Libraries & Design Patterns
+* __CQRS (Command Query Responsibility Segregation)__ – separates data read and write operations for better scalability and maintainability.
+* __MediatR__ – implements the Mediator pattern, simplifying the handling of commands and queries.
+* __AutoMapper__ – automates mapping between data transfer objects (DTOs) and domain entities.
 ## Technologies Used
 * **_Language:_** C#, HTML, JavaScript
 * **_Framework:_** ASP.NET Core MVC (.NET 8)
@@ -108,7 +113,7 @@ SA_PASSWORD=YourStrong@Passw0rd
 * Numbers
 * Special characters
 ### Navigate to the Project Directory
-Example (Windows):
+Example (Windows CMD):
 ```
 cd C:\Users\YourUser\Desktop\YourFolder\Out-of-Office-team
 ```
@@ -131,6 +136,7 @@ http://localhost:8080
 ### _⚠️ Security Notice:_
 * __Change your password immediately after the first login.__
 * __Enable Two-Factor Authentication (2FA) using Google Authenticator for increased account security.__
+
 After completing these steps, you are ready to manage employees, projects, leave requests, approvals, and system settings as an administrator.
 
 ## Contact
