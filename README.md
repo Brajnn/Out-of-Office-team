@@ -73,6 +73,78 @@ Complete history of changes made in the system for security and compliance.
 ## Screens
 
 
+<p align="center"><strong>Login Page</strong></p>
+
+
+![2025-05-20_18h41_43](https://github.com/user-attachments/assets/8311118d-3131-43ad-b9c3-88800a34b7fc)
+
+<p align="center"><strong>User Profile</strong></p>
+
+
+![2025-05-19_21h19_16](https://github.com/user-attachments/assets/391478be-abf8-4eb9-b4e1-bc5bce60a900)
+
+<p align="center"><strong>Two-Factor Authentication (2FA) Setup</strong></p>
+
+
+![2025-05-19_21h19_32](https://github.com/user-attachments/assets/f749ff14-63c9-4397-b0f8-766b36f7d694)
+
+<p align="center"><strong>List of employees</strong></p>
+
+
+![2025-05-19_21h14_49](https://github.com/user-attachments/assets/6ffcbea3-d579-491b-a81e-83b874b5f5c5)
+
+<p align="center"><strong>Employee details</strong></p>
+
+
+![2025-05-20_18h49_31](https://github.com/user-attachments/assets/d96773cf-600f-48b6-9007-a5d0cfb81c89)
+
+<p align="center"><strong>List of leave requests</strong></p>
+
+
+![2025-05-19_21h17_27](https://github.com/user-attachments/assets/20618b59-9adc-4664-b286-fa1e5b2caafe)
+
+
+<p align="center"><strong>Leave request details</strong></p>
+
+
+![2025-05-20_18h52_39](https://github.com/user-attachments/assets/7bc9f680-37e5-4635-83bb-154fbc18cd11)
+
+<p align="center"><strong>List of projects</strong></p>
+
+
+![2025-05-20_18h56_54](https://github.com/user-attachments/assets/aa964bed-70e8-4da7-bf87-a08140247aee)
+
+<p align="center"><strong>Project details</strong></p>
+
+
+![2025-05-20_18h56_15](https://github.com/user-attachments/assets/25531a09-cba1-4039-af2d-12d4a6279c38)
+
+<p align="center"><strong>List of approval requests</strong></p>
+
+
+![2025-05-19_21h15_30](https://github.com/user-attachments/assets/89f09b36-8960-4449-a5a2-cb8c4c0174c6)
+
+<p align="center"><strong>Approval request details</strong></p>
+
+
+![2025-05-20_19h01_09](https://github.com/user-attachments/assets/09916daf-1b11-43b2-9d59-e9fce7552a79)
+
+<p align="center"><strong>List of calendars</strong></p>
+
+
+![2025-05-20_19h06_13](https://github.com/user-attachments/assets/14df91d1-daae-4eec-986b-70f8d2bc8ac7)
+
+<p align="center"><strong>Calendar details</strong></p>
+
+
+![2025-05-20_19h05_08](https://github.com/user-attachments/assets/1715df86-8ee7-4f07-b755-355a4e802087)
+
+<p align="center"><strong>Create new calendar</strong></p>
+
+
+![2025-05-20_19h05_58](https://github.com/user-attachments/assets/6237214d-53fc-4d47-8330-81ddb23b2cc7)
+
+
 ## Getting started (Local Deployment with Docker)
 
 ### Prerequisites
