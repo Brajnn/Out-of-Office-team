@@ -40,6 +40,11 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
                 request.ValidationErrors = errors.ToList();
                 return Unit.Value;
             }
+            if (request.VacationDays < 0 || request.SickLeaveDays < 0 || request.UnpaidLeaveDays < 0)
+            {
+                request.ValidationErrors = new List<string> { "Leave days cannot be negative." };
+                return Unit.Value;
+            }
             var employee = new Domain.Entities.Employee
             {
                 FullName = request.FullName,
