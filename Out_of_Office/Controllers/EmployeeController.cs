@@ -13,6 +13,7 @@ using Out_of_Office.Application.Leave_Balance;
 using Out_of_Office.Infrastructure.Identity;
 using System.Security.Claims;
 using X.PagedList;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace Out_of_Office.Controllers
 {
     [Authorize(Roles = "Employee,HRManager,ProjectManager,Administrator")]
@@ -148,7 +149,7 @@ namespace Out_of_Office.Controllers
             if (!ModelState.IsValid)
                 return View("EditEmployee", employeeDto);
 
-            await _mediator.Send(new UpdateEmployeeCommand
+            var command = new UpdateEmployeeCommand
             {
                 Id = employeeDto.Id,
                 FullName = employeeDto.FullName,
@@ -164,8 +165,17 @@ namespace Out_of_Office.Controllers
                     Type = lb.Type,
                     DaysAvailable = lb.DaysAvailable
                 }).ToList() ?? new List<LeaveBalanceDto>()
-            });
+            };
+            await _mediator.Send(command);
+            if (command.ValidationErrors != null && command.ValidationErrors.Any())
+            {
+                foreach (var error in command.ValidationErrors)
+                {
+                    ModelState.AddModelError(string.Empty, error);
+                }
 
+                return View("EditEmployee", employeeDto);
+            }
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]

@@ -20,5 +20,6 @@ namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
         public int OutOfOfficeBalance { get; set; }
         public byte[] Photo { get; set; }
         public List<LeaveBalanceDto> LeaveBalances { get; set; }
+        public List<string> ValidationErrors { get; set; } = new();
     }
 }

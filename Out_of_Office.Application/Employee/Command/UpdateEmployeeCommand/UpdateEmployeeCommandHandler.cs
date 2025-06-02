@@ -43,9 +43,16 @@ namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
             employee.Photo = request.Photo;
             if (request.LeaveBalances != null && request.LeaveBalances.Any())
             {
+                var invalid = request.LeaveBalances.FirstOrDefault(lb => lb.DaysAvailable < 0);
+                if (invalid != null)
+                {
+                    request.ValidationErrors = new List<string> { $"Leave days for {invalid.Type} cannot be negative." };
+                    return Unit.Value;
+                }
+
                 var leaveBalances = request.LeaveBalances
-                 .Select(lb => (Enum.Parse<LeaveType>(lb.Type), lb.DaysAvailable))
-                 .ToList();
+                    .Select(lb => (Enum.Parse<LeaveType>(lb.Type), lb.DaysAvailable))
+                    .ToList();
 
                 await _employeeRepository.UpdateLeaveBalancesAsync(employee.Id, leaveBalances);
             }
