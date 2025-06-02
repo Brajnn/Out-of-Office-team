@@ -52,8 +52,12 @@ namespace Out_of_Office.Controllers
             ViewBag.CurrentFilter = searchString;
             ViewBag.ShowInactive = showInactive;
             ViewBag.SelectedPositions = selectedPositions ?? new List<string>();
-            ViewBag.Positions = new SelectList(new[] { "HR Manager", "Project Manager", "Employee" });
-
+            ViewBag.Positions = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "HR Manager", Value = "HRManager" },
+                new SelectListItem { Text = "Project Manager", Value = "ProjectManager" },
+                new SelectListItem { Text = "Employee", Value = "Employee" }
+            };
             return View(employees.ToPagedList(pageNumber ?? 1, 10));
         }
 
