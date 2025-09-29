@@ -1,22 +1,24 @@
-﻿@model Out_of_Office.Models.LoginViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model Out_of_Office.Models.LoginViewModel
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = @Localizer["LoginHeader"];
 }
 
-<h2 class="mb-4">Login</h2>
+<h2 class="mb-4">@Localizer["LoginHeader"]</h2>
 
 <form asp-action="Login" method="post">
     <div class="mb-3">
-        <label asp-for="Username" class="form-label"></label>
+        <label asp-for="Username" class="form-label">@Localizer["Username"]</label>
         <input asp-for="Username" class="form-control" />
         <span asp-validation-for="Username" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label asp-for="Password" class="form-label"></label>
+        <label asp-for="Password" class="form-label">@Localizer["Password"]</label>
         <input asp-for="Password" type="password" class="form-control" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Log in</button>
+    <button type="submit" class="btn btn-primary">@Localizer["Login_button"]</button>
 </form>
 
 @section Scripts {

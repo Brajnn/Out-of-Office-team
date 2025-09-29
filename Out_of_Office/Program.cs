@@ -1,22 +1,43 @@
-using Microsoft.EntityFrameworkCore;
-using Out_of_Office.Infrastructure.Presistance;
-using Out_of_Office.Infrastructure.Extensions;
-using Out_of_Office.Application.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
+using Out_of_Office.Application.Extensions;
+using Out_of_Office.Infrastructure.Extensions;
 using Out_of_Office.Infrastructure.Identity;
-using MediatR;
+using Out_of_Office.Infrastructure.Presistance;
+using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
-builder.Services.AddControllersWithViews(options =>
-options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
+
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 builder.Services.AddSession();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAplication();
 var app = builder.Build();
+
+// --- Middleware localization ---
+var supportedCultures = new[]
+{
+    new CultureInfo("en"),
+    new CultureInfo("pl")
+};
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+
+
 
 using (var scope = app.Services.CreateScope())
 {
