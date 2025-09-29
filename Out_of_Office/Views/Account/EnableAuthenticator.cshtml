@@ -31,7 +31,7 @@
 
 <form asp-action="EnableAuthenticator" method="post">
     <div class="mb-3">
-        <label class="form-label">@Localizer["CodeLabel"]</label>
+        <label class="form-label">@Localizer["CodeLabel"]:</label>
         <input asp-for="Code" class="form-control" autocomplete="off" required />
         <span asp-validation-for="Code" class="text-danger"></span>
     </div>

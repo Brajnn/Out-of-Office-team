@@ -1,15 +1,16 @@
 ﻿@model X.PagedList.IPagedList<Out_of_Office.Application.Approval_Request.ApprovalRequestDto>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Mvc.Core.Fluent
 @{
-    ViewData["Title"] = "Approval Requests";
+    ViewData["Title"] = @Localizer["PageTitle"];
     var currentSort = ViewBag.CurrentSort as string;
     var idSortParam = currentSort == "id_asc" ? "id_desc" : "id_asc";
     var approverSortParam = currentSort == "approver_asc" ? "approver_desc" : "approver_asc";
     var statusSortParam = currentSort == "status_asc" ? "status_desc" : "status_asc";
 }
 
-<h2>Approval Requests</h2>
+<h2>@Localizer["PageTitle"]</h2>
 
 
 
@@ -17,42 +18,42 @@
 {
     <div class="row mb-3">
         <div class="col-md-3">
-            <label>Search by Request Number:</label>
+            <label>@Localizer["SearchByRequestNumber"]:</label>
             <input type="number" class="form-control" id="searchRequestId" name="searchRequestId" value="@ViewData["SearchRequestId"]" />
         </div>
 
         <div class="col-md-3">
-            <label>Search by Employee Name:</label>
+            <label>@Localizer["SearchByEmployeeName"]:</label>
             <input type="text" class="form-control" id="employeeName" name="employeeName" value="@ViewData["EmployeeName"]" />
         </div>
 
         <div class="col-md-6">
-            <label>Status:</label>
+            <label>@Localizer["StatusLabel"]:</label>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="selectedStatuses" value="New" @(ViewBag.SelectedStatuses.Contains("New") ? "checked" : "") />
-                <label class="form-check-label">New</label>
+                <label class="form-check-label">@Localizer["StatusNew"]</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Approved" @(ViewBag.SelectedStatuses.Contains("Approved") ? "checked" : "") />
-                <label class="form-check-label">Approved</label>
+                <label class="form-check-label">@Localizer["StatusApproved"]</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Rejected" @(ViewBag.SelectedStatuses.Contains("Rejected") ? "checked" : "") />
-                <label class="form-check-label">Rejected</label>
+                <label class="form-check-label">@Localizer["StatusRejected"] </label>
             </div>
         </div>
 
         <div class="col-md-3">
-            <label>From:</label>
+            <label>@Localizer["DateFrom"]</label>
             <input type="date" class="form-control" name="startDate" value="@ViewBag.StartDate" />
         </div>
         <div class="col-md-3">
-            <label>To:</label>
+            <label>@Localizer["DateTo"]</label>
             <input type="date" class="form-control" name="endDate" value="@ViewBag.EndDate" />
         </div>
 
         <div class="col-md-3 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary w-100">Filter</button>
+            <button type="submit" class="btn btn-primary w-100">@Localizer["FilterButton"]</button>
         </div>
     </div>
 }
@@ -62,21 +63,21 @@
     <thead>
         <tr>
             <th>
-                <a href="?sortOrder=@idSortParam">ID</a>
+                <a href="?sortOrder=@idSortParam">@Localizer["TableHeader_ID"]</a>
             </th>
 
              <th>
-                <a href="?sortOrder=@approverSortParam">Approver</a>
+                <a href="?sortOrder=@approverSortParam">@Localizer["TableHeader_Approver"]</a>
             </th> 
-            <th>Employee</th>
+            <th>@Localizer["TableHeader_Employee"]</th>
             <th>
-                Leave Request Number
+                @Localizer["TableHeader_LeaveRequestNumber"]
             </th>
-            <th>Received date</th>
+            <th>@Localizer["TableHeader_ReceivedDate"]</th>
             <th>
-                <a href="?sortOrder=@statusSortParam">Status</a>
+                <a href="?sortOrder=@statusSortParam">@Localizer["TableHeader_Status"]</a>
             </th>
-            <th>Actions</th>
+            <th>@Localizer["TableHeader_Actions"]</th>
         </tr>
     </thead>
     <tbody>
@@ -105,20 +106,20 @@
                     <span class="@badgeClass">@approvalRequest.Status</span>
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@approvalRequest.ID" class="btn btn-info">Details</a>
+                    <a asp-action="Details" asp-route-id="@approvalRequest.ID" class="btn btn-info">@Localizer["Action_DetailsButton"]</a>
 
                     @if (approvalRequest.Status == "New")
                     {
                         <form asp-controller="ApprovalRequest" asp-action="Approve" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@approvalRequest.ID" />
                             <input type="hidden" name="status" value="Approved" />
-                            <button type="submit" class="btn btn-success">Approve</button>
+                            <button type="submit" class="btn btn-success">@Localizer["Action_ApproveButton"]</button>
                         </form>
                         <form asp-controller="ApprovalRequest" asp-action="Reject" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@approvalRequest.ID" />
                             <input type="hidden" name="status" value="Rejected" />
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal" data-id="@approvalRequest.ID">
-                                Reject
+                                @Localizer["Action_RejectButton"]
                             </button>
                         </form>
                     }
@@ -138,10 +139,10 @@
     DisplayLinkToNextPage = PagedListDisplayMode.Always,
     DisplayLinkToIndividualPages = true,
     EllipsesFormat = "…",
-    LinkToFirstPageFormat = "First",
-    LinkToPreviousPageFormat = "Previous",
-    LinkToNextPageFormat = "Next",
-    LinkToLastPageFormat = "Last",
+    LinkToFirstPageFormat = Localizer["Pager_First"].Value,
+    LinkToPreviousPageFormat = Localizer["Pager_Previous"].Value,
+    LinkToNextPageFormat = Localizer["Pager_Next"].Value,
+    LinkToLastPageFormat = Localizer["Pager_Last"].Value,
     ContainerDivClasses = new[] { "pagination-container" },
     UlElementClasses = new[] { "pagination", "justify-content-center" },
     LiElementClasses = new[] { "page-item" },
@@ -154,19 +155,19 @@
         <div class="modal-content">
             <form id="rejectForm" method="post" asp-controller="ApprovalRequest" asp-action="Reject">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="rejectModalLabel">Reject Request</h5>
+                    <h5 class="modal-title" id="rejectModalLabel">@Localizer["Modal_Reject_Title"]</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="approvalRequestId" name="id" />
                     <div class="mb-3">
-                        <label for="comment" class="form-label">Rejection Reason</label>
+                        <label for="comment" class="form-label">@Localizer["Modal_Reject_Label"]</label>
                         <textarea class="form-control" name="comment" id="comment" rows="3" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Reject</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Modal_Reject_CancelButton"]</button>
+                    <button type="submit" class="btn btn-danger">@Localizer["Modal_Reject_ConfirmButton"]</button>
                 </div>
             </form>
         </div>
