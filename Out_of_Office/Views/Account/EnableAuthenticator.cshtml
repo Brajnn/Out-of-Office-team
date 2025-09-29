@@ -1,8 +1,10 @@
-﻿@model Out_of_Office.Models.EnableAuthenticatorViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@model Out_of_Office.Models.EnableAuthenticatorViewModel
 @using QRCoder
 
 @{
-    ViewData["Title"] = "Enable Google Authenticator";
+    ViewData["Title"] = @Localizer["PageTitle"];
 
     // Generate the authenticator URI that the Google Authenticator app will use
     var authenticatorUri = $"otpauth://totp/OutOfOffice:{User.Identity.Name}?secret={Model.Key}&issuer=OutOfOffice";
@@ -18,22 +20,22 @@
     var qrCodeImageAsBase64 = qrCode.GetGraphic(5);
 }
 
-<h2>Configure Google Authenticator</h2>
+<h2>@Localizer["Header"]</h2>
 
 <div class="mb-4">
-    <p>Scan the QR code below using the <strong>Google Authenticator</strong> app:</p>
-    <img src="data:image/png;base64,@qrCodeImageAsBase64" alt="QR code" />
-    <p>Or manually enter the key:</p>
+    <p>@Localizer["ScanQrInstruction"] <strong>Google Authenticator</strong> @Localizer["ScanQrInstructionApp"]:</p>
+    <img src="data:image/png;base64,@qrCodeImageAsBase64" alt="@Localizer["QrAltText"]" />
+    <p>@Localizer["ManualKeyInstruction"]</p>
     <div class="alert alert-secondary">@Model.Key</div>
 </div>
 
 <form asp-action="EnableAuthenticator" method="post">
     <div class="mb-3">
-        <label class="form-label">Google Authenticator code</label>
+        <label class="form-label">@Localizer["CodeLabel"]</label>
         <input asp-for="Code" class="form-control" autocomplete="off" required />
         <span asp-validation-for="Code" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-success">Enable 2FA</button>
+    <button type="submit" class="btn btn-success">@Localizer["EnableButton"]</button>
 </form>
 
 @section Scripts {
