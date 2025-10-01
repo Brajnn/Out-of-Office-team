@@ -181,4 +181,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="LeaveType_SickLeave" xml:space="preserve">
+    <value>Sick Leave</value>
+  </data>
+  <data name="LeaveType_Unpaid" xml:space="preserve">
+    <value>Unpaid Leave</value>
+  </data>
+  <data name="LeaveType_Vacation" xml:space="preserve">
+    <value>Vacation</value>
+  </data>
 </root>

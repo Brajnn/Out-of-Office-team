@@ -142,4 +142,19 @@
   <data name="BackToList" xml:space="preserve">
     <value>Back to List</value>
   </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="StatusSubmitted" xml:space="preserve">
+    <value>Submitted</value>
+  </data>
+  <data name="StatusApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="StatusRejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="StatusCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
 </root>

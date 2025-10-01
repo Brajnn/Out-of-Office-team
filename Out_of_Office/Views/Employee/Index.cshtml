@@ -22,7 +22,7 @@
                         <input type="checkbox" name="selectedPositions" value="@item.Value"
                                @(ViewBag.SelectedPositions != null && ((List<string>)ViewBag.SelectedPositions).Contains(item.Value) ? "checked" : "")
                                class="form-check-input" id="position_@item.Value" />
-                        <label class="form-check-label" for="position_@item.Value">@item.Text</label>
+                        <label class="form-check-label" for="position_@item.Value">@Localizer[$"Position_{item.Value}"]</label>
                     </div>
                 }
             </div>
@@ -64,7 +64,7 @@
         {
             <tr>
                 <td>@employee.FullName</td>
-                <td>@employee.Position</td>
+                <td>@Localizer[$"Position_{employee.Position}"]</td>
                 <td>
                     @if (User.IsInRole("HRManager") || User.IsInRole("Administrator"))
                     {

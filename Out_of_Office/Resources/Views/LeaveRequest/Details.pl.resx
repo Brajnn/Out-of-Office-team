@@ -181,4 +181,13 @@
   <data name="Cancel" xml:space="preserve">
     <value>Anuluj</value>
   </data>
+  <data name="LeaveType_SickLeave" xml:space="preserve">
+    <value>Zwolnienie chorobowe</value>
+  </data>
+  <data name="LeaveType_Unpaid" xml:space="preserve">
+    <value>Urlop bezpłatny</value>
+  </data>
+  <data name="LeaveType_Vacation" xml:space="preserve">
+    <value>Urlop wypoczynkowy</value>
+  </data>
 </root>

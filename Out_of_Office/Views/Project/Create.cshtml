@@ -1,10 +1,11 @@
 ﻿@model Out_of_Office.Application.Project.Command.CreateProject.CreateProjectCommand
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Create Project";
+    ViewData["Title"] = Localizer["CreateProject"];
 }
 
-<h1>Create Project</h1>
+<h1>@Localizer["CreateProject"]</h1>
 
 <hr />
 <div class="row">
@@ -12,28 +13,28 @@
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ProjectType" class="control-label"></label>
+                <label asp-for="ProjectType" class="control-label">@Localizer["TableHeader_ProjectType"]</label>
                 <select asp-for="ProjectType" class="form-control">
-                    <option value="Internal">Internal</option>
-                    <option value="Exterior">Exterior</option>
-                    <option value="Strategic">Strategic</option>
+                    <option value="Internal">@Localizer["ProjectTypeInternal"]</option>
+                    <option value="Exterior">@Localizer["ProjectTypeExterior"]</option>
+                    <option value="Strategic">@Localizer["ProjectTypeStrategic"]</option>
                 </select>
                 <span asp-validation-for="ProjectType" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
+                <label asp-for="StartDate" class="control-label">@Localizer["TableHeader_StartDate"]</label>
                 <input asp-for="StartDate" type="date" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
+                <label asp-for="EndDate" class="control-label">@Localizer["TableHeader_EndDate"]</label>
                 <input asp-for="EndDate" type="date" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ProjectManagerID" class="control-label"></label>
+                <label asp-for="ProjectManagerID" class="control-label">@Localizer["TableHeader_ProjectManager"]</label>
                 <select asp-for="ProjectManagerID" class="form-control">
-                    <option value="">-- Select Project Manager --</option>
+                    <option value="">@Localizer["SelectProjectManager"]</option>
                     @foreach (var manager in ViewBag.ProjectManagers)
                     {
                         <option value="@manager.Id">@manager.FullName</option>
@@ -42,27 +43,27 @@
                 <span asp-validation-for="ProjectManagerID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Comment" class="control-label"></label>
+                <label asp-for="Comment" class="control-label">@Localizer["Comment"]</label>
                 <textarea asp-for="Comment" class="form-control"></textarea>
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
+                <label asp-for="Status" class="control-label">@Localizer["Status"]</label>
                 <select asp-for="Status" class="form-control">
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="Active">@Localizer["ProjectStatusActive"]</option>
+                    <option value="Inactive">@Localizer["ProjectStatusInactive"]</option>
                 </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">@Localizer["BackToList"]</a>
 </div>
 
 @section Scripts {

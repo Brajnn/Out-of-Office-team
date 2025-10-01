@@ -1,36 +1,38 @@
 ﻿@model X.PagedList.IPagedList<Out_of_Office.Application.Project.ProjectDto>
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Mvc.Core.Fluent
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
 @{
-    ViewData["Title"] = "Projects";
+    ViewData["Title"] = Localizer["Projects"];
 }
 
-<h2>Projects</h2>
+<h2>@Localizer["Projects"]</h2>
 
 <p>
     @using (Html.BeginForm("Index", "Project", FormMethod.Get))
     {
-        <label for="searchProjectId">Search by Project ID:</label>
+        <label for="searchProjectId">@Localizer["SearchByProjectID"]</label>
         <input type="number" id="searchProjectId" name="searchProjectId" value="@ViewData["SearchProjectId"]" />
-        <input type="submit" value="Search" />
+        <input type="submit" value="@Localizer["Search"]" />
     }
-
 </p>
+
 <p>
     @if (User.IsInRole("ProjectManager") || User.IsInRole("Administrator"))
-     {
-        @Html.ActionLink("Add New Project", "Create", "Project", null, new { @class = "btn btn-primary" })
-     }
+    {
+        @Html.ActionLink(Localizer["AddNewProject"].Value, "Create", "Project", null, new { @class = "btn btn-primary" })
+    }
 </p>
 
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.ActionLink("Project ID", "Index", new { sortOrder = ViewBag.IdSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
-            <th>@Html.ActionLink("Project Type", "Index", new { sortOrder = ViewBag.TypeSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
-            <th>@Html.ActionLink("Start Date", "Index", new { sortOrder = ViewBag.StartDateSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
-            <th>@Html.ActionLink("Project Manager", "Index", new { sortOrder = ViewBag.ManagerSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
-            <th>Actions</th>
+            <th>@Html.ActionLink(Localizer["TableHeader_ProjectID"].Value, "Index", new { sortOrder = ViewBag.IdSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
+            <th>@Html.ActionLink(Localizer["TableHeader_ProjectType"].Value, "Index", new { sortOrder = ViewBag.TypeSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
+            <th>@Html.ActionLink(Localizer["TableHeader_StartDate"].Value, "Index", new { sortOrder = ViewBag.StartDateSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
+            <th>@Html.ActionLink(Localizer["TableHeader_ProjectManager"].Value, "Index", new { sortOrder = ViewBag.ManagerSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
+            <th>@Localizer["Actions"]</th>
         </tr>
     </thead>
     <tbody>
@@ -42,25 +44,24 @@
                 <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
                 <td>@project.ProjectManagerFullName</td>
                 <td>
-                <a asp-action="Details" asp-route-id="@project.ID" class="btn btn-info">Details</a>
+                    <a asp-action="Details" asp-route-id="@project.ID" class="btn btn-info">@Localizer["Details"]</a>
                     @if (User.IsInRole("ProjectManager") || User.IsInRole("Administrator"))
                     {
                         @if (project.Status == Out_of_Office.Domain.Entities.ProjectStatus.Inactive)
                         {
                             <form asp-action="Activate" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@project.ID" />
-                                <button type="submit" class="btn btn-success">Activate</button>
+                                <button type="submit" class="btn btn-success">@Localizer["Activate"]</button>
                             </form>
                         }
                         else if (project.Status == Out_of_Office.Domain.Entities.ProjectStatus.Active)
                         {
                             <form asp-action="Deactivate" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@project.ID" />
-                                <button type="submit" class="btn btn-danger">Deactivate</button>
+                                <button type="submit" class="btn btn-danger">@Localizer["Deactivate"]</button>
                             </form>
                         }
                     }
-
                 </td>
             </tr>
         }
@@ -69,22 +70,22 @@
 
 <div class="text-center">
     @Html.PagedListPager(Model, page => Url.Action("Index", new { pageNumber = page, sortOrder = ViewBag.CurrentSort, searchProjectId = ViewData["SearchProjectId"] }), new PagedListRenderOptions
-{
-    Display = PagedListDisplayMode.IfNeeded,
-    MaximumPageNumbersToDisplay = 5,
-    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-    DisplayLinkToLastPage = PagedListDisplayMode.Always,
-    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-    DisplayLinkToNextPage = PagedListDisplayMode.Always,
-    DisplayLinkToIndividualPages = true,
-    EllipsesFormat = "…",
-    LinkToFirstPageFormat = "First",
-    LinkToPreviousPageFormat = "Previous",
-    LinkToNextPageFormat = "Next",
-    LinkToLastPageFormat = "Last",
-    ContainerDivClasses = new[] { "pagination-container" },
-    UlElementClasses = new[] { "pagination", "justify-content-center" },
-    LiElementClasses = new[] { "page-item" },
-    PageClasses = new[] { "page-link" }
-})
+    {
+        Display = PagedListDisplayMode.IfNeeded,
+        MaximumPageNumbersToDisplay = 5,
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+        DisplayLinkToIndividualPages = true,
+        EllipsesFormat = "…",
+        LinkToFirstPageFormat = Localizer["PagerFirst"].Value,
+        LinkToPreviousPageFormat = Localizer["PagerPrevious"].Value,
+        LinkToNextPageFormat = Localizer["PagerNext"].Value,
+        LinkToLastPageFormat = Localizer["PagerLast"].Value,
+        ContainerDivClasses = new[] { "pagination-container" },
+        UlElementClasses = new[] { "pagination", "justify-content-center" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" }
+        })
 </div>

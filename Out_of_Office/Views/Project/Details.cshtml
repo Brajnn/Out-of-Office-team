@@ -1,46 +1,47 @@
 ﻿@model Out_of_Office.Application.Project.ProjectDto
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Project Details";
+    ViewData["Title"] = Localizer["ProjectDetails"];
 }
 
-<h2>Project Details</h2>
+<h2>@Localizer["ProjectDetails"]</h2>
 
 <div>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">ID</dt>
+        <dt class="col-sm-2">@Localizer["TableHeader_ID"]</dt>
         <dd class="col-sm-10">@Model.ID</dd>
 
-        <dt class="col-sm-2">Project Type</dt>
+        <dt class="col-sm-2">@Localizer["TableHeader_ProjectType"]</dt>
         <dd class="col-sm-10">@Model.ProjectType</dd>
 
-        <dt class="col-sm-2">Start Date</dt>
+        <dt class="col-sm-2">@Localizer["TableHeader_StartDate"]</dt>
         <dd class="col-sm-10">@Model.StartDate.ToString("yyyy-MM-dd")</dd>
 
-        <dt class="col-sm-2">End Date</dt>
+        <dt class="col-sm-2">@Localizer["TableHeader_EndDate"]</dt>
         <dd class="col-sm-10">@Model.EndDate?.ToString("yyyy-MM-dd")</dd>
 
-        <dt class="col-sm-2">Project Manager</dt>
+        <dt class="col-sm-2">@Localizer["TableHeader_ProjectManager"]</dt>
         <dd class="col-sm-10">@Model.ProjectManagerFullName</dd>
 
-        <dt class="col-sm-2">Comment</dt>
+        <dt class="col-sm-2">@Localizer["Comment"]</dt>
         <dd class="col-sm-10">@Model.Comment</dd>
 
-        <dt class="col-sm-2">Status</dt>
-        <dd class="col-sm-10">@Model.Status</dd>
+        <dt class="col-sm-2">@Localizer["Status"]</dt>
+        <dd class="col-sm-10">@Localizer[$"ProjectStatus{Model.Status}"]</dd>
     </dl>
 </div>
-<h3>Employees in this Project</h3>
+<h3>@Localizer["EmployeesInThisProject"]</h3>
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Full Name</th>
+            <th>@Localizer["TableHeader_ID"]</th>
+            <th>@Localizer["FullName"]</th>
             @if (User.IsInRole("ProjectManager") || User.IsInRole("Administrator"))
-    {
-            <th>Actions</th>
-    }
+            {
+                <th>@Localizer["Actions"]</th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -53,11 +54,10 @@
                     <form asp-action="RemoveEmployee" method="post" class="d-inline">
                         <input type="hidden" name="EmployeeId" value="@employee.Id" />
                         <input type="hidden" name="ProjectId" value="@Model.ID" />
-                         @if (User.IsInRole("ProjectManager"))
+                        @if (User.IsInRole("ProjectManager"))
                         {
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger">@Localizer["Delete"]</button>
                         }
-                       
                     </form>
                 </td>
             </tr>
@@ -66,11 +66,10 @@
 </table>
 
 <div>
-    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary">@Localizer["BackToList"]</a>
     @if (User.IsInRole("ProjectManager") || User.IsInRole("Administrator")
-    && Model.Status == Out_of_Office.Domain.Entities.ProjectStatus.Active)
+        && Model.Status == Out_of_Office.Domain.Entities.ProjectStatus.Active)
     {
-        <a asp-action="AssignEmployee" asp-route-id="@Model.ID" class="btn btn-secondary">Assign Employee</a>
+        <a asp-action="AssignEmployee" asp-route-id="@Model.ID" class="btn btn-secondary">@Localizer["AssignEmployee"]</a>
     }
 </div>
-

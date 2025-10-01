@@ -97,64 +97,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Details" xml:space="preserve">
-    <value>Szczegóły</value>
+  <data name="CreateWorkCalendar" xml:space="preserve">
+    <value>Create Work Calendar</value>
   </data>
-  <data name="Approval Request Details" xml:space="preserve">
-    <value>Szczegóły wniosku</value>
+  <data name="CreateWorkCalendarForYearFormat" xml:space="preserve">
+    <value>Create Work Calendar for {0}</value>
   </data>
-  <data name="TableHeader_ID" xml:space="preserve">
-    <value>ID</value>
+  <data name="SelectYear" xml:space="preserve">
+    <value>Select Year:</value>
   </data>
-  <data name="TableHeader_Employee" xml:space="preserve">
-    <value>Pracownik</value>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
   </data>
-  <data name="TableHeader_Approver" xml:space="preserve">
-    <value>Zatwierdzający</value>
+  <data name="Day" xml:space="preserve">
+    <value>Day</value>
   </data>
-  <data name="TableHeader_LeaveRequestNumber" xml:space="preserve">
-    <value>Numer wniosku urlopowego</value>
+  <data name="Holiday" xml:space="preserve">
+    <value>Holiday</value>
   </data>
-  <data name="TableHeader_Status" xml:space="preserve">
-    <value>Status</value>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
-  <data name="TableHeader_ReceivedDate" xml:space="preserve">
-    <value>Data otrzymania</value>
+  <data name="SaveCalendar" xml:space="preserve">
+    <value>Save Calendar</value>
   </data>
-  <data name="StatusChangedAt" xml:space="preserve">
-    <value>Data zmiany statusu</value>
-  </data>
-  <data name="NotYetChanged" xml:space="preserve">
-    <value>Jeszcze nie zmieniono</value>
-  </data>
-  <data name="LeaveRequestComment" xml:space="preserve">
-    <value>Komentarz urlopowy</value>
-  </data>
-  <data name="DecisionComment" xml:space="preserve">
-    <value>Komentarz decyzji</value>
-  </data>
-  <data name="LeaveStart" xml:space="preserve">
-    <value>Początek urlopu</value>
-  </data>
-  <data name="LeaveEnd" xml:space="preserve">
-    <value>Koniec urlopu</value>
-  </data>
-  <data name="BackToList" xml:space="preserve">
-    <value>Powrót do listy</value>
-  </data>
-  <data name="StatusNew" xml:space="preserve">
-    <value>Nowy</value>
-  </data>
-  <data name="StatusSubmitted" xml:space="preserve">
-    <value>Złożony</value>
-  </data>
-  <data name="StatusApproved" xml:space="preserve">
-    <value>Zatwierdzony</value>
-  </data>
-  <data name="StatusRejected" xml:space="preserve">
-    <value>Odrzucony</value>
-  </data>
-  <data name="StatusCancelled" xml:space="preserve">
-    <value>Anulowany</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
   </data>
 </root>

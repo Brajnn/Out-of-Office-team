@@ -148,4 +148,16 @@
   <data name="PagerLast" xml:space="preserve">
     <value>Last</value>
   </data>
+  <data name="Position_HRManager" xml:space="preserve">
+    <value>HR Manager</value>
+  </data>
+  <data name="Position_ProjectManager" xml:space="preserve">
+    <value>Project Manager</value>
+  </data>
+  <data name="Position_Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="Position_Administrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
 </root>

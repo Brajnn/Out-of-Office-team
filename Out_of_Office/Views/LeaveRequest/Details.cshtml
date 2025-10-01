@@ -18,7 +18,7 @@
         <dd class="col-sm-9">@Model.EmployeeFullName</dd>
 
         <dt class="col-sm-3">@Localizer["AbsenceReason"]</dt>
-        <dd class="col-sm-9">@formattedReason</dd>
+        <dd class="col-sm-9">@Localizer[$"LeaveType_{Model.AbsenceReason}"]</dd>
 
         <dt class="col-sm-3">@Localizer["TableHeader_CreatedAt"]</dt>
         <dd class="col-sm-9">@Model.CreatedAt</dd>

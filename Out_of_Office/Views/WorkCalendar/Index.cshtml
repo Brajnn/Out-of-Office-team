@@ -1,19 +1,20 @@
 ﻿@model List<int>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
-    ViewData["Title"] = "Work Calendar";
+    ViewData["Title"] = Localizer["WorkCalendarTitle"];
 }
 
-<h2>Work Calendars</h2>
+<h2>@Localizer["WorkCalendars"]</h2>
 
-<a asp-action="Create" class="btn btn-primary mb-3">Create New Calendar</a>
+<a asp-action="Create" class="btn btn-primary mb-3">@Localizer["CreateNewCalendar"]</a>
 
 @if (Model != null && Model.Count > 0)
 {
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Year</th>
-                <th>Actions</th>
+                <th>@Localizer["Year"]</th>
+                <th>@Localizer["Actions"]</th>
             </tr>
         </thead>
         <tbody>
@@ -22,21 +23,21 @@
                 <tr>
                     <td>@year</td>
                     <td>
-                        <a class="btn btn-info btn-sm" href="@Url.Action("Details", "WorkCalendar", new { year = year })">Details</a>
+                        <a class="btn btn-info btn-sm" href="@Url.Action("Details", "WorkCalendar", new { year = year })">@Localizer["Details"]</a>
                         <form asp-action="Delete" method="post" class="d-inline">
                             <input type="hidden" name="year" value="@year" />
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete the calendar for @year?');">
-                                Delete
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('@string.Format(Localizer["DeleteCalendarConfirmationFormat"].Value, year)')">
+                                @Localizer["Delete"]
                             </button>
                         </form>
                     </td>
                 </tr>
-
             }
         </tbody>
     </table>
 }
 else
 {
-    <p>No calendars found.</p>
+    <p>@Localizer["NoCalendarsFound"]</p>
 }

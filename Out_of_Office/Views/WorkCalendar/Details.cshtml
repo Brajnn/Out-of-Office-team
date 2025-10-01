@@ -1,13 +1,15 @@
 ﻿@model List<Out_of_Office.Application.WorkDayCalendar.WorkCalendarDayDto>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 @{
     var grouped = Model.GroupBy(d => d.Date.Month).OrderBy(g => g.Key);
     var year = ViewBag.Year;
     var monthNames = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+    ViewData["Title"] = string.Format(Localizer["CalendarForYearFormat"].Value, ViewData["Year"]);
 }
 
-<h2 class="text-center my-4">Calendar - @ViewData["Year"]</h2>
+<h2 class="text-center my-4">@ViewData["Title"]</h2>
 <div>
-    <a asp-action="Index" class="btn btn-secondary mb-4">← Back</a>
+    <a asp-action="Index" class="btn btn-secondary mb-4">@Localizer["BackWithArrow"]</a>
 </div>
 
 <div class="row">
@@ -21,13 +23,13 @@
                 @{
                     var orderedDays = month.OrderBy(d => d.Date.Day).ToList();
                     var firstDayOfMonth = orderedDays.First().Date;
-                    int offset = ((int)firstDayOfMonth.DayOfWeek + 6) % 7; 
+                    int offset = ((int)firstDayOfMonth.DayOfWeek + 6) % 7;
                 }
                 <div class="card-body p-2">
                     <div class="d-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;">
                         @for (int i = 0; i < offset; i++)
                         {
-                            <div></div> 
+                            <div></div>
                         }
 
                         @foreach (var day in orderedDays)
@@ -38,7 +40,7 @@
                                 <div class="calendar-day border rounded text-center p-2 @color"
                                      style="min-height: 60px;"
                                      title="@day.Description"
-                                     data-bs-toggle="tooltip" >    <!-- Tooltip is using in wwwroot/js/site.js--> 
+                                     data-bs-toggle="tooltip">
                                     <div>@day.Date.Day</div>
                                     <small style="font-size: 0.7rem;">@day.Date.ToString("ddd")</small>
                                 </div>
@@ -58,4 +60,3 @@
         </div>
     }
 </div>
-

@@ -139,4 +139,31 @@
   <data name="BackToList" xml:space="preserve">
     <value>Powrót do listy</value>
   </data>
+  <data name="LeaveType_SickLeave" xml:space="preserve">
+    <value>Zwolnienie chorobowe</value>
+  </data>
+  <data name="LeaveType_Unpaid" xml:space="preserve">
+    <value>Urlop bezpłatny</value>
+  </data>
+  <data name="LeaveType_Vacation" xml:space="preserve">
+    <value>Urlop wypoczynkowy</value>
+  </data>
+  <data name="EmployeeStatus_Active" xml:space="preserve">
+    <value>Aktywny</value>
+  </data>
+  <data name="EmployeeStatus_Inactive" xml:space="preserve">
+    <value>Nieaktywny</value>
+  </data>
+  <data name="Position_HRManager" xml:space="preserve">
+    <value>Manager HR</value>
+  </data>
+  <data name="Position_ProjectManager" xml:space="preserve">
+    <value>Manager Projektu</value>
+  </data>
+  <data name="Position_Employee" xml:space="preserve">
+    <value>Pracownik</value>
+  </data>
+  <data name="Position_Administrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
 </root>

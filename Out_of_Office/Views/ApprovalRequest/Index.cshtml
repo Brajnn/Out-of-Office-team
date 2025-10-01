@@ -103,7 +103,7 @@
                             _ => "badge bg-light"
                         };
                     }
-                    <span class="@badgeClass">@approvalRequest.Status</span>
+                    <span class="@badgeClass">@Localizer[$"Status{approvalRequest.Status}"]</span>
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@approvalRequest.ID" class="btn btn-info">@Localizer["Action_DetailsButton"]</a>

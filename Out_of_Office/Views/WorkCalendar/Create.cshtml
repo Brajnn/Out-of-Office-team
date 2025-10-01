@@ -1,16 +1,17 @@
 ﻿@model Out_of_Office.Application.WorkDayCalendar.Command.CreateWorkCalendar.CreateWorkCalendarCommand
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Create Work Calendar";
+    ViewData["Title"] = Localizer["CreateWorkCalendar"];
 }
-<h2 class="text-center my-4">Create Work Calendar for @Model.Year</h2>
+<h2 class="text-center my-4">@string.Format(Localizer["CreateWorkCalendarForYearFormat"].Value, Model.Year)</h2>
 
 @{
     var availableYears = ViewBag.AvailableYears as List<int> ?? new List<int>();
 }
 
 <form asp-action="Create" method="get" class="mb-4">
-    <label for="year">Select Year:</label>
+    <label for="year">@Localizer["SelectYear"]</label>
     <select name="year" id="year" class="form-control" onchange="this.form.submit()">
         @foreach (var y in availableYears)
         {
@@ -19,17 +20,16 @@
     </select>
 </form>
 
-<!-- FORMULARZ ZAPISU -->
 <form asp-action="Create" method="post">
     <input type="hidden" asp-for="Year" />
 
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Day</th>
-                <th>Holiday</th>
-                <th>Description</th>
+                <th>@Localizer["Date"]</th>
+                <th>@Localizer["Day"]</th>
+                <th>@Localizer["Holiday"]</th>
+                <th>@Localizer["Description"]</th>
             </tr>
         </thead>
         <tbody>
@@ -52,11 +52,10 @@
         </tbody>
     </table>
     <div class="mt-4">
-        <button type="submit" class="btn btn-success">Save Calendar</button>
+        <button type="submit" class="btn btn-success">@Localizer["SaveCalendar"]</button>
 
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        <a asp-action="Index" class="btn btn-secondary">@Localizer["Cancel"]</a>
     </div>
-   
 </form>
 
 @if (TempData["Success"] != null)
