@@ -1,80 +1,79 @@
 ﻿@model X.PagedList.IPagedList<Out_of_Office.Application.Leave_Request.LeaveRequestDto>
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Mvc.Core.Fluent
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
 @{
-    ViewData["Title"] = "Leave Requests";
+    ViewData["Title"] = Localizer["LeaveRequests"];
     var currentSort = ViewBag.CurrentSort as string;
     var idSortParam = currentSort == "id_asc" ? "id_desc" : "id_asc";
     var employeeSortParam = currentSort == "employee_asc" ? "employee_desc" : "employee_asc";
     var startDateSortParam = currentSort == "startdate_asc" ? "startdate_desc" : "startdate_asc";
     var endDateSortParam = currentSort == "enddate_asc" ? "enddate_desc" : "enddate_asc";
     var createdAtSortParam = currentSort == "createdat_asc" ? "createdat_desc" : "createdat_asc";
-
-
 }
 
-<h2>Leave Requests</h2>
+<h2>@Localizer["LeaveRequests"]</h2>
 
 <p>
-    @Html.ActionLink("Add New Leave Request", "Create", "LeaveRequest", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink(Localizer["AddNewLeaveRequest"].Value, "Create", "LeaveRequest", null, new { @class = "btn btn-primary" })
 </p>
 @using (Html.BeginForm("Index", "LeaveRequest", FormMethod.Get))
 {
     <div class="row">
         <div class="col-md-3">
-            <label>Search by Request Number:</label>
+            <label>@Localizer["SearchByRequestNumber"]</label>
             <input type="text" id="SearchRequestId" name="searchRequestId" value="@ViewData["SearchRequestId"]" class="form-control" />
         </div>
 
         <div class="col-md-6">
-            <label>Status:</label>
+            <label>@Localizer["Status"]</label>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="selectedStatuses" value="New" @(ViewBag.SelectedStatuses.Contains("New") ? "checked" : "") />
-                <label class="form-check-label">New</label>
+                <label class="form-check-label">@Localizer["StatusNew"]</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Submitted" @(ViewBag.SelectedStatuses.Contains("Submitted") ? "checked" : "") />
-                <label class="form-check-label">Submitted</label>
+                <label class="form-check-label">@Localizer["StatusSubmitted"]</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Approved" @(ViewBag.SelectedStatuses.Contains("Approved") ? "checked" : "") />
-                <label class="form-check-label">Approved</label>
+                <label class="form-check-label">@Localizer["StatusApproved"]</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Rejected" @(ViewBag.SelectedStatuses.Contains("Rejected") ? "checked" : "") />
-                <label class="form-check-label">Rejected</label>
+                <label class="form-check-label">@Localizer["StatusRejected"]</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="selectedStatuses" value="Cancelled" @(ViewBag.SelectedStatuses.Contains("Cancelled") ? "checked" : "") />
-                <label class="form-check-label">Cancelled</label>
+                <label class="form-check-label">@Localizer["StatusCancelled"]</label>
             </div>
         </div>
 
         <div class="col-md-3">
-            <label>Start Date:</label>
+            <label>@Localizer["TableHeader_StartDate"]</label>
             <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control" />
-            <label>End Date:</label>
+            <label>@Localizer["TableHeader_EndDate"]</label>
             <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control" />
         </div>
-
     </div>
 
     <br />
-    <button type="submit" class="btn btn-primary">Filter</button>
+    <button type="submit" class="btn btn-primary">@Localizer["Filter"]</button>
 }
 
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.ActionLink("Request Number", "Index", new { sortOrder = idSortParam })</th>
+            <th>@Html.ActionLink(Localizer["TableHeader_RequestNumber"].Value, "Index", new { sortOrder = idSortParam })</th>
             @if (!User.IsInRole("Employee"))
-                {
-            <th>@Html.ActionLink("Employee", "Index", new { sortOrder = employeeSortParam })</th>
-                }
-            <th>@Html.ActionLink("Created At", "Index", new { sortOrder = createdAtSortParam })</th>
-            <th>@Html.ActionLink("Start Date", "Index", new { sortOrder = startDateSortParam })</th>
-            <th>@Html.ActionLink("End Date", "Index", new { sortOrder = endDateSortParam })</th>
-            <th>Actions</th>
+            {
+                <th>@Html.ActionLink(Localizer["TableHeader_Employee"].Value, "Index", new { sortOrder = employeeSortParam })</th>
+            }
+            <th>@Html.ActionLink(Localizer["TableHeader_CreatedAt"].Value, "Index", new { sortOrder = createdAtSortParam })</th>
+            <th>@Html.ActionLink(Localizer["TableHeader_StartDate"].Value, "Index", new { sortOrder = startDateSortParam })</th>
+            <th>@Html.ActionLink(Localizer["TableHeader_EndDate"].Value, "Index", new { sortOrder = endDateSortParam })</th>
+            <th>@Localizer["Actions"]</th>
         </tr>
     </thead>
     <tbody>
@@ -91,30 +90,27 @@
                 </td>
                 <td>@leaveRequest.StartDate.ToString("yyyy-MM-dd")</td>
                 <td>@leaveRequest.EndDate.ToString("yyyy-MM-dd")</td>
-
-
-
                 <td>
-                    <a asp-action="Details" asp-route-id="@leaveRequest.ID" class="btn btn-info btn-sm me-2">Details</a>
+                    <a asp-action="Details" asp-route-id="@leaveRequest.ID" class="btn btn-info btn-sm me-2">@Localizer["Details"]</a>
 
                     @if (leaveRequest.Status == "New")
                     {
                         <form asp-action="UpdateStatus" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@leaveRequest.ID" />
                             <input type="hidden" name="status" value="Submitted" />
-                            <button type="submit" class="btn btn-success btn-sm me-1">Submit</button>
+                            <button type="submit" class="btn btn-success btn-sm me-1">@Localizer["Submit"]</button>
                         </form>
                         <form asp-action="UpdateStatus" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@leaveRequest.ID" />
                             <input type="hidden" name="status" value="Cancelled" />
-                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            <button type="submit" class="btn btn-danger btn-sm">@Localizer["Cancel"]</button>
                         </form>
                     }
                     else if (leaveRequest.Status == "Submitted")
                     {
                         <form asp-action="Cancel" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@leaveRequest.ID" />
-                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            <button type="submit" class="btn btn-danger btn-sm">@Localizer["Cancel"]</button>
                         </form>
                     }
                     else
@@ -128,7 +124,7 @@
                             _ => "badge bg-secondary"
                         };
 
-                        <span class="@badgeClass rounded-pill">@leaveRequest.Status</span>
+                        <span class="@badgeClass rounded-pill">@Localizer[$"Status{leaveRequest.Status}"]</span>
                     }
                 </td>
             </tr>
@@ -138,30 +134,30 @@
 
 <div class="text-center">
     @Html.PagedListPager(Model, page => Url.Action("Index", new
-        {
-            pageNumber = page,
-            sortOrder = ViewBag.CurrentSort,
-            searchRequestId = ViewData["SearchRequestId"],
-            selectedStatuses = ViewBag.SelectedStatuses,
-            startDate = ViewBag.StartDate,
-            endDate = ViewBag.EndDate
+    {
+        pageNumber = page,
+        sortOrder = ViewBag.CurrentSort,
+        searchRequestId = ViewData["SearchRequestId"],
+        selectedStatuses = ViewBag.SelectedStatuses,
+        startDate = ViewBag.StartDate,
+        endDate = ViewBag.EndDate
         }), new PagedListRenderOptions
-{
-    Display = PagedListDisplayMode.IfNeeded,
-    MaximumPageNumbersToDisplay = 5,
-    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-    DisplayLinkToLastPage = PagedListDisplayMode.Always,
-    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-    DisplayLinkToNextPage = PagedListDisplayMode.Always,
-    DisplayLinkToIndividualPages = true,
-    EllipsesFormat = "…",
-    LinkToFirstPageFormat = "First",
-    LinkToPreviousPageFormat = "Previous",
-    LinkToNextPageFormat = "Next",
-    LinkToLastPageFormat = "Last",
-    ContainerDivClasses = new[] { "pagination-container" },
-    UlElementClasses = new[] { "pagination", "justify-content-center" },
-    LiElementClasses = new[] { "page-item" },
-    PageClasses = new[] { "page-link" }
-})
+    {
+        Display = PagedListDisplayMode.IfNeeded,
+        MaximumPageNumbersToDisplay = 5,
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+        DisplayLinkToIndividualPages = true,
+        EllipsesFormat = "…",
+        LinkToFirstPageFormat = Localizer["PagerFirst"].Value,
+        LinkToPreviousPageFormat = Localizer["PagerPrevious"].Value,
+        LinkToNextPageFormat = Localizer["PagerNext"].Value,
+        LinkToLastPageFormat = Localizer["PagerLast"].Value,
+        ContainerDivClasses = new[] { "pagination-container" },
+        UlElementClasses = new[] { "pagination", "justify-content-center" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" }
+    })
 </div>
