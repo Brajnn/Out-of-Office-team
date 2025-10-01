@@ -17,7 +17,7 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
         public DateTime HireDate { get; set; }
         public int PeoplePartnerID { get; set; }
         public int OutOfOfficeBalance { get; set; }
-        public byte[] Photo { get; set; }
+        public byte[]? Photo { get; set; }
 
         public int VacationDays { get; set; }
         public int SickLeaveDays { get; set; }

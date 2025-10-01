@@ -1,49 +1,53 @@
 ﻿@model Out_of_Office.Application.Approval_Request.Command.CreateApprovalRequest.CreateApprovalRequestCommand
-
-
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer 
 @{
-    ViewData["Title"] = "Create Approval Request";
+    ViewData["Title"] = Localizer["CreateApprovalRequest"]; 
 }
 
-<h1>Create Approval Request</h1>
+<h1>@Localizer["CreateApprovalRequest"]</h1> 
 
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
-                <label asp-for="ApproverID" class="control-label"></label>
+                <label asp-for="ApproverID" class="control-label">@Localizer["Approver"]</label> 
                 <input asp-for="ApproverID" class="form-control" />
                 <span asp-validation-for="ApproverID" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="LeaveRequestID" class="control-label"></label>
+                <label asp-for="LeaveRequestID" class="control-label">@Localizer["LeaveRequest"]</label> 
                 <input asp-for="LeaveRequestID" class="form-control" />
                 <span asp-validation-for="LeaveRequestID" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Comment" class="control-label"></label>
+                <label asp-for="Comment" class="control-label">@Localizer["Comment"]</label> 
                 <input asp-for="Comment" class="form-control" />
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
+                <label asp-for="Status" class="control-label">@Localizer["Status"]</label> 
                 <select asp-for="Status" class="form-control">
-                    <option value="New">New</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Rejected">Rejected</option>
+                    <option value="New">@Localizer["StatusNew"]</option> 
+                    <option value="Approved">@Localizer["StatusApproved"]</option> 
+                    <option value="Rejected">@Localizer["StatusRejected"]</option> 
                 </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@Localizer["Create"]" class="btn btn-primary" /> 
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">@Localizer["BackToList"]</a> 
 </div>
 
 @section Scripts {
