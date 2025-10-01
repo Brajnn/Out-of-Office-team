@@ -1,9 +1,11 @@
 ﻿@model Out_of_Office.Application.Employee.EmployeeDto
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
 @{
-    ViewData["Title"] = "My Profile";
+    ViewData["Title"] = Localizer["MyProfile"];
 }
 
-<h2 class="mb-4">My Profile</h2>
+<h2 class="mb-4">@Localizer["MyProfile"]</h2>
 
 
 @if (TempData["ErrorMessage"] != null)
@@ -12,35 +14,34 @@
 }
 
 <div class="row">
-    <!-- Left Column -->
     <div class="col-md-6">
-        <h4 class="mb-3">Employee Information</h4>
+        <h4 class="mb-3">@Localizer["EmployeeInformation"]</h4>
         <dl class="row">
-            <dt class="col-sm-5">Full Name</dt>
+            <dt class="col-sm-5">@Localizer["FullName"]</dt>
             <dd class="col-sm-7">@Model.FullName</dd>
 
-            <dt class="col-sm-5">Username</dt>
+            <dt class="col-sm-5">@Localizer["Username"]</dt>
             <dd class="col-sm-7">@Model.Username</dd>
 
-            <dt class="col-sm-5">Subdivision</dt>
+            <dt class="col-sm-5">@Localizer["Subdivision"]</dt>
             <dd class="col-sm-7">@Model.Subdivision</dd>
 
-            <dt class="col-sm-5">Position</dt>
+            <dt class="col-sm-5">@Localizer["Position"]</dt>
             <dd class="col-sm-7">@Model.Position</dd>
 
-            <dt class="col-sm-5">Status</dt>
+            <dt class="col-sm-5">@Localizer["Status"]</dt>
             <dd class="col-sm-7">@Model.Status</dd>
 
-            <dt class="col-sm-5">Hire Date</dt>
+            <dt class="col-sm-5">@Localizer["HireDate"]</dt>
             <dd class="col-sm-7">@Model.HireDate.ToShortDateString()</dd>
         </dl>
 
-        <h4 class="mt-4 mb-2">Leave Balances</h4>
+        <h4 class="mt-4 mb-2">@Localizer["LeaveBalances"]</h4>
         <table class="table table-bordered table-sm text-center">
             <thead class="table-light">
                 <tr>
-                    <th>Type</th>
-                    <th>Days Available</th>
+                    <th>@Localizer["LeaveType"]</th>
+                    <th>@Localizer["DaysAvailable"]</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,46 +54,44 @@
                 }
             </tbody>
         </table>
-        </table>
     </div>
 
-    <!-- Right Column -->
     <div class="col-md-6">
-        <h4 class="mb-3">Change Password</h4>
+        <h4 class="mb-3">@Localizer["ChangePassword"]</h4>
         <form asp-controller="Account" asp-action="ChangePassword" method="post">
             <div class="form-group mb-2">
-                <label>Current Password</label>
+                <label>@Localizer["CurrentPassword"]</label>
                 <input type="password" name="oldPassword" class="form-control" required />
             </div>
             <div class="form-group mb-2">
-                <label>New Password</label>
+                <label>@Localizer["NewPassword"]</label>
                 <input type="password" name="newPassword" class="form-control" required />
             </div>
             <div class="form-group mb-3">
-                <label>Confirm New Password</label>
+                <label>@Localizer["ConfirmNewPassword"]</label>
                 <input type="password" name="confirmPassword" class="form-control" required />
             </div>
-            <button type="submit" class="btn btn-primary">Change Password</button>
+            <button type="submit" class="btn btn-primary">@Localizer["ChangePassword"]</button>
         </form>
     </div>
     <div class="col-md-6 mt-4">
-        <h4 class="mb-3">Two-Factor Authentication (2FA)</h4>
+        <h4 class="mb-3">@Localizer["2FATitle"]</h4>
 
         @if (ViewBag.HasAuthenticator)
         {
             <div class="alert alert-success">
-                Two-Factor Authentication is <strong>enabled</strong> for your account.
+                @Localizer["2FAEnabledMessage"]
             </div>
             <form asp-controller="Account" asp-action="ResetAuthenticator" method="post">
-                <button type="submit" class="btn btn-warning">Reset Authenticator</button>
+                <button type="submit" class="btn btn-warning">@Localizer["ResetAuthenticator"]</button>
             </form>
         }
         else
         {
             <div class="alert alert-secondary">
-                Two-Factor Authentication is <strong>not enabled</strong> on your account.
+                @Localizer["2FADisabledMessage"]
             </div>
-            <a class="btn btn-primary" asp-controller="Account" asp-action="EnableAuthenticator">Enable Authenticator</a>
+            <a class="btn btn-primary" asp-controller="Account" asp-action="EnableAuthenticator">@Localizer["EnableAuthenticator"]</a>
         }
     </div>
 </div>

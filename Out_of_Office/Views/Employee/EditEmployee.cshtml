@@ -1,10 +1,11 @@
 ﻿@model Out_of_Office.Application.Employee.EmployeeDto
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Edit Employee";
+    ViewData["Title"] = Localizer["EditEmployee"];
 }
 
-<h1>Edit Employee</h1>
+<h1>@Localizer["EditEmployee"]</h1>
 
 <div class="row">
     <div class="col-md-4">
@@ -23,70 +24,68 @@
             <input type="hidden" asp-for="Id" />
 
             <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
+                <label asp-for="FullName" class="control-label">@Localizer["FullName"]</label>
                 <input asp-for="FullName" class="form-control" />
                 <span asp-validation-for="FullName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Subdivision" class="control-label"></label>
+                <label asp-for="Subdivision" class="control-label">@Localizer["Subdivision"]</label>
                 <input asp-for="Subdivision" class="form-control" />
                 <span asp-validation-for="Subdivision" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Position" class="control-label"></label>
+                <label asp-for="Position" class="control-label">@Localizer["Position"]</label>
                 <input asp-for="Position" class="form-control" />
                 <span asp-validation-for="Position" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="HireDate" class="control-label"></label>
+                <label asp-for="HireDate" class="control-label">@Localizer["HireDate"]</label>
                 <input asp-for="HireDate" class="form-control" />
                 <span asp-validation-for="HireDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
+                <label asp-for="Status" class="control-label">@Localizer["Status"]</label>
                 <select asp-for="Status" class="form-control">
-                    <option>Active</option>
-                    <option>Inactive</option>
+                    <option>@Localizer["StatusActive"]</option>
+                    <option>@Localizer["StatusInactive"]</option>
                 </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PeoplePartnerID" class="control-label"></label>
+                <label asp-for="PeoplePartnerID" class="control-label">@Localizer["PeoplePartnerID"]</label>
                 <input asp-for="PeoplePartnerID" class="form-control" />
                 <span asp-validation-for="PeoplePartnerID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OutOfOfficeBalance" class="control-label"></label>
+                <label asp-for="OutOfOfficeBalance" class="control-label">@Localizer["OutOfOfficeBalance"]</label>
                 <input asp-for="OutOfOfficeBalance" class="form-control" />
                 <span asp-validation-for="OutOfOfficeBalance" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Photo" class="control-label"></label>
+                <label asp-for="Photo" class="control-label">@Localizer["Photo"]</label>
                 <input asp-for="Photo" type="file" class="form-control-file" />
                 <span asp-validation-for="Photo" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-            <h4>Leave Balances</h4>
+
+            <h4>@Localizer["LeaveBalances"]</h4>
             @for (int i = 0; i < Model.LeaveBalances.Count; i++)
             {
                 <div class="form-group">
-                    <label class="control-label">@Model.LeaveBalances[i].Type Days</label>
-
+                    <label class="control-label">@string.Format(Localizer["LeaveBalanceDaysFormat"].Value, Model.LeaveBalances[i].Type)</label>
                     <input asp-for="LeaveBalances[@i].DaysAvailable" class="form-control" />
-
                     <input type="hidden" asp-for="LeaveBalances[@i].Type" />
-
                 </div>
             }
+
+            <div class="form-group mt-3">
+                <input type="submit" value="@Localizer["Save"]" class="btn btn-primary" />
+            </div>
         </form>
     </div>
-    
 </div>
 
 <div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">@Localizer["BackToList"]</a>
 </div>
 
 @section Scripts {
@@ -94,4 +93,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-
