@@ -57,11 +57,6 @@
                 <span asp-validation-for="PeoplePartnerID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OutOfOfficeBalance" class="control-label">@Localizer["OutOfOfficeBalance"]</label>
-                <input asp-for="OutOfOfficeBalance" class="form-control" />
-                <span asp-validation-for="OutOfOfficeBalance" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Photo" class="control-label">@Localizer["Photo"]</label>
                 <input asp-for="Photo" type="file" class="form-control-file" />
                 <span asp-validation-for="Photo" class="text-danger"></span>
@@ -71,7 +66,7 @@
             @for (int i = 0; i < Model.LeaveBalances.Count; i++)
             {
                 <div class="form-group">
-                    <label class="control-label">@string.Format(Localizer["LeaveBalanceDaysFormat"].Value, Model.LeaveBalances[i].Type)</label>
+                    <label class="control-label">@string.Format(Localizer["LeaveBalanceDaysFormat"].Value, Localizer[Model.LeaveBalances[i].Type].Value)</label>
                     <input asp-for="LeaveBalances[@i].DaysAvailable" class="form-control" />
                     <input type="hidden" asp-for="LeaveBalances[@i].Type" />
                 </div>
