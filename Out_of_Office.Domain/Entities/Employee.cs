@@ -25,6 +25,7 @@ namespace Out_of_Office.Domain.Entities
         public int PeoplePartnerID { get; set; }
         public int OutOfOfficeBalance { get; set; }
         public byte[] Photo { get; set; }
+        public string Email { get; set; }
         public ICollection<EmployeeProject> EmployeeProjects { get; set; }
         public ICollection<LeaveBalance> LeaveBalances { get; set; }
     }

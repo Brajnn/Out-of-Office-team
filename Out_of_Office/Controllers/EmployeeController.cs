@@ -160,6 +160,7 @@ namespace Out_of_Office.Controllers
                 OutOfOfficeBalance = employeeDto.OutOfOfficeBalance,
                 HireDate = employeeDto.HireDate,
                 Photo = employeeDto.Photo,
+                Email = employeeDto.Email,
                 LeaveBalances = employeeDto.LeaveBalances?.Select(lb => new LeaveBalanceDto
                 {
                     Type = lb.Type,

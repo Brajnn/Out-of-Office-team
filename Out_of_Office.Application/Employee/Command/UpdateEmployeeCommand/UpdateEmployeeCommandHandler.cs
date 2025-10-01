@@ -41,6 +41,7 @@ namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
             employee.PeoplePartnerID = request.PeoplePartnerID;
             employee.OutOfOfficeBalance = request.OutOfOfficeBalance;
             employee.Photo = request.Photo;
+            employee.Email = request.Email;
             if (request.LeaveBalances != null && request.LeaveBalances.Any())
             {
                 var invalid = request.LeaveBalances.FirstOrDefault(lb => lb.DaysAvailable < 0);

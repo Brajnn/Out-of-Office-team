@@ -54,6 +54,7 @@ namespace Out_of_Office.Application.Employee.Command.CreateEmployee
                 Status = employeeStatus,
                 PeoplePartnerID = request.PeoplePartnerID,
                 OutOfOfficeBalance = request.OutOfOfficeBalance,
+                Email = request.Email,
                 Photo = request.Photo,
                 LeaveBalances = new List<LeaveBalance>
                 {

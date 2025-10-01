@@ -18,7 +18,8 @@ namespace Out_of_Office.Application.Employee.Command.UpdateEmployeeCommand
         public string Status { get; set; }
         public int PeoplePartnerID { get; set; }
         public int OutOfOfficeBalance { get; set; }
-        public byte[] Photo { get; set; }
+        public byte[]? Photo { get; set; }
+        public string Email { get; set; }
         public List<LeaveBalanceDto> LeaveBalances { get; set; }
         public List<string> ValidationErrors { get; set; } = new();
     }
