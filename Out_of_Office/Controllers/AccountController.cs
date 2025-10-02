@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Out_of_Office.Domain.Interfaces;
 using Out_of_Office.Infrastructure.Identity;
 using Out_of_Office.Models;
+using System.Text.Encodings.Web;
 
 namespace Out_of_Office.Controllers
 {
@@ -10,11 +12,12 @@ namespace Out_of_Office.Controllers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        private readonly IEmailSender _emailSender;
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
@@ -153,6 +156,97 @@ namespace Out_of_Office.Controllers
 
             TempData["SuccessMessage"] = "Authenticator reset. Please configure a new authenticator app.";
             return RedirectToAction("EnableAuthenticator");
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null) return RedirectToAction("ForgotPasswordConfirmation");
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = System.Web.HttpUtility.UrlEncode(token);
+
+            var resetLink = Url.Action(
+                "ResetPassword", "Account",
+                new { token = encodedToken, email = user.Email },
+                Request.Scheme);
+
+            // proste wysłanie maila bez Razor View
+            await _emailSender.SendEmailAsync(
+                user.Email,
+                "Reset hasła",
+                $"Kliknij w link, aby zresetować hasło: {resetLink}");
+
+            return RedirectToAction("ForgotPasswordConfirmation");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string token, string email)
+        {
+            var model = new ResetPasswordViewModel { Token = token, Email = email };
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // tak samo: nie zdradzaj, że użytkownik nie istnieje
+                return RedirectToAction("ResetPasswordConfirmation");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ResetPasswordConfirmation");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> TestEmail()
+        {
+            try
+            {
+                await _emailSender.SendEmailAsync(
+                    "bacolik500@rograc.com",
+                    "Test Email",
+                    "To jest testowa wiadomość.");
+                return Content("Email wysłany!");
+            }
+            catch (Exception ex)
+            {
+                return Content("Błąd: " + ex.Message);
+            }
         }
 
     }

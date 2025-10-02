@@ -31,7 +31,9 @@ namespace Out_of_Office.Infrastructure.Extensions
                 .AddEntityFrameworkStores<Out_of_OfficeDbContext>()
                 .AddDefaultTokenProviders();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IEmployeeRepository,EmployeeRepository>();
+           
             services.AddScoped<IApprovalRequestRepository, ApprovalRequestRepository>();
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();

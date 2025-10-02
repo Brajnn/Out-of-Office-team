@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>de5e76c0-ec24-40c6-b004-518428cb6da1</UserSecretsId>
   </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="11.0.0" />
