@@ -21,6 +21,8 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddSession();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAplication();
+builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
+    o.TokenLifespan = TimeSpan.FromHours(2));
 var app = builder.Build();
 
 // --- Middleware localization ---

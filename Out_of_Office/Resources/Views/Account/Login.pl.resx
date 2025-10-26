@@ -129,4 +129,7 @@
   <data name="Username" xml:space="preserve">
     <value>Nazwa użytkownika</value>
   </data>
+  <data name="ForgotPasswordLink" xml:space="preserve">
+    <value>Zapomniałeś hasła?</value>
+  </data>
 </root>
