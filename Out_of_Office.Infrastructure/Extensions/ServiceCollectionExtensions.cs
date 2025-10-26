@@ -4,16 +4,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Out_of_Office.Domain.Interfaces;
 using Out_of_Office.Infrastructure.Presistance;
-using System.Reflection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Out_of_Office.Infrastructure.Repositories;
 using Out_of_Office.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Out_of_Office.Infrastructure.Identity;
+using Out_of_Office.Application.Common.Interfaces;
+using Out_of_Office.Infrastructure.Email;
 
 namespace Out_of_Office.Infrastructure.Extensions
 {
@@ -30,6 +26,15 @@ namespace Out_of_Office.Infrastructure.Extensions
             })
                 .AddEntityFrameworkStores<Out_of_OfficeDbContext>()
                 .AddDefaultTokenProviders();
+            services.Configure<EmailOptions>(configuration.GetSection("Email"));
+
+            services.AddScoped<IEmailSender>(sp =>
+            {
+                var opt = sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<EmailOptions>>().Value;
+                return opt.UseFilePickup
+                    ? new FileEmailSender(sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<EmailOptions>>())
+                    : new SmtpEmailSender(sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<EmailOptions>>());
+            });
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmployeeRepository,EmployeeRepository>();
             services.AddScoped<IApprovalRequestRepository, ApprovalRequestRepository>();

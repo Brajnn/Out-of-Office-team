@@ -33,7 +33,7 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
         {
             var today = DateTime.Today;
 
-            // Step 1: Validate the start date based on the selected absence reason
+            // Validate the start date based on the selected absence reason
             switch (request.AbsenceReason)
             {
                 case "Vacation":
@@ -54,19 +54,22 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
                 default:
                     throw new ArgumentException("Invalid absence reason selected.");
             }
-
-            // Step 2: Retrieve the employee based on the request's EmployeeId
+            if (request.EndDate < request.StartDate)
+            {
+                throw new ArgumentException("End date cannot be earlier than start date.");
+            }
+            // Retrieve the employee based on the request's EmployeeId
             var employee = await _employeeRepository.GetEmployeeByIdAsync(request.EmployeeId);
             if (employee == null)
                 throw new Exception("Employee not found.");
 
-            // Step 3: Retrieve the work calendar for the selected year
+            // Retrieve the work calendar for the selected year
             var year = request.StartDate.Year;
             var calendar = await _calendarRepository.GetByYearAsync(year);
             if (calendar == null || !calendar.Any())
                 throw new Exception($"No work calendar found for year {year}.");
 
-            // Step 4: Calculate the number of working days between the start and end dates
+            // Calculate the number of working days between the start and end dates
             var workingDays = calendar
                 .Where(d =>
                     d.Date >= request.StartDate &&
@@ -74,7 +77,7 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
                     !d.IsHoliday)
                 .Count();
 
-            // Step 5: Check if the employee has enough available leave days
+            // Check if the employee has enough available leave days
             var hasEnoughDays = request.AbsenceReason switch
             {
                 "Vacation" => employee.LeaveBalances.Any(lb => lb.Type == LeaveType.Vacation && lb.DaysAvailable >= workingDays),
@@ -82,7 +85,7 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
                 "Unpaid" => employee.LeaveBalances.Any(lb => lb.Type == LeaveType.Unpaid && lb.DaysAvailable >= workingDays),
                 _ => false
             };
-            // Step 6: Create and save the leave request
+            // Create and save the leave request
             if (!hasEnoughDays)
             {
                 string displayName = request.AbsenceReason switch

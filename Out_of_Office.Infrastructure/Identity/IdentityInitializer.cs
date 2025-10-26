@@ -49,6 +49,7 @@ namespace Out_of_Office.Infrastructure.Identity
                 HireDate = new DateTime(2023, 1, 1),
                 Status = EmployeeStatus.Active,
                 PeoplePartnerID = projectManagerEmployee.Id,
+                Email = adminEmail,
                 OutOfOfficeBalance = 30,
                 Photo = null,
                 LeaveBalances = new List<LeaveBalance>
@@ -93,6 +94,7 @@ namespace Out_of_Office.Infrastructure.Identity
                     HireDate = new DateTime(2023, 1, 1),
                     Status = EmployeeStatus.Active,
                     PeoplePartnerID = 1,
+                    Email = email,
                     OutOfOfficeBalance = 20,
                     LeaveBalances = new List<LeaveBalance>
             {

@@ -15,7 +15,19 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__OutOfOfficeConnectionString=Server=${DATABASE_HOST};Database=${DATABASE_NAME};User=${DATABASE_USER};Password=${SA_PASSWORD};TrustServerCertificate=True;
+      # --- EMAIL: mapowanie na klucze konfiguracji .NET ---
+      - Email__From=${EMAIL_FROM}
+      - Email__UseFilePickup=${EMAIL_USEFILEPICKUP}
+      - Email__PickupDirectory=${EMAIL_PICKUPDIRECTORY}
+      - Email__Smtp__Host=${EMAIL_SMTP_HOST}
+      - Email__Smtp__Port=${EMAIL_SMTP_PORT}
+      - Email__Smtp__User=${EMAIL_SMTP_USER}
+      - Email__Smtp__Pass=${EMAIL_SMTP_PASS}
+      - Email__Smtp__UseStartTls=${EMAIL_SMTP_USESTARTTLS}
 
+    volumes:
+      # dla trybu plikowego oraz żeby mieć podgląd na maile nawet przy SMTP (diagnostyka)
+      - emails:/app/Emails
   sqldata:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqldata
@@ -23,8 +35,8 @@ services:
     ports:
       - "1433:1433"
     environment:
-    - ACCEPT_EULA=Y
-    - SA_PASSWORD=${SA_PASSWORD}
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SA_PASSWORD}
     env_file:
       - .env
     volumes:
@@ -40,6 +52,6 @@ services:
     entrypoint: [ "sh", "-c", "/opt/mssql/bin/sqlservr & sleep 20 && /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -i /init.sql && tail -f /dev/null" ]
 volumes:
   sqldata-data:
-
+  emails:
 networks:
   backend-network:

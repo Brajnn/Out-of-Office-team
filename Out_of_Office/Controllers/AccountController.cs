@@ -3,23 +3,88 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Out_of_Office.Infrastructure.Identity;
 using Out_of_Office.Models;
-
+using System.Text.Encodings.Web;
+using Out_of_Office.Application.Common.Interfaces;
 namespace Out_of_Office.Controllers
 {
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
         public IActionResult Login() => View();
 
+       
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword() => View(new ForgotPasswordViewModel());
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                return View("ForgotPasswordConfirmation"); // nie zdradzamy czy konto istnieje
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callbackUrl = Url.Action("ResetPassword", "Account",
+                new { email = user.Email, token },
+                protocol: Request.Scheme, host: Request.Host.Value);
+
+            var body = $@"
+        <p>To reset your password click:</p>
+        <p><a href=""{HtmlEncoder.Default.Encode(callbackUrl!)}"">Reset password</a></p>";
+
+            await _emailSender.SendAsync(user.Email!, "Reset your password", body);
+            return View("ForgotPasswordConfirmation");
+        }
+
+        // === RESET PASSWORD ===
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token)) return BadRequest();
+            return View(new ResetPasswordViewModel { Email = email, Token = token });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null) return RedirectToAction(nameof(ResetPasswordConfirmation));
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                foreach (var e in result.Errors) ModelState.AddModelError("", e.Description);
+                return View(model);
+            }
+            return RedirectToAction(nameof(ResetPasswordConfirmation));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation() => View();
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation() => View();
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
