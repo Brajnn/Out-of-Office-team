@@ -135,4 +135,25 @@
   <data name="InvalidCredentials" xml:space="preserve">
     <value>Invalid username or password.</value>
   </data>
+  <data name="TwoFactorEnabledSuccess" xml:space="preserve">
+    <value>Two-factor authentication has been enabled successfully.</value>
+  </data>
+  <data name="VerificationCodeRequired" xml:space="preserve">
+    <value>Verification code is required.</value>
+  </data>
+  <data name="VerificationCodeIncorrect" xml:space="preserve">
+    <value>The verification code is incorrect.</value>
+  </data>
+  <data name="AuthenticatorResetSuccess" xml:space="preserve">
+    <value>Authenticator has been reset successfully.</value>
+  </data>
+  <data name="Invalid2faCode" xml:space="preserve">
+    <value>Invalid authentication code.</value>
+  </data>
+  <data name="InvalidRecoveryCode" xml:space="preserve">
+    <value>Invalid recovery code.</value>
+  </data>
+  <data name="UseRecoveryCodeLinkText" xml:space="preserve">
+    <value>Don’t have access to your authenticator device? Use a recovery code.</value>
+  </data>
 </root>

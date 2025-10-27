@@ -66,9 +66,9 @@ namespace Out_of_Office.Controllers
                 new { email = user.Email, token },
                 protocol: Request.Scheme, host: Request.Host.Value);
 
-            var subject = _stringLocalizer["ResetPasswordEmailSubject"];
+            var subject = _stringLocalizer["ResetPasswordEmailSubject"].Value;
             var body = string.Format(
-                _stringLocalizer["ResetPasswordEmailBodyHtml"],
+                _stringLocalizer["ResetPasswordEmailBodyHtml"].Value,
                 HtmlEncoder.Default.Encode(callbackUrl!)
             );
             await _emailSender.SendAsync(user.Email!, subject, body);
@@ -123,7 +123,7 @@ namespace Out_of_Office.Controllers
             if (result.Succeeded)
                 return RedirectToAction("Index", "Home");
 
-            ModelState.AddModelError(string.Empty, _stringLocalizer["InvalidCredentials"]);
+            ModelState.AddModelError(string.Empty, _stringLocalizer["InvalidCredentials"].Value);
             return View(model);
         }
 
@@ -143,7 +143,7 @@ namespace Out_of_Office.Controllers
 
             if (newPassword != confirmPassword)
             {
-                TempData["ErrorMessage"] = _stringLocalizer["PasswordsDoNotMatch"];
+                TempData["ErrorMessage"] = _stringLocalizer["PasswordsDoNotMatch"].Value;
                 return RedirectToAction("EmployeeProfile", "Employee");
             }
 
@@ -154,7 +154,7 @@ namespace Out_of_Office.Controllers
                 return RedirectToAction("EmployeeProfile", "Employee");
             }
 
-            TempData["SuccessMessage"] = _stringLocalizer["PasswordChangedSuccessfully"];
+            TempData["SuccessMessage"] = _stringLocalizer["PasswordChangedSuccessfully"].Value;
             return RedirectToAction("EmployeeProfile", "Employee");
         }
         [Authorize]
@@ -180,11 +180,12 @@ namespace Out_of_Office.Controllers
                 await _userManager.ResetAuthenticatorKeyAsync(user);
                 key = await _userManager.GetAuthenticatorKeyAsync(user);
             }
+            ViewBag.SuccessMessage = TempData["SuccessMessage"] as string;
 
             var verificationCode = model.Code?.Replace(" ", "").Replace("-", "");
             if (string.IsNullOrEmpty(verificationCode))
             {
-                ModelState.AddModelError(nameof(model.Code), _stringLocalizer["VerificationCodeRequired"]);
+                ModelState.AddModelError(nameof(model.Code), _stringLocalizer["VerificationCodeRequired"].Value);
                 return View(new EnableAuthenticatorViewModel { Key = key }); // Ensure key is passed again
             }
 
@@ -193,16 +194,16 @@ namespace Out_of_Office.Controllers
 
             if (!is2faTokenValid)
             {
-                ModelState.AddModelError(nameof(model.Code), _stringLocalizer["VerificationCodeIncorrect"]);
+                ModelState.AddModelError(nameof(model.Code), _stringLocalizer["VerificationCodeIncorrect"].Value);
                 return View(new EnableAuthenticatorViewModel { Key = key }); // Ensure key is passed again
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, true);
 
-            TempData["SuccessMessage"] = _stringLocalizer["TwoFactorEnabledSuccess"];
+            TempData["SuccessMessage"] = _stringLocalizer["TwoFactorEnabledSuccess"].Value;
 
-            var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-            TempData["RecoveryCodes"] = recoveryCodes;
+            var recoveryCodes = (await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10)).ToArray();
+            TempData["RecoveryCodes"] = string.Join("\n", recoveryCodes);
 
             return RedirectToAction("EmployeeProfile", "Employee");
         }
@@ -217,7 +218,7 @@ namespace Out_of_Office.Controllers
             var username = HttpContext.Session.GetString("2FAUser");
             if (username == null)
             {
-                ModelState.AddModelError(string.Empty, _stringLocalizer["SessionExpired"]);
+                ModelState.AddModelError(string.Empty, _stringLocalizer["SessionExpired"].Value);
                 return RedirectToAction("Login");
             }
 
@@ -229,7 +230,7 @@ namespace Out_of_Office.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError(string.Empty, _stringLocalizer["Invalid2faCode"]);
+            ModelState.AddModelError(string.Empty, _stringLocalizer["Invalid2faCode"].Value);
             return View(model);
         }
         [Authorize]
@@ -240,8 +241,58 @@ namespace Out_of_Office.Controllers
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
 
-            TempData["SuccessMessage"] = _stringLocalizer["AuthenticatorResetSuccess"];
+            TempData["SuccessMessage"] = _stringLocalizer["AuthenticatorResetSuccess"].Value;
             return RedirectToAction("EnableAuthenticator");
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> LoginWithRecoveryCode()
+        {
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null)
+            {
+
+                TempData["ErrorMessage"] = _stringLocalizer["SessionExpired"].Value;
+                return RedirectToAction(nameof(Login));
+            }
+
+            return View(new LoginWithRecoveryCodeViewModel());
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoginWithRecoveryCode(LoginWithRecoveryCodeViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var twoFaUser = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (twoFaUser == null)
+            {
+                TempData["ErrorMessage"] = _stringLocalizer["SessionExpired"].Value;
+                return RedirectToAction(nameof(Login));
+            }
+
+            var code = model.RecoveryCode?.Trim();
+            var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(code);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (result.IsLockedOut)
+            {
+                ModelState.AddModelError(string.Empty, _stringLocalizer["AccountLocked"].Value);
+                return View(model);
+            }
+            twoFaUser = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (twoFaUser == null)
+            {
+                TempData["ErrorMessage"] = _stringLocalizer["SessionExpired"].Value;
+                return RedirectToAction(nameof(Login));
+            }
+            ModelState.AddModelError(string.Empty, _stringLocalizer["InvalidRecoveryCode"].Value);
+            return View(model);
         }
 
     }

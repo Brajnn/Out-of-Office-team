@@ -129,4 +129,7 @@
   <data name="LoginButton" xml:space="preserve">
     <value>Zaloguj się</value>
   </data>
+  <data name="UseRecoveryCodeLinkText" xml:space="preserve">
+    <value>Nie masz dostępu do aplikacji uwierzytelniającej? Użyj kodu zapasowego.</value>
+  </data>
 </root>

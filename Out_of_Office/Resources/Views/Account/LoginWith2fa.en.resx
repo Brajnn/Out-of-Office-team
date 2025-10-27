@@ -129,4 +129,7 @@
   <data name="LoginButton" xml:space="preserve">
     <value>Log in</value>
   </data>
+  <data name="UseRecoveryCodeLinkText" xml:space="preserve">
+    <value>Don’t have access to your authenticator device? Use a recovery code.</value>
+  </data>
 </root>

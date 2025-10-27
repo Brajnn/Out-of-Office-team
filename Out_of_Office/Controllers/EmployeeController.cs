@@ -191,7 +191,9 @@ namespace Out_of_Office.Controllers
                 return NotFound("Employee not found.");
 
             ViewBag.Username = user.UserName;
-            ViewBag.HasAuthenticator = user.TwoFactorEnabled;
+            ViewBag.HasAuthenticator = await _userManager.GetTwoFactorEnabledAsync(user);
+            ViewBag.SuccessMessage = TempData["SuccessMessage"] as string;
+            ViewBag.RecoveryCodes = TempData["RecoveryCodes"] as string;
             return View("EmployeeProfile", employee);
         }
     }

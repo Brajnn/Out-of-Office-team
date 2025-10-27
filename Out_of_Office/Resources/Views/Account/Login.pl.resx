@@ -135,4 +135,25 @@
   <data name="InvalidCredentials" xml:space="preserve">
     <value>Nieprawidłowa nazwa użytkownika lub hasło.</value>
   </data>
+  <data name="TwoFactorEnabledSuccess" xml:space="preserve">
+    <value>Uwierzytelnianie dwuskładnikowe zostało pomyślnie włączone.</value>
+  </data>
+  <data name="VerificationCodeRequired" xml:space="preserve">
+    <value>Wymagany jest kod weryfikacyjny.</value>
+  </data>
+  <data name="VerificationCodeIncorrect" xml:space="preserve">
+    <value>Podano nieprawidłowy kod weryfikacyjny.</value>
+  </data>
+  <data name="AuthenticatorResetSuccess" xml:space="preserve">
+    <value>Aplikacja uwierzytelniająca została pomyślnie zresetowana.</value>
+  </data>
+  <data name="Invalid2faCode" xml:space="preserve">
+    <value>Nieprawidłowy kod uwierzytelniający.</value>
+  </data>
+  <data name="InvalidRecoveryCode" xml:space="preserve">
+    <value>Nieprawidłowy kod zapasowy.</value>
+  </data>
+  <data name="UseRecoveryCodeLinkText" xml:space="preserve">
+    <value>Nie masz dostępu do aplikacji uwierzytelniającej? Użyj kodu zapasowego.</value>
+  </data>
 </root>

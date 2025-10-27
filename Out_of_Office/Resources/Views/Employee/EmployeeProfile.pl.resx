@@ -219,4 +219,31 @@
   <data name="EmployeeStatus_Inactive" xml:space="preserve">
     <value>Nieaktywny</value>
   </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>Hasła nie są takie same.</value>
+  </data>
+  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+    <value>Hasło zostało pomyślnie zmienione.</value>
+  </data>
+  <data name="AuthenticatorResetSuccess" xml:space="preserve">
+    <value>Aplikacja uwierzytelniająca została pomyślnie zresetowana.</value>
+  </data>
+  <data name="TwoFactorEnabledSuccess" xml:space="preserve">
+    <value>Uwierzytelnianie dwuskładnikowe zostało pomyślnie włączone.</value>
+  </data>
+  <data name="RecoveryCodesTitle" xml:space="preserve">
+    <value>Kody zapasowe</value>
+  </data>
+  <data name="RecoveryCodesInstruction" xml:space="preserve">
+    <value>Użyj tych kodów, jeśli utracisz dostęp do aplikacji uwierzytelniającej. Każdy kod można wykorzystać tylko raz.</value>
+  </data>
+  <data name="RecoveryCodesWarning" xml:space="preserve">
+    <value>Zachowaj te kody w bezpiecznym miejscu. Nie udostępniaj ich nikomu.</value>
+  </data>
+  <data name="Invalid2faCode" xml:space="preserve">
+    <value>Nieprawidłowy kod uwierzytelniający.</value>
+  </data>
+  <data name="SessionExpired" xml:space="preserve">
+    <value>Sesja uwierzytelniania dwuskładnikowego wygasła. Zaloguj się ponownie.</value>
+  </data>
 </root>

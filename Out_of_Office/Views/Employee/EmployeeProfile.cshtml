@@ -12,7 +12,25 @@
 {
     <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
 }
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success">@ViewBag.SuccessMessage</div>
+}
 
+@if (ViewBag.RecoveryCodes != null)
+{
+    <div class="alert alert-info">
+        <h5 class="mb-2">@Localizer["RecoveryCodesTitle"]</h5>
+        <p class="mb-2">@Localizer["RecoveryCodesInstruction"]</p>
+        <ul class="list-unstyled">
+            @foreach (var code in ((string)ViewBag.RecoveryCodes).Split('\n', StringSplitOptions.RemoveEmptyEntries))
+            {
+                <li><code>@code</code></li>
+            }
+        </ul>
+        <p class="mb-0"><strong>@Localizer["RecoveryCodesWarning"]</strong></p>
+    </div>
+}
 <div class="row">
     <div class="col-md-6">
         <h4 class="mb-3">@Localizer["EmployeeInformation"]</h4>

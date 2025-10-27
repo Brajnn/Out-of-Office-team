@@ -219,4 +219,31 @@
   <data name="EmployeeStatus_Inactive" xml:space="preserve">
     <value>Inactive</value>
   </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>Passwords do not match.</value>
+  </data>
+  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+    <value>Password changed successfully.</value>
+  </data>
+  <data name="AuthenticatorResetSuccess" xml:space="preserve">
+    <value>Authenticator has been reset successfully.</value>
+  </data>
+  <data name="TwoFactorEnabledSuccess" xml:space="preserve">
+    <value>Two-factor authentication has been enabled successfully.</value>
+  </data>
+  <data name="RecoveryCodesTitle" xml:space="preserve">
+    <value>Backup recovery codes</value>
+  </data>
+  <data name="RecoveryCodesInstruction" xml:space="preserve">
+    <value>Use these codes if you lose access to your authenticator app. Each code can be used only once.</value>
+  </data>
+  <data name="RecoveryCodesWarning" xml:space="preserve">
+    <value>Keep these codes in a safe place. Do not share them with anyone.</value>
+  </data>
+  <data name="Invalid2faCode" xml:space="preserve">
+    <value>Invalid authentication code.</value>
+  </data>
+  <data name="SessionExpired" xml:space="preserve">
+    <value>Two-factor authentication session expired. Please log in again.</value>
+  </data>
 </root>
