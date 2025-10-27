@@ -132,4 +132,7 @@
   <data name="ForgotPasswordLink" xml:space="preserve">
     <value>Zapomniałeś hasła?</value>
   </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Nieprawidłowa nazwa użytkownika lub hasło.</value>
+  </data>
 </root>

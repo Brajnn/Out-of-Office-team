@@ -5,6 +5,8 @@ using Out_of_Office.Infrastructure.Identity;
 using Out_of_Office.Models;
 using System.Text.Encodings.Web;
 using Out_of_Office.Application.Common.Interfaces;
+using Out_of_Office;
+using Microsoft.Extensions.Localization;
 namespace Out_of_Office.Controllers
 {
     public class AccountController : Controller
@@ -12,12 +14,33 @@ namespace Out_of_Office.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer _stringLocalizer;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IEmailSender emailSender, IStringLocalizerFactory factory)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _emailSender = emailSender;
+            var asm = typeof(Program).Assembly.GetName().Name!;
+            _stringLocalizer = factory.Create("Views.Account.Login", asm);
+        }
+        [HttpGet]
+        public IActionResult TestLoc([FromServices] IStringLocalizer<SharedResource> L)
+        {
+            // 1) Wypisz wartość klucza
+            var value = L["InvalidCredentials"].Value;
+
+            // 2) Policz, czy w ogóle widzi jakieś stringi
+            var all = L.GetAllStrings(includeParentCultures: true).ToList();
+            var count = all.Count;
+
+            return Content($"Value='{value}', Count={count}");
+        }
+        [HttpGet]
+        public IActionResult ListRes()
+        {
+            var names = typeof(Program).Assembly.GetManifestResourceNames();
+            return Content(string.Join("\n", names));
         }
 
         [HttpGet]
@@ -43,11 +66,12 @@ namespace Out_of_Office.Controllers
                 new { email = user.Email, token },
                 protocol: Request.Scheme, host: Request.Host.Value);
 
-            var body = $@"
-        <p>To reset your password click:</p>
-        <p><a href=""{HtmlEncoder.Default.Encode(callbackUrl!)}"">Reset password</a></p>";
-
-            await _emailSender.SendAsync(user.Email!, "Reset your password", body);
+            var subject = _stringLocalizer["ResetPasswordEmailSubject"];
+            var body = string.Format(
+                _stringLocalizer["ResetPasswordEmailBodyHtml"],
+                HtmlEncoder.Default.Encode(callbackUrl!)
+            );
+            await _emailSender.SendAsync(user.Email!, subject, body);
             return View("ForgotPasswordConfirmation");
         }
 
@@ -99,7 +123,7 @@ namespace Out_of_Office.Controllers
             if (result.Succeeded)
                 return RedirectToAction("Index", "Home");
 
-            ModelState.AddModelError("", "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, _stringLocalizer["InvalidCredentials"]);
             return View(model);
         }
 
@@ -119,7 +143,7 @@ namespace Out_of_Office.Controllers
 
             if (newPassword != confirmPassword)
             {
-                TempData["ErrorMessage"] = "Passwords do not match.";
+                TempData["ErrorMessage"] = _stringLocalizer["PasswordsDoNotMatch"];
                 return RedirectToAction("EmployeeProfile", "Employee");
             }
 
@@ -130,7 +154,7 @@ namespace Out_of_Office.Controllers
                 return RedirectToAction("EmployeeProfile", "Employee");
             }
 
-            TempData["SuccessMessage"] = "Password changed successfully.";
+            TempData["SuccessMessage"] = _stringLocalizer["PasswordChangedSuccessfully"];
             return RedirectToAction("EmployeeProfile", "Employee");
         }
         [Authorize]
@@ -160,7 +184,7 @@ namespace Out_of_Office.Controllers
             var verificationCode = model.Code?.Replace(" ", "").Replace("-", "");
             if (string.IsNullOrEmpty(verificationCode))
             {
-                ModelState.AddModelError(nameof(model.Code), "The verification code is required. Please enter the code from your authenticator app.");
+                ModelState.AddModelError(nameof(model.Code), _stringLocalizer["VerificationCodeRequired"]);
                 return View(new EnableAuthenticatorViewModel { Key = key }); // Ensure key is passed again
             }
 
@@ -169,13 +193,13 @@ namespace Out_of_Office.Controllers
 
             if (!is2faTokenValid)
             {
-                ModelState.AddModelError(nameof(model.Code), "The verification code is incorrect. Please try again with the correct code from your authenticator app.");
+                ModelState.AddModelError(nameof(model.Code), _stringLocalizer["VerificationCodeIncorrect"]);
                 return View(new EnableAuthenticatorViewModel { Key = key }); // Ensure key is passed again
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, true);
 
-            TempData["SuccessMessage"] = "Two-factor authentication has been successfully enabled.";
+            TempData["SuccessMessage"] = _stringLocalizer["TwoFactorEnabledSuccess"];
 
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
             TempData["RecoveryCodes"] = recoveryCodes;
@@ -193,7 +217,7 @@ namespace Out_of_Office.Controllers
             var username = HttpContext.Session.GetString("2FAUser");
             if (username == null)
             {
-                ModelState.AddModelError("", "Session expired. Try logging in again.");
+                ModelState.AddModelError(string.Empty, _stringLocalizer["SessionExpired"]);
                 return RedirectToAction("Login");
             }
 
@@ -205,7 +229,7 @@ namespace Out_of_Office.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError("", "Invalid authenticator code.");
+            ModelState.AddModelError(string.Empty, _stringLocalizer["Invalid2faCode"]);
             return View(model);
         }
         [Authorize]
@@ -216,7 +240,7 @@ namespace Out_of_Office.Controllers
             await _userManager.SetTwoFactorEnabledAsync(user, false);
             await _userManager.ResetAuthenticatorKeyAsync(user);
 
-            TempData["SuccessMessage"] = "Authenticator reset. Please configure a new authenticator app.";
+            TempData["SuccessMessage"] = _stringLocalizer["AuthenticatorResetSuccess"];
             return RedirectToAction("EnableAuthenticator");
         }
 
