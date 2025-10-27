@@ -7,6 +7,7 @@ using System.Text.Encodings.Web;
 using Out_of_Office.Application.Common.Interfaces;
 using Out_of_Office;
 using Microsoft.Extensions.Localization;
+using Microsoft.EntityFrameworkCore;
 namespace Out_of_Office.Controllers
 {
     public class AccountController : Controller
@@ -294,7 +295,70 @@ namespace Out_of_Office.Controllers
             ModelState.AddModelError(string.Empty, _stringLocalizer["InvalidRecoveryCode"].Value);
             return View(model);
         }
+        [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> AdminSetPassword(int employeeId, string newPassword, string confirmPassword)
+        {
+            if (string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword))
+            {
+                TempData["ErrorMessage"] = _stringLocalizer["PasswordsDoNotMatch"].Value;
+                return RedirectToAction("Details", "Employee", new { id = employeeId });
+            }
 
+            if (newPassword != confirmPassword)
+            {
+                TempData["ErrorMessage"] = _stringLocalizer["PasswordsDoNotMatch"].Value;
+                return RedirectToAction("Details", "Employee", new { id = employeeId });
+            }
+
+            // znajdź usera po powiązanym EmployeeId
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.EmployeeId == employeeId);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = _stringLocalizer["UserNotFound"].Value;
+                return RedirectToAction("Details", "Employee", new { id = employeeId });
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+            if (!result.Succeeded)
+            {
+                var msg = string.Join(" ", result.Errors.Select(e => e.Description));
+                TempData["ErrorMessage"] = msg;
+                return RedirectToAction("Details", "Employee", new { id = employeeId });
+            }
+
+            TempData["SuccessMessage"] = _stringLocalizer["AdminPasswordChangedSuccess"].Value;
+            return RedirectToAction("Details", "Employee", new { id = employeeId });
+        }
+
+
+        [Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> AdminDisableTwoFactor(int employeeId)
+        {
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.EmployeeId == employeeId);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = _stringLocalizer["UserNotFound"].Value;
+                return RedirectToAction("Details", "Employee", new { id = employeeId });
+            }
+
+            var is2faEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
+            if (!is2faEnabled)
+            {
+                TempData["InfoMessage"] = _stringLocalizer["Admin2FAAlreadyDisabled"].Value;
+                return RedirectToAction("Details", "Employee", new { id = employeeId });
+            }
+
+            await _userManager.SetTwoFactorEnabledAsync(user, false);
+
+            TempData["SuccessMessage"] = _stringLocalizer["Admin2FADisabledSuccess"].Value;
+            return RedirectToAction("Details", "Employee", new { id = employeeId });
+        }
     }
 
 }

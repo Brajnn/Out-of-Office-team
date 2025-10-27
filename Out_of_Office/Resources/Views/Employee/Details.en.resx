@@ -166,4 +166,43 @@
   <data name="Position_Administrator" xml:space="preserve">
     <value>Administrator</value>
   </data>
+  <data name="AdminActions" xml:space="preserve">
+    <value>Admin actions</value>
+  </data>
+  <data name="SendPasswordResetLink" xml:space="preserve">
+    <value>Send password reset link</value>
+  </data>
+  <data name="Reset2FA" xml:space="preserve">
+    <value>Reset 2FA</value>
+  </data>
+  <data name="ConfirmSendPasswordReset" xml:space="preserve">
+    <value>Send password reset email to this user?</value>
+  </data>
+  <data name="ConfirmReset2FA" xml:space="preserve">
+    <value>Disable 2FA and reset the authenticator key for this user?</value>
+  </data>
+  <data name="SetNewPasswordTitle" xml:space="preserve">
+    <value>Set a new password</value>
+  </data>
+  <data name="SetNewPasswordButton" xml:space="preserve">
+    <value>Set new password</value>
+  </data>
+  <data name="ConfirmSetNewPassword" xml:space="preserve">
+    <value>Set a new password for this user?</value>
+  </data>
+  <data name="TwoFactorActionsTitle" xml:space="preserve">
+    <value>Two-Factor actions</value>
+  </data>
+  <data name="Disable2FAButton" xml:space="preserve">
+    <value>Disable 2FA</value>
+  </data>
+  <data name="ConfirmDisable2FA" xml:space="preserve">
+    <value>Disable two-factor authentication for this user?</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
 </root>

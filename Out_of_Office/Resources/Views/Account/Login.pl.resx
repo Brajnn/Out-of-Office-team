@@ -156,4 +156,28 @@
   <data name="UseRecoveryCodeLinkText" xml:space="preserve">
     <value>Nie masz dostępu do aplikacji uwierzytelniającej? Użyj kodu zapasowego.</value>
   </data>
+  <data name="AdminPasswordResetSent" xml:space="preserve">
+    <value>Wysłano do użytkownika e-mail z resetem hasła.</value>
+  </data>
+  <data name="Admin2FAResetSuccess" xml:space="preserve">
+    <value>Użytkownikowi zresetowano uwierzytelnianie dwuskładnikowe.</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Nie znaleziono użytkownika.</value>
+  </data>
+  <data name="PasswordResetNotSentUser" xml:space="preserve">
+    <value>Nie wysłano e-maila z resetem hasła (użytkownik nie istnieje lub e-mail niepotwierdzony).</value>
+  </data>
+  <data name="AdminPasswordChangedSuccess" xml:space="preserve">
+    <value>Hasło zostało pomyślnie zmienione.</value>
+  </data>
+  <data name="Admin2FADisabledSuccess" xml:space="preserve">
+    <value>Dla tego użytkownika wyłączono uwierzytelnianie dwuskładnikowe.</value>
+  </data>
+  <data name="Admin2FADisableFailed" xml:space="preserve">
+    <value>Nie udało się wyłączyć uwierzytelniania dwuskładnikowego.</value>
+  </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>Hasła nie są takie same.</value>
+  </data>
 </root>

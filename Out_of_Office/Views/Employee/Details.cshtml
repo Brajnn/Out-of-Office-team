@@ -66,3 +66,60 @@
 <div>
     <a asp-action="Index" class="btn btn-secondary">@Localizer["BackToList"]</a>
 </div>
+@if (User.IsInRole("Administrator"))
+{
+    <hr />
+    <h4 class="mt-4">@Localizer["AdminActions"]</h4>
+
+    <div class="row g-3">
+        <!-- Reset hasła -->
+        <div class="col-md-6">
+            <form asp-controller="Account" asp-action="AdminSetPassword" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="employeeId" value="@Model.Id" />
+
+                <div class="mb-2">
+                    <label class="form-label">@Localizer["NewPassword"]</label>
+                    <input type="password" name="newPassword" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">@Localizer["ConfirmNewPassword"]</label>
+                    <input type="password" name="confirmPassword" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-outline-primary"
+                        onclick="return confirm('@Localizer["ConfirmSetNewPassword"]');">
+                    @Localizer["SetNewPasswordButton"]
+                </button>
+            </form>
+        </div>
+
+        <!-- Wyłącz 2FA -->
+        @if (ViewBag.TargetHas2FA == true)
+        {
+            <div class="col-md-6">
+                <form asp-controller="Account" asp-action="AdminDisableTwoFactor" method="post"
+                      onsubmit="return confirm('@Localizer["ConfirmDisable2FA"]');">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="employeeId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-outline-warning">
+                        @Localizer["Disable2FAButton"]
+                    </button>
+                </form>
+            </div>
+        }
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger mt-3">@TempData["ErrorMessage"]</div>
+    }
+    @if (TempData["InfoMessage"] != null)
+    {
+        <div class="alert alert-info mt-3">@TempData["InfoMessage"]</div>
+    }
+}

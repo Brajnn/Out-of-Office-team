@@ -156,4 +156,28 @@
   <data name="UseRecoveryCodeLinkText" xml:space="preserve">
     <value>Don’t have access to your authenticator device? Use a recovery code.</value>
   </data>
+  <data name="AdminPasswordResetSent" xml:space="preserve">
+    <value>Password reset email sent to the user.</value>
+  </data>
+  <data name="Admin2FAResetSuccess" xml:space="preserve">
+    <value>Two-factor authentication has been reset for this user.</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found.</value>
+  </data>
+  <data name="PasswordResetNotSentUser" xml:space="preserve">
+    <value>Password reset email wasn’t sent (user not found or email not confirmed).</value>
+  </data>
+  <data name="AdminPasswordChangedSuccess" xml:space="preserve">
+    <value>The password has been changed successfully.</value>
+  </data>
+  <data name="Admin2FADisabledSuccess" xml:space="preserve">
+    <value>Two-factor authentication has been disabled for this user.</value>
+  </data>
+  <data name="Admin2FADisableFailed" xml:space="preserve">
+    <value>Could not disable two-factor authentication.</value>
+  </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>Passwords do not match.</value>
+  </data>
 </root>

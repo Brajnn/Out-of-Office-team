@@ -14,6 +14,7 @@ using Out_of_Office.Infrastructure.Identity;
 using System.Security.Claims;
 using X.PagedList;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Microsoft.EntityFrameworkCore;
 namespace Out_of_Office.Controllers
 {
     [Authorize(Roles = "Employee,HRManager,ProjectManager,Administrator")]
@@ -66,7 +67,11 @@ namespace Out_of_Office.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var employee = await _mediator.Send(new GetEmployeeByIdQuery { Id = id });
-            return employee is null ? NotFound() : View(employee);
+            if (employee is null)
+                return NotFound();
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.EmployeeId == id);
+            ViewBag.TargetHas2FA = user != null && await _userManager.GetTwoFactorEnabledAsync(user);
+            return View(employee);
         }
 
 
