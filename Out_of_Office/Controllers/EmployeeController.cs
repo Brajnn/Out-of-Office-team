@@ -15,6 +15,7 @@ using System.Security.Claims;
 using X.PagedList;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 namespace Out_of_Office.Controllers
 {
     [Authorize(Roles = "Employee,HRManager,ProjectManager,Administrator")]
@@ -22,10 +23,13 @@ namespace Out_of_Office.Controllers
     {
         private readonly IMediator _mediator;
         private readonly UserManager<ApplicationUser> _userManager;
-        public EmployeeController(IMediator mediator, UserManager<ApplicationUser> userManager)
+        private readonly IStringLocalizer stringLocalizer;
+        public EmployeeController(IMediator mediator, UserManager<ApplicationUser> userManager, IStringLocalizerFactory factory)
         {
             _mediator = mediator;
             _userManager = userManager;
+            var asm = typeof(Program).Assembly.GetName().Name!;
+            stringLocalizer = factory.Create("Views.Employee.CreateEmployee", asm);
         }
         public async Task<IActionResult> Index(string sortOrder, string searchString, List<string> selectedPositions, bool showInactive = false, int? pageNumber = 1)
         {
@@ -56,9 +60,9 @@ namespace Out_of_Office.Controllers
             ViewBag.SelectedPositions = selectedPositions ?? new List<string>();
             ViewBag.Positions = new List<SelectListItem>
             {
-                new SelectListItem { Text = "HR Manager", Value = "HRManager" },
-                new SelectListItem { Text = "Project Manager", Value = "ProjectManager" },
-                new SelectListItem { Text = "Employee", Value = "Employee" }
+                new SelectListItem { Text = stringLocalizer["Position_HRManager"], Value = "HRManager" },
+                new SelectListItem { Text = stringLocalizer["Position_ProjectManager"], Value = "ProjectManager" },
+                new SelectListItem { Text = stringLocalizer["Position_Employee"], Value = "Employee" }
             };
             return View(employees.ToPagedList(pageNumber ?? 1, 10));
         }
@@ -120,9 +124,9 @@ namespace Out_of_Office.Controllers
 
             var positions = new List<SelectListItem>
             {
-                new SelectListItem { Text = "HR Manager", Value = "HRManager" },
-                new SelectListItem { Text = "Project Manager", Value = "ProjectManager" },
-                new SelectListItem { Text = "Employee", Value = "Employee" }
+                new SelectListItem { Text = stringLocalizer["Position_HRManager"], Value = "HRManager" },
+                new SelectListItem { Text = stringLocalizer["Position_ProjectManager"], Value = "ProjectManager" },
+                new SelectListItem { Text = stringLocalizer["Position_Employee"], Value = "Employee" }
             };
 
             ViewBag.HrManagers = hrManagers;
