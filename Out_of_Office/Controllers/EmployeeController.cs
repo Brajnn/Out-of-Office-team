@@ -62,7 +62,8 @@ namespace Out_of_Office.Controllers
             {
                 new SelectListItem { Text = stringLocalizer["Position_HRManager"], Value = "HRManager" },
                 new SelectListItem { Text = stringLocalizer["Position_ProjectManager"], Value = "ProjectManager" },
-                new SelectListItem { Text = stringLocalizer["Position_Employee"], Value = "Employee" }
+                new SelectListItem { Text = stringLocalizer["Position_Employee"], Value = "Employee" },
+                new SelectListItem { Text = stringLocalizer["Position_Administrator"], Value = "Administrator" }
             };
             return View(employees.ToPagedList(pageNumber ?? 1, 10));
         }
@@ -126,7 +127,8 @@ namespace Out_of_Office.Controllers
             {
                 new SelectListItem { Text = stringLocalizer["Position_HRManager"], Value = "HRManager" },
                 new SelectListItem { Text = stringLocalizer["Position_ProjectManager"], Value = "ProjectManager" },
-                new SelectListItem { Text = stringLocalizer["Position_Employee"], Value = "Employee" }
+                new SelectListItem { Text = stringLocalizer["Position_Employee"], Value = "Employee" },
+                new SelectListItem { Text = stringLocalizer["Position_Administrator"], Value = "Administrator" }
             };
 
             ViewBag.HrManagers = hrManagers;
