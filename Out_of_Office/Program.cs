@@ -29,7 +29,8 @@ var app = builder.Build();
 var supportedCultures = new[]
 {
     new CultureInfo("en"),
-    new CultureInfo("pl")
+    new CultureInfo("pl"),
+    new CultureInfo("de")
 };
 
 app.UseRequestLocalization(new RequestLocalizationOptions

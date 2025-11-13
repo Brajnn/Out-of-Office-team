@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -86,45 +86,123 @@
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
+    <value></value>
   </resheader>
   <resheader name="version">
-    <value>1.3</value>
+    <value></value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
-  <data name="AuthenticatorResetSuccess" xml:space="preserve">
+  <data name="EmployeeDetails" xml:space="preserve">
     <value></value>
   </data>
-  <data name="Invalid2faCode" xml:space="preserve">
+  <data name="FullName" xml:space="preserve">
     <value></value>
   </data>
-  <data name="InvalidCredentials" xml:space="preserve">
+  <data name="Username" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+  <data name="Subdivision" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordsDoNotMatch" xml:space="preserve">
+  <data name="Position" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailSubject" xml:space="preserve">
+  <data name="HireDate" xml:space="preserve">
     <value></value>
   </data>
-  <data name="SessionExpired" xml:space="preserve">
+  <data name="Status" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailBodyHtml" xml:space="preserve">
+  <data name="PeoplePartnerID" xml:space="preserve">
     <value></value>
   </data>
-  <data name="RequiresTwoFactor" xml:space="preserve">
+  <data name="Photo" xml:space="preserve">
     <value></value>
   </data>
-  <data name="AccountLocked" xml:space="preserve">
+  <data name="EmployeePhotoAlt" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveBalances" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveType" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DaysAvailable" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveType_SickLeave" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveType_Unpaid" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveType_Vacation" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="EmployeeStatus_Active" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="EmployeeStatus_Inactive" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Position_HRManager" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Position_ProjectManager" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Position_Employee" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Position_Administrator" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="AdminActions" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SendPasswordResetLink" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Reset2FA" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ConfirmSendPasswordReset" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ConfirmReset2FA" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SetNewPasswordTitle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SetNewPasswordButton" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ConfirmSetNewPassword" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="TwoFactorActionsTitle" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Disable2FAButton" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ConfirmDisable2FA" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
     <value></value>
   </data>
 </root>

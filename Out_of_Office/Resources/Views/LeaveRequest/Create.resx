@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -86,45 +86,48 @@
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
+    <value></value>
   </resheader>
   <resheader name="version">
-    <value>1.3</value>
+    <value></value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
-  <data name="AuthenticatorResetSuccess" xml:space="preserve">
+  <data name="CreateLeaveRequest" xml:space="preserve">
     <value></value>
   </data>
-  <data name="Invalid2faCode" xml:space="preserve">
+  <data name="AbsenceReason" xml:space="preserve">
     <value></value>
   </data>
-  <data name="InvalidCredentials" xml:space="preserve">
+  <data name="SelectReason" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+  <data name="ReasonVacation" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordsDoNotMatch" xml:space="preserve">
+  <data name="ReasonSickLeave" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailSubject" xml:space="preserve">
+  <data name="ReasonUnpaid" xml:space="preserve">
     <value></value>
   </data>
-  <data name="SessionExpired" xml:space="preserve">
+  <data name="StartDate" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailBodyHtml" xml:space="preserve">
+  <data name="EndDate" xml:space="preserve">
     <value></value>
   </data>
-  <data name="RequiresTwoFactor" xml:space="preserve">
+  <data name="Comment" xml:space="preserve">
     <value></value>
   </data>
-  <data name="AccountLocked" xml:space="preserve">
+  <data name="Create" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
     <value></value>
   </data>
 </root>

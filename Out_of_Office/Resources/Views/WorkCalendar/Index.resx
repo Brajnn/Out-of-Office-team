@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -86,45 +86,42 @@
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
+    <value></value>
   </resheader>
   <resheader name="version">
-    <value>1.3</value>
+    <value></value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
-  <data name="AuthenticatorResetSuccess" xml:space="preserve">
+  <data name="WorkCalendarTitle" xml:space="preserve">
     <value></value>
   </data>
-  <data name="Invalid2faCode" xml:space="preserve">
+  <data name="WorkCalendars" xml:space="preserve">
     <value></value>
   </data>
-  <data name="InvalidCredentials" xml:space="preserve">
+  <data name="CreateNewCalendar" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+  <data name="Year" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordsDoNotMatch" xml:space="preserve">
+  <data name="Actions" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailSubject" xml:space="preserve">
+  <data name="Details" xml:space="preserve">
     <value></value>
   </data>
-  <data name="SessionExpired" xml:space="preserve">
+  <data name="Delete" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailBodyHtml" xml:space="preserve">
+  <data name="DeleteCalendarConfirmationFormat" xml:space="preserve">
     <value></value>
   </data>
-  <data name="RequiresTwoFactor" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="AccountLocked" xml:space="preserve">
+  <data name="NoCalendarsFound" xml:space="preserve">
     <value></value>
   </data>
 </root>

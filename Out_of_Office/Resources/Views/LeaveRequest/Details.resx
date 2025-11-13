@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -86,45 +86,108 @@
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
+    <value></value>
   </resheader>
   <resheader name="version">
-    <value>1.3</value>
+    <value></value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
-  <data name="AuthenticatorResetSuccess" xml:space="preserve">
+  <data name="LeaveRequestDetails" xml:space="preserve">
     <value></value>
   </data>
-  <data name="Invalid2faCode" xml:space="preserve">
+  <data name="RequestID" xml:space="preserve">
     <value></value>
   </data>
-  <data name="InvalidCredentials" xml:space="preserve">
+  <data name="TableHeader_Employee" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+  <data name="AbsenceReason" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordsDoNotMatch" xml:space="preserve">
+  <data name="TableHeader_CreatedAt" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailSubject" xml:space="preserve">
+  <data name="TableHeader_StartDate" xml:space="preserve">
     <value></value>
   </data>
-  <data name="SessionExpired" xml:space="preserve">
+  <data name="TableHeader_EndDate" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailBodyHtml" xml:space="preserve">
+  <data name="TotalDaysIncludingHolidays" xml:space="preserve">
     <value></value>
   </data>
-  <data name="RequiresTwoFactor" xml:space="preserve">
+  <data name="WorkingDaysExcludingHolidays" xml:space="preserve">
     <value></value>
   </data>
-  <data name="AccountLocked" xml:space="preserve">
+  <data name="Comment" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SubmittedAt" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DecisionDate" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DecisionComment" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="BackToListWithArrow" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusSubmitted" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusApproved" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusRejected" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusCancelled" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SelectReason" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ReasonVacation" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ReasonSickLeave" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="ReasonUnpaid" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveType_SickLeave" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveType_Unpaid" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveType_Vacation" xml:space="preserve">
     <value></value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -86,45 +86,78 @@
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
+    <value></value>
   </resheader>
   <resheader name="version">
-    <value>1.3</value>
+    <value></value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
-  <data name="AuthenticatorResetSuccess" xml:space="preserve">
-    <value></value>
+  <data name="Employees" xml:space="preserve">
+    <value>Mitarbeiter</value>
   </data>
-  <data name="Invalid2faCode" xml:space="preserve">
-    <value></value>
+  <data name="SearchByName" xml:space="preserve">
+    <value>Nach Name suchen:</value>
   </data>
-  <data name="InvalidCredentials" xml:space="preserve">
-    <value></value>
+  <data name="FilterByPosition" xml:space="preserve">
+    <value>Nach Position filtern:</value>
   </data>
-  <data name="PasswordChangedSuccessfully" xml:space="preserve">
-    <value></value>
+  <data name="ShowInactiveEmployees" xml:space="preserve">
+    <value>Inaktive Mitarbeiter anzeigen</value>
   </data>
-  <data name="PasswordsDoNotMatch" xml:space="preserve">
-    <value></value>
+  <data name="ApplyFilters" xml:space="preserve">
+    <value>Filter anwenden</value>
   </data>
-  <data name="ResetPasswordEmailSubject" xml:space="preserve">
-    <value></value>
+  <data name="AddNewEmployee" xml:space="preserve">
+    <value>Neuen Mitarbeiter hinzufügen</value>
   </data>
-  <data name="SessionExpired" xml:space="preserve">
-    <value></value>
+  <data name="FullName" xml:space="preserve">
+    <value>Vollständiger Name</value>
   </data>
-  <data name="ResetPasswordEmailBodyHtml" xml:space="preserve">
-    <value></value>
+  <data name="Position" xml:space="preserve">
+    <value>Position</value>
   </data>
-  <data name="RequiresTwoFactor" xml:space="preserve">
-    <value></value>
+  <data name="Actions" xml:space="preserve">
+    <value>Aktionen</value>
   </data>
-  <data name="AccountLocked" xml:space="preserve">
-    <value></value>
+  <data name="Activate" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="Deactivate" xml:space="preserve">
+    <value>Deaktivieren</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="PagerFirst" xml:space="preserve">
+    <value>Erste</value>
+  </data>
+  <data name="PagerPrevious" xml:space="preserve">
+    <value>Vorherige</value>
+  </data>
+  <data name="PagerNext" xml:space="preserve">
+    <value>Nächste</value>
+  </data>
+  <data name="PagerLast" xml:space="preserve">
+    <value>Letzte</value>
+  </data>
+  <data name="Position_HRManager" xml:space="preserve">
+    <value>Personalmanager</value>
+  </data>
+  <data name="Position_ProjectManager" xml:space="preserve">
+    <value>Projektmanager</value>
+  </data>
+  <data name="Position_Employee" xml:space="preserve">
+    <value>Mitarbeiter</value>
+  </data>
+  <data name="Position_Administrator" xml:space="preserve">
+    <value>Administrator</value>
   </data>
 </root>

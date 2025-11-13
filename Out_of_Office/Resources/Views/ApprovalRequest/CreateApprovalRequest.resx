@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
 		Microsoft ResX Schema
@@ -86,45 +86,84 @@
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
+    <value></value>
   </resheader>
   <resheader name="version">
-    <value>1.3</value>
+    <value></value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value></value>
   </resheader>
-  <data name="AuthenticatorResetSuccess" xml:space="preserve">
+  <data name="CreateApprovalRequest" xml:space="preserve">
     <value></value>
   </data>
-  <data name="Invalid2faCode" xml:space="preserve">
+  <data name="Approval Request Details" xml:space="preserve">
     <value></value>
   </data>
-  <data name="InvalidCredentials" xml:space="preserve">
+  <data name="TableHeader_ID" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordChangedSuccessfully" xml:space="preserve">
+  <data name="TableHeader_Employee" xml:space="preserve">
     <value></value>
   </data>
-  <data name="PasswordsDoNotMatch" xml:space="preserve">
+  <data name="TableHeader_Approver" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailSubject" xml:space="preserve">
+  <data name="TableHeader_LeaveRequestNumber" xml:space="preserve">
     <value></value>
   </data>
-  <data name="SessionExpired" xml:space="preserve">
+  <data name="TableHeader_Status" xml:space="preserve">
     <value></value>
   </data>
-  <data name="ResetPasswordEmailBodyHtml" xml:space="preserve">
+  <data name="TableHeader_ReceivedDate" xml:space="preserve">
     <value></value>
   </data>
-  <data name="RequiresTwoFactor" xml:space="preserve">
+  <data name="StatusChangedAt" xml:space="preserve">
     <value></value>
   </data>
-  <data name="AccountLocked" xml:space="preserve">
+  <data name="LeaveRequestComment" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="DecisionComment" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveStart" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveEnd" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Approver" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="LeaveRequest" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusApproved" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="StatusRejected" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="NotYetChanged" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
     <value></value>
   </data>
 </root>
