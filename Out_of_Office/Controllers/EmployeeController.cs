@@ -115,13 +115,13 @@ namespace Out_of_Office.Controllers
         {
             var employees = await _mediator.Send(new GetAllEmployeesQuery());
 
-            var hrManagers = employees
-                .Where(e => e.Position == "HRManager")
-                .Select(e => new SelectListItem
-                {
-                    Text = e.FullName,
-                    Value = e.Id.ToString()
-                }).ToList();
+            var supervisors = employees
+                    .Where(e => e.Position != "Employee" && e.Status == "Active")
+                    .Select(e => new SelectListItem
+                    {
+                        Text = $"{e.FullName} ({e.Position})",
+                        Value = e.Id.ToString()
+                    }).ToList();
 
             var positions = new List<SelectListItem>
             {
@@ -131,7 +131,7 @@ namespace Out_of_Office.Controllers
                 new SelectListItem { Text = stringLocalizer["Position_Administrator"], Value = "Administrator" }
             };
 
-            ViewBag.HrManagers = hrManagers;
+            ViewBag.Supervisors = supervisors;
             ViewBag.Positions = positions;
         }
 

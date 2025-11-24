@@ -13,6 +13,8 @@ using X.PagedList;
 using Out_of_Office.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Out_of_Office.Application.Leave_Request.Errors;
+using Microsoft.Extensions.Localization;
 
 
 namespace Out_of_Office.Controllers
@@ -24,12 +26,15 @@ namespace Out_of_Office.Controllers
         private readonly ILogger<LeaveRequestController> _logger;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly UserManager<ApplicationUser> _userManager;
-        public LeaveRequestController(IMediator mediator, ILogger<LeaveRequestController> logger, IEmployeeRepository employeeRepository, UserManager<ApplicationUser> userManager)
+        private readonly IStringLocalizer _stringLocalizer;
+        public LeaveRequestController(IMediator mediator, ILogger<LeaveRequestController> logger, IEmployeeRepository employeeRepository, UserManager<ApplicationUser> userManager, IStringLocalizerFactory factory)
         {
             _mediator = mediator;
             _logger = logger;
             _employeeRepository = employeeRepository;
             _userManager = userManager;
+            var asm = typeof(Program).Assembly.GetName().Name!;
+            _stringLocalizer = factory.Create("Views.LeaveRequest.Create", asm);
         }
 
         [HttpGet]
@@ -151,17 +156,21 @@ namespace Out_of_Office.Controllers
             }
 
             command.EmployeeId = user.Employee.Id;
-
+            var test = _stringLocalizer["EndDateEarlierThanStart"];
             try
             {
                 await _mediator.Send(command);
                 return RedirectToAction(nameof(Index));
             }
+            catch (LeaveRequestValidationException ex)
+            {
+                ModelState.AddModelError(string.Empty, _stringLocalizer[ex.ErrorCode.ToString()]);
+            }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                _logger.LogError(ex, "Unexpected error");
+                ModelState.AddModelError(string.Empty, _stringLocalizer["UnexpectedError"]);
             }
-
             return View(command);
         }
         [HttpPost]

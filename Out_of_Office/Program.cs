@@ -18,6 +18,7 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 builder.Services.AddControllersWithViews()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization();
+
 builder.Services.AddSession();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAplication();

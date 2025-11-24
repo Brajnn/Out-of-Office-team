@@ -127,4 +127,34 @@
   <data name="ResetPasswordEmailBodyHtml" xml:space="preserve">
     <value>Aby zresetować hasło kliknij: &lt;a href="{0}"&gt;Zresetuj hasło&lt;/a&gt;</value>
   </data>
+  <data name="VacationAdvanceError" xml:space="preserve">
+    <value>Wniosek o urlop wypoczynkowy musi być złożony co najmniej 1 dzień wcześniej.</value>
+  </data>
+  <data name="UnpaidAdvanceError" xml:space="preserve">
+    <value>Wniosek o urlop bezpłatny musi być złożony co najmniej 7 dni wcześniej.</value>
+  </data>
+  <data name="SickLeavePastError" xml:space="preserve">
+    <value>Urlop chorobowy nie może zaczynać się w przeszłości.</value>
+  </data>
+  <data name="InvalidAbsenceReason" xml:space="preserve">
+    <value>Wybrano nieprawidłowy powód nieobecności.</value>
+  </data>
+  <data name="EndDateEarlierThanStart" xml:space="preserve">
+    <value>Data zakończenia nie może być wcześniejsza niż data rozpoczęcia.</value>
+  </data>
+  <data name="EmployeeNotFound" xml:space="preserve">
+    <value>Pracownik nie został odnaleziony.</value>
+  </data>
+  <data name="NoCalendarForYear" xml:space="preserve">
+    <value>Brak kalendarza pracy dla roku {0}.</value>
+  </data>
+  <data name="InsufficientLeaveDays" xml:space="preserve">
+    <value>Brak wystarczającej liczby dni dla tego rodzaju urlopu.</value>
+  </data>
+  <data name="OverlappingRequest" xml:space="preserve">
+    <value>Masz już zatwierdzony wniosek kolidujący z tym zakresem dat.</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Wystąpił nieoczekiwany błąd. Spróbuj ponownie później.</value>
+  </data>
 </root>

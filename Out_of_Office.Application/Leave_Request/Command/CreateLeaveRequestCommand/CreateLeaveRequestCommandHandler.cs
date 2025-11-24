@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Out_of_Office.Application.Leave_Request.Errors;
 using Out_of_Office.Domain.Entities;
 using Out_of_Office.Domain.Interfaces;
 using System;
@@ -38,36 +39,36 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
             {
                 case "Vacation":
                     if ((request.StartDate - today).TotalDays < 1)
-                        throw new ArgumentException("Vacation leave must be requested at least 1 day in advance.");
+                        throw new LeaveRequestValidationException(LeaveRequestError.VacationAdvanceError);
                     break;
 
                 case "Unpaid":
                     if ((request.StartDate - today).TotalDays < 7)
-                        throw new ArgumentException("Unpaid leave must be requested at least 7 days in advance.");
+                        throw new LeaveRequestValidationException(LeaveRequestError.UnpaidAdvanceError);
                     break;
 
                 case "SickLeave":
                     if (request.StartDate < today)
-                        throw new ArgumentException("Sick leave cannot start in the past.");
+                        throw new LeaveRequestValidationException(LeaveRequestError.SickLeavePastError);
                     break;
 
                 default:
-                    throw new ArgumentException("Invalid absence reason selected.");
+                    throw new LeaveRequestValidationException(LeaveRequestError.InvalidAbsenceReason);
             }
             if (request.EndDate < request.StartDate)
             {
-                throw new ArgumentException("End date cannot be earlier than start date.");
+                throw new LeaveRequestValidationException(LeaveRequestError.EndDateEarlierThanStart);
             }
             // Retrieve the employee based on the request's EmployeeId
             var employee = await _employeeRepository.GetEmployeeByIdAsync(request.EmployeeId);
             if (employee == null)
-                throw new Exception("Employee not found.");
+                throw new LeaveRequestValidationException(LeaveRequestError.EmployeeNotFound);
 
             // Retrieve the work calendar for the selected year
             var year = request.StartDate.Year;
             var calendar = await _calendarRepository.GetByYearAsync(year);
             if (calendar == null || !calendar.Any())
-                throw new Exception($"No work calendar found for year {year}.");
+                throw new LeaveRequestValidationException(LeaveRequestError.NoCalendarForYear);
 
             // Calculate the number of working days between the start and end dates
             var workingDays = calendar
@@ -96,7 +97,7 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
                     _ => request.AbsenceReason
                 };
 
-                throw new Exception($"Not enough available days for {displayName}. Please check your available days on your profile.");
+                throw new LeaveRequestValidationException(LeaveRequestError.InsufficientLeaveDays);
             }
             // Check for overlapping leave requests
             var allRequests = await _leaveRequestRepository.GetAllLeaveRequestsAsync();
@@ -109,7 +110,7 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
 
             if (overlappingRequestExists)
             {
-                throw new InvalidOperationException("You already have an approved leave request overlapping with these dates.");
+                throw new LeaveRequestValidationException(LeaveRequestError.OverlappingRequest);
             }
             var leaveRequest = new LeaveRequest
             {

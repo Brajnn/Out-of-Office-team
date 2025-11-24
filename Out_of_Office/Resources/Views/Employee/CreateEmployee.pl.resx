@@ -166,4 +166,7 @@
   <data name="Position_Administrator" xml:space="preserve">
     <value>Administrator</value>
   </data>
+  <data name="SelectSupervisior" xml:space="preserve">
+    <value>Wybierz przełożonego</value>
+  </data>
 </root>

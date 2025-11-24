@@ -14,15 +14,10 @@ namespace Out_of_Office.Application.Leave_Request.Command.CreateLeaveRequestComm
     {
         public int EmployeeId { get; set; }
         [Required]
-        [DisplayName("Absence Reason")]
         public string AbsenceReason { get; set; }
         [DataType(DataType.Date)]
-        [DisplayName("Start Date")]
-
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
-        [DisplayName("End Date")]
-        [DateRange("StartDate", ErrorMessage = "The end date must be later than the start date.")]
         public DateTime EndDate { get; set; }
         public string? Comment { get; set; }
     }

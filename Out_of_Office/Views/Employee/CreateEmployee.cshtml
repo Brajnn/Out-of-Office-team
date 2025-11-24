@@ -49,8 +49,8 @@
 
             <div class="form-group">
                 <label asp-for="PeoplePartnerID" class="control-label">@Localizer["Supervisor"]</label>
-                <select asp-for="PeoplePartnerID" class="form-control" asp-items="hrManagers">
-                    <option value="">@Localizer["SelectHRManager"]</option>
+                <select asp-for="PeoplePartnerID" class="form-control" asp-items="ViewBag.Supervisors">
+                    <option value="">@Localizer["SelectSupervisor"]</option>
                 </select>
                 <span asp-validation-for="PeoplePartnerID" class="text-danger"></span>
             </div>

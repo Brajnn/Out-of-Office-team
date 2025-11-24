@@ -127,4 +127,34 @@
   <data name="AccountLocked" xml:space="preserve">
     <value></value>
   </data>
+  <data name="VacationAdvanceError" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="UnpaidAdvanceError" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SickLeavePastError" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="InvalidAbsenceReason" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="EndDateEarlierThanStart" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="EmployeeNotFound" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="NoCalendarForYear" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="InsufficientLeaveDays" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="OverlappingRequest" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

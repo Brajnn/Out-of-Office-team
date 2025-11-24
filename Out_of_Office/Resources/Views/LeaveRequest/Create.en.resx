@@ -130,4 +130,34 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="VacationAdvanceError" xml:space="preserve">
+    <value>You must request vacation leave at least 1 day in advance.</value>
+  </data>
+  <data name="UnpaidAdvanceError" xml:space="preserve">
+    <value>You must request unpaid leave at least 7 days in advance.</value>
+  </data>
+  <data name="SickLeavePastError" xml:space="preserve">
+    <value>Sick leave cannot start in the past.</value>
+  </data>
+  <data name="InvalidAbsenceReason" xml:space="preserve">
+    <value>Invalid absence reason selected.</value>
+  </data>
+  <data name="EndDateEarlierThanStart" xml:space="preserve">
+    <value>End date cannot be earlier than start date.</value>
+  </data>
+  <data name="EmployeeNotFound" xml:space="preserve">
+    <value>Employee not found.</value>
+  </data>
+  <data name="NoCalendarForYear" xml:space="preserve">
+    <value>No work calendar found for year {0}.</value>
+  </data>
+  <data name="InsufficientLeaveDays" xml:space="preserve">
+    <value>Not enough available days for this leave type.</value>
+  </data>
+  <data name="OverlappingRequest" xml:space="preserve">
+    <value>You already have an approved leave request overlapping with these dates.</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>An unexpected error has occurred. Please try again later.</value>
+  </data>
 </root>

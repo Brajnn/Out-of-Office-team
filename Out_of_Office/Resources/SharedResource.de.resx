@@ -127,4 +127,34 @@
   <data name="ResetPasswordEmailBodyHtml" xml:space="preserve">
     <value>Um Ihr Passwort zurückzusetzen, klicken Sie auf: Passwort zurücksetzen</value>
   </data>
+  <data name="VacationAdvanceError" xml:space="preserve">
+    <value>Sie müssen Erholungsurlaub mindestens 1 Tag im Voraus beantragen.</value>
+  </data>
+  <data name="UnpaidAdvanceError" xml:space="preserve">
+    <value>Sie müssen unbezahlten Urlaub mindestens 7 Tage im Voraus beantragen.</value>
+  </data>
+  <data name="SickLeavePastError" xml:space="preserve">
+    <value>Krankheitsurlaub darf nicht in der Vergangenheit beginnen.</value>
+  </data>
+  <data name="InvalidAbsenceReason" xml:space="preserve">
+    <value>Ungültiger Abwesenheitsgrund ausgewählt.</value>
+  </data>
+  <data name="EndDateEarlierThanStart" xml:space="preserve">
+    <value>Das Enddatum darf nicht vor dem Startdatum liegen.</value>
+  </data>
+  <data name="EmployeeNotFound" xml:space="preserve">
+    <value>Mitarbeiter wurde nicht gefunden.</value>
+  </data>
+  <data name="NoCalendarForYear" xml:space="preserve">
+    <value>Kein Arbeitskalender für das Jahr {0} gefunden.</value>
+  </data>
+  <data name="InsufficientLeaveDays" xml:space="preserve">
+    <value>Nicht genügend verfügbare Urlaubstage für diesen Typ.</value>
+  </data>
+  <data name="OverlappingRequest" xml:space="preserve">
+    <value>Sie haben bereits einen genehmigten Antrag, der sich mit diesen Daten überschneidet.</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es später erneut.</value>
+  </data>
 </root>
