@@ -23,6 +23,7 @@ namespace Out_of_Office.Application.Project.Command.CreateProject
         {
             var project = new Domain.Entities.Project
             {
+                Name = request.Name,
                 ProjectType = request.ProjectType,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
@@ -35,6 +36,7 @@ namespace Out_of_Office.Application.Project.Command.CreateProject
             
             var details = JsonSerializer.Serialize(new
             {
+                project.Name,
                 project.ProjectType,
                 project.StartDate,
                 project.EndDate,

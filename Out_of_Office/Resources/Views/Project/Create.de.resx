@@ -142,4 +142,7 @@
   <data name="BackToList" xml:space="preserve">
     <value>Zurück zur Liste</value>
   </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value>Name</value>
+  </data>
 </root>

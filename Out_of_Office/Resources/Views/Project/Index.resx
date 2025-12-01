@@ -178,4 +178,7 @@
   <data name="ProjectStatusInactive" xml:space="preserve">
     <value></value>
   </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

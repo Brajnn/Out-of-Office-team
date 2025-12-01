@@ -34,7 +34,7 @@ namespace Out_of_Office.Application.Project.Query.GetProjectById
 
             projectDto.Employees = project.EmployeeProjects.Select(ep => new EmployeeDto
             {
-                Id = ep.Employee.Id,
+                Id = ep.Employee.Id, 
                 FullName = ep.Employee.FullName,
                 Subdivision = ep.Employee.Subdivision,
                 Position = ep.Employee.Position,

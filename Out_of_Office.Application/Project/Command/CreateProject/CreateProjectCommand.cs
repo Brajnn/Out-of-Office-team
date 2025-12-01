@@ -10,6 +10,7 @@ namespace Out_of_Office.Application.Project.Command.CreateProject
 {
     public class CreateProjectCommand:IRequest
     {
+        public string Name { get; set; }
         public string ProjectType { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }

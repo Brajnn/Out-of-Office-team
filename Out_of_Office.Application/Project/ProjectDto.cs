@@ -11,6 +11,7 @@ namespace Out_of_Office.Application.Project
     public class ProjectDto
     {
         public int ID { get; set; }
+        public string Name { get; set; }
         public string ProjectType { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }

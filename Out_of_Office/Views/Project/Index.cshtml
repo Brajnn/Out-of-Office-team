@@ -29,6 +29,7 @@
     <thead>
         <tr>
             <th>@Html.ActionLink(Localizer["TableHeader_ProjectID"].Value, "Index", new { sortOrder = ViewBag.IdSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
+            <th>@Html.ActionLink(Localizer["ProjectName"].Value, "Index", new { sortOrder = ViewBag.IdSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
             <th>@Html.ActionLink(Localizer["TableHeader_ProjectType"].Value, "Index", new { sortOrder = ViewBag.TypeSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
             <th>@Html.ActionLink(Localizer["TableHeader_StartDate"].Value, "Index", new { sortOrder = ViewBag.StartDateSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
             <th>@Html.ActionLink(Localizer["TableHeader_ProjectManager"].Value, "Index", new { sortOrder = ViewBag.ManagerSortParm, searchProjectId = ViewData["SearchProjectId"] })</th>
@@ -40,6 +41,7 @@
         {
             <tr>
                 <td>@project.ID</td>
+                <td>@project.Name</td>
                 <td>@project.ProjectType</td>
                 <td>@project.StartDate.ToString("yyyy-MM-dd")</td>
                 <td>@project.ProjectManagerFullName</td>
