@@ -43,7 +43,7 @@ namespace Out_of_Office.Infrastructure.Repositories
         public async Task<IList<Employee>> GetProjectManagersAsync()
         {
             return await _dbContext.Employees
-                                 .Where(e => e.Position == "Project Manager")
+                                 .Where(e => e.Position == "ProjectManager")
                                  .ToListAsync();
         }
         public async Task UpdateLeaveBalancesAsync(int employeeId, List<(LeaveType Type, int DaysAvailable)> balances)

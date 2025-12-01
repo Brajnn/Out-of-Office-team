@@ -143,7 +143,7 @@ namespace Out_of_Office.Controllers
                 Project = project,
                 Employees = activeEmployees
             };
-
+            Console.WriteLine($"ROLE FROM CLAIMS: {User.FindFirstValue(ClaimTypes.Role)}");
             return View(viewModel);
         }
 
@@ -156,7 +156,7 @@ namespace Out_of_Office.Controllers
                 var command = new AssignEmployeeCommand
                 {
                     ProjectId = viewModel.ProjectId,
-                    EmployeeId = viewModel.SelectedEmployeeId,
+                    EmployeeId = viewModel.EmployeeId,
 
                 };
 

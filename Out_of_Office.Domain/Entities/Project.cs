@@ -10,6 +10,7 @@ namespace Out_of_Office.Domain.Entities
     public class Project
     {
         public int ID { get; set; }
+        public string Name { get; set; }
         public string ProjectType { get; set; }
         public DateTime StartDate { get; set; }  
 

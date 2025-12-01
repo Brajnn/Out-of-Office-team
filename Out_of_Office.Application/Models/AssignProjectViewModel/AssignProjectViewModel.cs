@@ -11,8 +11,8 @@ namespace Out_of_Office.Application.Models.AssignProjectViewModel
     public class AssignProjectViewModel
     {
         public int ProjectId { get; set; }
-        public ProjectDto Project { get; set; }
-        public IEnumerable<EmployeeDto> Employees { get; set; }
-        public int SelectedEmployeeId { get; set; }
+        public ProjectDto? Project { get; set; }
+        public IEnumerable<EmployeeDto>? Employees { get; set; }
+        public int EmployeeId { get; set; }
     }
 }

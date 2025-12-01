@@ -13,8 +13,8 @@
 <form asp-action="AssignEmployee" method="post">
     <input type="hidden" asp-for="ProjectId" />
     <div class="form-group">
-        <label for="SelectedEmployeeId">@Localizer["SelectEmployee"]</label>
-        <select asp-for="SelectedEmployeeId" class="form-control" asp-items="@(new SelectList(Model.Employees, "Id", "FullName"))"></select>
+        <label for="EmployeeId">@Localizer["SelectEmployee"]</label>
+        <select asp-for="EmployeeId" class="form-control" asp-items="@(new SelectList(Model.Employees, "Id", "FullName"))"></select>
     </div>
     <div class="form-group text-center">
         <button type="submit" class="btn btn-primary">@Localizer["Assign"]</button>
